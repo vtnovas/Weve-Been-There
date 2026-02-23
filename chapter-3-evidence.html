@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence & Paperwork - We've Been There</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            color: #3D517D;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #3D517D;
+            text-decoration: none;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #3D517D;
+            padding: 6rem 1.5rem 2rem;
+            transition: left 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+        
+        .sidebar:hover,
+        .sidebar-trigger:hover + .sidebar {
+            left: 0;
+        }
+        
+        .sidebar-trigger {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 100px;
+            background: #3D517D;
+            opacity: 0.5;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .sidebar-trigger:hover {
+            opacity: 1;
+        }
+        
+        .sidebar h3 {
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar nav a {
+            display: block;
+            color: #FFE3E3;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            font-size: 12pt;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+        }
+        
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            color: white;
+            border-left-color: #FFD0D0;
+            padding-left: 1.5rem;
+        }
+        
+        /* Victor's Experience Panel */
+        .victor-panel {
+            position: fixed;
+            right: -700px;
+            top: 0;
+            width: 700px;
+            height: 100vh;
+            background: #FFE3E3;
+            padding: 6rem 1.5rem 2rem;
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .victor-panel:hover,
+        .victor-trigger:hover + .victor-panel {
+            right: 0;
+        }
+        
+        .victor-trigger {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 100px;
+            background: #FFD0D0;
+            opacity: 0.5;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .victor-trigger:hover {
+            opacity: 1;
+        }
+        
+        .victor-panel h3 {
+            color: #AB3838;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .victor-content {
+            color: #3D517D;
+            font-size: 12pt;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            padding-bottom: 120px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        .content-wrapper {
+            margin-top: 2rem;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .main-content-area {
+            max-width: 800px;
+        }
+        
+        .sidebar-callouts {
+            position: relative;
+        }
+        
+        .callout-box {
+            background: #FBEBDD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: absolute;
+            right: -420px;
+            width: 380px;
+            top: 0;
+        }
+        
+        .callout-anchor {
+            position: relative;
+        }
+        
+        .callout-box .read-thread-btn {
+            display: inline-block;
+            padding: 0.5rem 16px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+        }
+        
+        .callout-box .read-thread-btn:hover {
+            background: #AB3838;
+            color: white;
+        }
+        
+        .callout-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-username {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #3D517D;
+            margin-bottom: 0.5rem;
+        }
+        
+        .callout-content {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+        }
+        
+        .callout-content p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .chapter-title-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+        
+        .chapter-number-header {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 3rem;
+            color: #AB3838;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 25pt;
+            color: #3D517D;
+            line-height: 1.2;
+        }
+        
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .nav-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav.stuck {
+            position: absolute;
+            bottom: auto;
+            top: auto;
+        }
+        
+        .footer-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .footer-nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav-btn .arrow {
+            font-size: 1.2rem;
+        }
+        
+        /* Category Carousel */
+        .category-carousel {
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .category-card {
+            min-width: calc(50% - 1rem);
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            transform: scale(0.95);
+            flex-shrink: 0;
+        }
+        
+        .category-card.active {
+            opacity: 1;
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-card:hover {
+            transform: scale(0.98) translateX(-5px);
+            cursor: pointer;
+        }
+        
+        .category-card.active:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-card h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 0.75rem;
+        }
+        
+        .category-card .category-subtitle {
+            font-style: italic;
+            color: #58647E;
+            margin-bottom: 0.5rem;
+            font-size: 12pt;
+        }
+        
+        .category-card .category-description {
+            color: #3D517D;
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .carousel-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot:hover {
+            background: #FFE3E3;
+        }
+        
+        .carousel-dot.active {
+            background: #AB3838;
+            color: white;
+            border-color: #AB3838;
+        }
+        
+        /* Legal Disclaimer Box */
+        .legal-disclaimer {
+            background: #FFE3E3;
+            border-left: 4px solid #AB3838;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .legal-disclaimer h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 1rem;
+        }
+        
+        .legal-disclaimer p {
+            margin-bottom: 1rem;
+            color: #3D517D;
+        }
+        
+        .legal-disclaimer p:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .resource-btn {
+            padding: 0.75rem 20px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+        }
+        
+        .resource-btn:hover {
+            background: #AB3838;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(171, 56, 56, 0.3);
+        }
+        
+        /* Accordion Styles */
+        .accordion {
+            margin: 1.5rem 0;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #3D517D;
+        }
+        
+        .accordion-header:hover {
+            background: #E3ECDC;
+        }
+        
+        .accordion-header.active {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content.active {
+            max-height: 3000px;
+            padding: 1.5rem;
+        }
+        
+        .accordion-content ul {
+            list-style: disc;
+            padding-left: 2rem;
+            margin: 0;
+        }
+        
+        .accordion-content li {
+            margin-bottom: 0.15rem;
+            line-height: 1.6;
+            color: #3D517D;
+        }
+        
+        /* Tighten bullet spacing globally for all items */
+        ul li,
+        ol li {
+            margin-bottom: 0.15rem !important;
+        }
+        
+        /* Evidence Category Sections */
+        .evidence-category {
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .evidence-category.bg-pink {
+            background: #FFE3E3;
+        }
+        
+        .evidence-category.bg-green {
+            background: #E3ECDC;
+        }
+        
+        .evidence-category.bg-orange {
+            background: #FBEBDD;
+        }
+        
+        .evidence-category.bg-white {
+            background: white;
+        }
+        
+        /* Red numbered list */
+        ol.red-numbers {
+            list-style: none;
+            counter-reset: item;
+            padding-left: 2rem;
+        }
+        
+        ol.red-numbers li {
+            counter-increment: item;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        ol.red-numbers li::before {
+            content: counter(item) ".";
+            color: #AB3838;
+            font-weight: bold;
+            position: absolute;
+            left: -2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 2rem;
+            }
+            
+            .callout-anchor {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .callout-box {
+                position: relative;
+                right: 0;
+                width: 100%;
+                margin-top: 1rem;
+                order: 999;
+            }
+            
+            .category-card {
+                min-width: calc(70% - 1rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chapter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-arrows-top {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                order: -1;
+            }
+            
+            .footer-nav {
+                padding: 1rem;
+            }
+            
+            .footer-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 11pt;
+            }
+            
+            .category-card {
+                min-width: calc(85% - 1rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">We've Been There</a>
+    </header>
+    
+    <div class="sidebar-trigger"></div>
+    
+    <div class="sidebar">
+        <h3>Chapters</h3>
+        <nav>
+            <a href="chapter-1.html">01. Introduction</a>
+            <a href="chapter-2.html">02. Plan Your Route</a>
+            <a href="#" class="active">03. Evidence & Paperwork</a>
+            <a href="chapter-4.html">04. The Waiting</a>
+            <a href="chapter-5.html">05. Medical Exam</a>
+            <a href="chapter-6.html">06. Biometrics Appointment</a>
+            <a href="chapter-7.html">07. Work Authorization & Social Security</a>
+            <a href="chapter-8.html">08. Interview</a>
+            <a href="chapter-9.html">09. The Green Card</a>
+        </nav>
+    </div>
+    
+    <!-- Victor's Experience Panel -->
+    <div class="victor-trigger"></div>
+    
+    <div class="victor-panel">
+        <img src="Thesis_Profile_EvidencePaperwork.png" alt="Victor's Journey infographic showing total section time of 141 days, stress level indicator, and pain points experienced during the evidence and paperwork phase." style="width: 100%; height: auto;">
+    </div>
+    
+    <main id="main-content">
+        <div class="chapter-header">
+            <a href="chapter-2.html" class="nav-arrow" title="Previous Chapter">←</a>
+            <div class="chapter-title-wrapper">
+                <div class="chapter-number-header">03</div>
+                <h1>Evidence & Paperwork</h1>
+            </div>
+            <a href="chapter-4.html" class="nav-arrow" title="Next Chapter">→</a>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="main-content-area">
+                <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem;">Getting Started</h2>
+                
+                <p>Once you have planned your route, you are ready to prepare your application. USCIS officers review evidence in a few broad categories to understand who you are, how you qualify, and whether you meet the requirements to move forward.<br><br></p>
+                
+                <p>After exploring the categories below, you'll find a table that organizes everything you may need to submit into forms and five evidence categories. Depending on your relationship and your filing path, some items will apply to you and others will not. That is normal. This table is simply meant to help you confirm what matters for your specific situation.<br><br></p>
+                
+                <p style="margin-bottom: 2rem;">Think of these categories as lenses USCIS uses to understand your case. When all of them are clearly supported, your application is easier to review and may be less likely to be delayed.</p>
+                
+                <!-- Category Carousel -->
+                <div class="category-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            <!-- Card 1 -->
+                            <div class="category-card active" onclick="goToSlide(0)">
+                                <h3>1. Identity & Civil Documents</h3>
+                                <p class="category-subtitle">This evidence answers a basic question: who are the people in this application?</p>
+                                <p class="category-description">These documents establish legal identity and family ties. They include things like birth certificates, marriage certificates, and certified translations. USCIS uses them to confirm names, dates, and relationships before looking at anything else.</p>
+                            </div>
+                            
+                            <!-- Card 2 -->
+                            <div class="category-card" onclick="goToSlide(1)">
+                                <h3>2. Relationship Eligibility</h3>
+                                <p class="category-subtitle">This category shows why you are allowed to apply through this family relationship.</p>
+                                <p class="category-description">For spouses, this includes proof that the marriage is real and ongoing. For parents or children, it focuses on documents that show a legal parent–child relationship. This evidence helps USCIS understand how you qualify, not how long the process will take or how strong your case "feels."</p>
+                            </div>
+                            
+                            <!-- Card 3 -->
+                            <div class="category-card" onclick="goToSlide(2)">
+                                <h3>3. Immigration Status & Entry (Adjustment of Status Only)</h3>
+                                <p class="category-subtitle">This evidence explains how the beneficiary entered the U.S. and what their current status is.</p>
+                                <p class="category-description">It includes records like passport pages, visas, and arrival documents. USCIS uses this information to confirm that the beneficiary is eligible to apply from inside the U.S. or to understand their immigration history more broadly.</p>
+                            </div>
+                            
+                            <!-- Card 4 -->
+                            <div class="category-card" onclick="goToSlide(3)">
+                                <h3>4. Financial Sponsorship</h3>
+                                <p class="category-subtitle">This category answers the question: will the applicant be financially supported?</p>
+                                <p class="category-description">USCIS requires proof that the petitioner (or a joint sponsor, if needed) meets income requirements. This includes tax returns, proof of employment, and sometimes assets. This is not about wealth. It is about showing basic financial stability as defined by USCIS rules.</p>
+                            </div>
+                            
+                            <!-- Card 5 -->
+                            <div class="category-card" onclick="goToSlide(4)">
+                                <h3>5. Admissibility & Background</h3>
+                                <p class="category-subtitle">This evidence helps USCIS confirm that the applicant is eligible to receive a green card under U.S. law.</p>
+                                <p class="category-description">It includes the immigration medical exam and, in some cases, records related to prior arrests or court cases. Many people never need to submit anything beyond the medical exam in this category.</p>
+                            </div>
+                            
+                            <!-- Card 6: USCIS Forms -->
+                            <div class="category-card" onclick="goToSlide(5)">
+                                <h3>6. USCIS Forms</h3>
+                                <p class="category-subtitle">The official forms required to process your application.</p>
+                                <p class="category-description">These are the completed government forms that tie all your evidence together and formally request immigration benefits. Each form serves a specific purpose in your application packet.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="carousel-nav">
+                        <div class="carousel-arrow" onclick="previousSlide()">←</div>
+                        <div class="carousel-dots">
+                            <div class="carousel-dot active" onclick="goToSlide(0)">1</div>
+                            <div class="carousel-dot" onclick="goToSlide(1)">2</div>
+                            <div class="carousel-dot" onclick="goToSlide(2)">3</div>
+                            <div class="carousel-dot" onclick="goToSlide(3)">4</div>
+                            <div class="carousel-dot" onclick="goToSlide(4)">5</div>
+                            <div class="carousel-dot" onclick="goToSlide(5)">6</div>
+                        </div>
+                        <div class="carousel-arrow" onclick="nextSlide()">→</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <img src="Website_Evidence_Table_Draft3.png" alt="What Evidence Do I Need? A table showing required documents organized by petitioner type (Lawful Permanent Resident or U.S. Citizen) and beneficiary relationship (Child, Spouse, Parent/Child, Spouse). Documents are grouped into categories: Identity &amp; Civil Documents, Relationship Eligibility Evidence, Immigration Status &amp; Entry, Financial Sponsorship Evidence, Admissibility &amp; Background, and USCIS Forms. Each item is marked as Required, If Applicable, Adjustment of Status Only, or Optional." style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                </div>
+                
+                <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin: 3rem 0 1rem;">Preparing Your Application</h2>
+                <p>The table above helps you understand what USCIS may ask for based on your situation. This section focuses on a different question: how do you put your evidence together in a way that is clear, complete, and easy to review? Preparing your evidence is about making sure you have what you need, and presenting it in a thoughtful, readable manner so your application tells a clear story from start to finish.</p>
+                
+                <!-- Legal Disclaimer -->
+                <div class="legal-disclaimer">
+                    <h3>Need Help?</h3>
+                    <p>Immigration forms and processes can be confusing, and each case is unique. If you become frustrated, confused, or uncertain at any point, please consult with a licensed immigration attorney or an accredited legal representative, as this guide is not to be used as legal advice.</p>
+                    <p>You can find free or low-cost legal help here:</p>
+                    <div class="resource-buttons">
+                        <a href="https://www.justice.gov/eoir/list-pro-bono-legal-service-providers" target="_blank" rel="noopener noreferrer" class="resource-btn">Department of Justice</a>
+                        <a href="https://www.ailalawyer.com/" target="_blank" rel="noopener noreferrer" class="resource-btn">AILA</a>
+                        <a href="https://www.immi.org/en/Info/get-legal-help" target="_blank" rel="noopener noreferrer" class="resource-btn">Immi.org</a>
+                    </div>
+                </div>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 2rem 0 1rem;">Get Your Documents Ready</h3>
+                <p>Let's start with what documents you should have ready that will help you fill out your forms. Be sure to make copies if they need to be submitted for evidence, since you will not get them back. USCIS will specifically ask if they need an original of a certain evidence type.</p>
+                
+                <!-- Accordions -->
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(0)">
+                            <span>For the Petitioner (U.S. citizen or green card holder)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Proof of status (U.S. passport, birth certificate, naturalization certificate, or green card)</li>
+                                <li>Proof of relationship (marriage certificate, birth certificate of child, etc.)</li>
+                                <li>Proof of prior divorces (if it applies to you)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(1)">
+                            <span>For the Beneficiary (Immigrant)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <ul>
+                                <li>Passport biographic page</li>
+                                <li>Birth certificate (with certified English translation if in another language)</li>
+                                <li>Marriage certificate (if marriage-based)</li>
+                                <li>I-94 arrival/departure record (if in the U.S.)</li>
+                                <li>Visa used to enter the U.S. (if it applies to you)</li>
+                                <li>Medical exam results (Also known as Form I-693, submitted with or after I-485)</li>
+                                <li>Prior immigration records (if it applies to you)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 3rem 0 1rem;">The Forms</h3>
+                <p>There are many forms with names that may get confusing. If you have trouble differentiating them, here is each form's name, who files it, and a description to help you understand the differences.</p>
+                
+                <!-- Forms Carousel -->
+                <div class="category-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="formsCarouselTrack">
+                            <!-- Form 1: I-130 -->
+                            <div class="category-card active" onclick="goToFormsSlide(0)">
+                                <h3>I-130 | Petition for Alien Relative</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filed by the petitioner</p>
+                                <p class="category-description">This form tells the U.S. government you want to bring a family member to live in the U.S.</p>
+                            </div>
+                            
+                            <!-- Form 2: I-485 -->
+                            <div class="category-card" onclick="goToFormsSlide(1)">
+                                <h3>I-485 | Adjustment of Status</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filed by the beneficiary (if applying from inside the U.S.)</p>
+                                <p class="category-description">This form is used to apply for a green card without leaving the U.S.</p>
+                            </div>
+                            
+                            <!-- Form 3: I-864 -->
+                            <div class="category-card" onclick="goToFormsSlide(2)">
+                                <h3>I-864 | Affidavit of Support</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filed by the petitioner</p>
+                                <p class="category-description">This form shows that the immigrant has someone who can support them financially.</p>
+                            </div>
+                            
+                            <!-- Form 4: I-693 -->
+                            <div class="category-card" onclick="goToFormsSlide(3)">
+                                <h3>I-693 | Report of Medical Examination and Vaccination Record</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filled out by the civil surgeon, filed by the beneficiary</p>
+                                <p class="category-description">This form shows that the immigrant has someone who can support them financially.</p>
+                            </div>
+                            
+                            <!-- Form 5: I-765 -->
+                            <div class="category-card" onclick="goToFormsSlide(4)">
+                                <h3>I-765 | Application for Work Authorization (Optional)</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filed by the beneficiary (if also submitting I-485)</p>
+                                <p class="category-description">This form lets the immigrant ask for permission to work while their green card is in process.</p>
+                            </div>
+                            
+                            <!-- Form 6: I-131 -->
+                            <div class="category-card" onclick="goToFormsSlide(5)">
+                                <h3>I-131 | Application for Travel Document (Optional)</h3>
+                                <p style="font-style: italic; font-size: 12pt; color: #AB3838; margin-bottom: 0.75rem;">Filed by the beneficiary (if also submitting I-485)</p>
+                                <p class="category-description">This form is used if the immigrant wants to travel outside the U.S. and return while their case is still pending.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="carousel-nav">
+                        <div class="carousel-arrow" onclick="previousFormsSlide()">←</div>
+                        <div class="carousel-dots">
+                            <div class="carousel-dot active" onclick="goToFormsSlide(0)">1</div>
+                            <div class="carousel-dot" onclick="goToFormsSlide(1)">2</div>
+                            <div class="carousel-dot" onclick="goToFormsSlide(2)">3</div>
+                            <div class="carousel-dot" onclick="goToFormsSlide(3)">4</div>
+                            <div class="carousel-dot" onclick="goToFormsSlide(4)">5</div>
+                            <div class="carousel-dot" onclick="goToFormsSlide(5)">6</div>
+                        </div>
+                        <div class="carousel-arrow" onclick="nextFormsSlide()">→</div>
+                    </div>
+                </div>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 3rem 0 1rem;">Building Your Packet</h3>
+                <p>Now let's go through each evidence category and prepare your packet to submit with your forms.</p>
+                
+                <!-- Category 1: Identity & Civil Documents (Pink) -->
+                <div class="evidence-category bg-pink">
+                    <h4 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 16pt; color: #AB3838; margin: 0 0 1rem;">1. Identity & Civil Documents</h4>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Purpose: Establish who everyone is and how they are legally connected.</p>
+                    <p>This category includes documents like birth certificates, marriage certificates, divorce decrees, and certified translations. These documents form the foundation of your application. USCIS uses them to confirm names, dates, and legal relationships before looking at anything else.</p>
+                    
+                    <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">How to prepare and organize</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.75rem;">Use clear, readable copies. Do not submit originals unless specifically required since they will not send them back.</li>
+                        <li style="margin-bottom: 0.75rem;">Make sure names and dates are consistent across documents.</li>
+                        <li style="margin-bottom: 0.75rem;">If a document is not in English, include:
+                            <ul style="list-style: circle; padding-left: 2rem; margin-top: 0.5rem;">
+                                <li style="margin-bottom: 0.5rem;">A full English translation</li>
+                                <li style="margin-bottom: 0.5rem;">A signed translator certification<br>
+                                    If you would like to use a template, you can use the Google Drive template linked below:<br>
+                                    <a href="https://docs.google.com/document/d/e/2PACX-1vS0JACWyayIXxVGfFEHPGCfh8go6ihGgqLXbr58JmiV7ZssV7d8SzXHTO_no3APCB_LNpX2UnDnfjcr/pub" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-top: 0.5rem;">Translation Certificate Template</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li style="margin-bottom: 0.75rem;">Group these documents together at the front of your packet or under a clearly labeled divider like "Identity & Civil Documents."</li>
+                    </ul>
+                    
+                    <p style="color: #58647E;">This section is about accuracy. Clean, legible, and easy to verify is the goal.</p>
+                </div>
+                
+                <!-- Category 2: Relationship Eligibility Evidence (Green) -->
+                <div class="evidence-category bg-green">
+                    <h4 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 16pt; color: #AB3838; margin: 0 0 1rem;">2. Relationship Eligibility Evidence</h4>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Purpose: Show why your family relationship qualifies under immigration law.</p>
+                    <p>This category looks different depending on the relationship.</p>
+                    
+                    <!-- Relationship Accordions -->
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(2)">
+                                <span>For spouses (bona fide marriage)</span>
+                                <span class="accordion-icon">▼</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p style="margin-bottom: 1rem;">USCIS is looking for signs of a shared life over time.</p>
+                                
+                                <p style="font-weight: bold; margin-bottom: 0.5rem;">What strong evidence looks like:</p>
+                                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                                    <li style="margin-bottom: 0.5rem;">Documents that span different points in time</li>
+                                    <li style="margin-bottom: 0.5rem;">Evidence that shows shared responsibility or decision-making</li>
+                                    <li style="margin-bottom: 0.5rem;">A mix of official records and everyday life proof</li>
+                                </ul>
+                                
+                                <p style="font-weight: bold; margin-bottom: 0.5rem;">How to organize:</p>
+                                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                                    <li style="margin-bottom: 0.5rem;">Group evidence by type or theme. For example:
+                                        <ul style="list-style: circle; padding-left: 2rem; margin-top: 0.5rem;">
+                                            <li style="margin-bottom: 0.25rem;">Housing</li>
+                                            <li style="margin-bottom: 0.25rem;">Finances</li>
+                                            <li style="margin-bottom: 0.25rem;">Insurance and benefits</li>
+                                            <li style="margin-bottom: 0.25rem;">Photos</li>
+                                        </ul>
+                                    </li>
+                                    <li style="margin-bottom: 0.5rem;">Label everything. A simple caption goes a long way.
+                                        <ul style="list-style: circle; padding-left: 2rem; margin-top: 0.5rem;">
+                                            <li style="margin-bottom: 0.25rem;">Who is in the photo?</li>
+                                            <li style="margin-bottom: 0.25rem;">When it was taken?</li>
+                                            <li style="margin-bottom: 0.25rem;">Where it was taken?</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
+                                <p style="margin-bottom: 1rem;">Avoid submitting dozens of similar items. A small, representative set is usually stronger than volume. Remember, this section answers "why you qualify," not "how much you love each other." Clarity matters more than emotion here.</p>
+                                
+                                <p style="margin-bottom: 0.5rem;">If you would like a template for organizing and captioning your photos, you can use the Google Drive one using the link below:</p>
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-top: 0.5rem;">Photo Caption Template</a>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(3)">
+                                <span>For parents or children</span>
+                                <span class="accordion-icon">▼</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p style="margin-bottom: 1rem;">This category is more straightforward and focuses on legal proof rather than shared life.</p>
+                                
+                                <p style="font-weight: bold; margin-bottom: 0.5rem;">How to organize:</p>
+                                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 0;">
+                                    <li style="margin-bottom: 0.5rem;">Place birth certificates, adoption decrees, or legitimation documents together.</li>
+                                    <li style="margin-bottom: 0.5rem;">If something requires explanation, include a short written note rather than assuming USCIS will infer context.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 3: Immigration Status & Entry (Orange) -->
+                <div class="evidence-category bg-orange">
+                    <h4 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 16pt; color: #AB3838; margin: 0 0 1rem;">3. Immigration Status & Entry <span style="font-family: 'Open Sans', sans-serif; font-weight: normal; font-size: 12pt;">(Adjustment of Status Only)</span></h4>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Purpose: Explain how the beneficiary entered the U.S. and their current immigration context.</p>
+                    <p style="margin-bottom: 0.5rem;">This category applies primarily to Adjustment of Status cases, and covers:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">How the beneficiary entered the U.S.</li>
+                        <li style="margin-bottom: 0.5rem;">When the entry occurred</li>
+                        <li style="margin-bottom: 0.5rem;">Under what status or authorization</li>
+                    </ul>
+                    
+                    <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">How to organize:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Start with the passport biographic page.</li>
+                        <li style="margin-bottom: 0.5rem;">Follow with the visa page used for entry.</li>
+                        <li style="margin-bottom: 0.5rem;">Include the Form I-94 or entry/parole record.</li>
+                        <li style="margin-bottom: 0.5rem;">Add any prior immigration documents in chronological order.</li>
+                        <li style="margin-bottom: 0.5rem;">Keep everything in one section rather than scattering these documents across the packet.</li>
+                    </ul>
+                    
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Helpful mindset</p>
+                    <p style="color: #58647E;">This is a timeline, not a test. USCIS wants to quickly understand the sequence of events without needing to dig for it.</p>
+                </div>
+                
+                <!-- Category 4: Financial Sponsorship (Pink) -->
+                <div class="evidence-category bg-pink">
+                    <h4 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 16pt; color: #AB3838; margin: 0 0 1rem;">4. Financial Sponsorship</h4>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Purpose: Show that the applicant will be financially supported as required by law.</p>
+                    <p style="margin-bottom: 0.5rem;">This section centers around the Affidavit of Support and its supporting evidence.</p>
+                    <p style="margin-bottom: 1rem;">If using a joint sponsor or household member, keep their documents grouped together as a complete mini-packet.</p>
+                    
+                    <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">How to organize</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Include the most recent required tax return first.</li>
+                        <li style="margin-bottom: 0.5rem;">Follow with supporting documents like W-2s, pay stubs, or employer letters.</li>
+                        <li style="margin-bottom: 0.5rem;">If there are multiple sponsors, don't mix their documents together without headings.</li>
+                    </ul>
+                    
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Helpful mindset</p>
+                    <p style="color: #58647E;">This is just about meeting a threshold. Clear numbers and attribution matter here.</p>
+                </div>
+                
+                <!-- Category 5: Admissibility & Background (Green) -->
+                <div class="evidence-category bg-green">
+                    <h4 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 16pt; color: #AB3838; margin: 0 0 1rem;">5. Admissibility & Background</h4>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Purpose: Confirm eligibility to receive a green card under U.S. law.</p>
+                    <p style="margin-bottom: 1rem;">For many applicants, this category is simple and limited.</p>
+                    
+                    <p style="margin-bottom: 0.5rem;">What this usually includes:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">The immigration medical exam (Form I-693)</li>
+                        <li style="margin-bottom: 0.5rem;">Vaccination review conducted by a civil surgeon</li>
+                    </ul>
+                    
+                    <p style="margin-bottom: 1rem;">If you have previous criminal charges, this also includes record of those. Include certified court dispositions if there were arrests or charges. Do not submit partial records or summaries, and place explanations directly after the related document if needed.</p>
+                    
+                    <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">How to organize:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">Keep sealed medical exam result sealed.</li>
+                        <li style="margin-bottom: 0.5rem;">Group any legal records clearly and label them neutrally.</li>
+                    </ul>
+                    
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Helpful mindset</p>
+                    <p style="color: #58647E;">This category is often smaller than people expect. If it applies to you, clarity and completeness matter. If it does not, that is normal.</p>
+                </div>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 3rem 0 1rem;">Building Your Packet</h3>
+                <p>Once you have gathered your documents, the final step is putting everything together in a way that is clear and easy to review.</p>
+                <p>USCIS officers review many cases every day. A well-organized packet does not guarantee approval, but it does reduce confusion and lowers the chance of delays caused by missing or misplaced documents.</p>
+                
+                <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">Start With Structure</p>
+                <p style="margin-bottom: 0.5rem;">A strong packet usually follows a simple flow:</p>
+                <ol class="red-numbers" style="margin-bottom: 1rem;">
+                    <li>A short cover letter (optional but helpful)</li>
+                    <li>Payment</li>
+                    <li>Completed forms</li>
+                    <li>Identity and civil documents</li>
+                    <li>Relationship evidence</li>
+                    <li>Financial sponsorship evidence</li>
+                    <li>Immigration history (if applicable)</li>
+                    <li>Medical exam (if included at time of filing)</li>
+                    <li>Any additional supporting documents</li>
+                </ol>
+                <p>You do not need to over-engineer this. The goal is logical sequencing, not perfection.</p>
+                
+                <div class="callout-anchor">
+                <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">The Cover Letter</p>
+                <p>A cover letter in a family-based green card application works like a guide for the immigration officer reviewing your case. It explains who is applying, what forms are included, and what documents are in the packet. Since officers review many applications every day, a clear cover letter helps them understand your case quickly.</p>
+                <p>The cover letter is not required, but it is a good idea to include one. It shows that your application is organized and complete. It can also explain anything that might cause confusion, such as a past marriage or a name change. Overall, the cover letter helps make your application easier to review and may help prevent delays.</p>
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">If you would like to work off of a template, you can use the one linked below. Please be mindful as you use it, and be sure to customize everything so it matches your specific packet.</p>
+                <a href="https://docs.google.com/document/d/e/2PACX-1vTF3w2Bgh6C9b6zOSC--MU0KWw897-KTJyOtHNW-fYo79Tka7zYgCpDqVm52FXVVCnI_MubajltvwDK/pub" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 1.5rem;">Cover Letter Template</a>
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/JHSD_0408</div>
+                    <div class="callout-content">
+                        <p>"We did a cover letter with a table of contents outlining our evidence. We also captioned all photos with who/where/when/etc."</p>
+                        <a href="https://www.reddit.com/r/USCIS/comments/1gdrfqs/did_you_label_individual_evidence_documents_when/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="callout-anchor">
+                <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">Group by Category, Not by Document Type</p>
+                <p style="margin-bottom: 0.5rem;">Avoid mixing everything together.</p>
+                <p style="margin-bottom: 0.5rem;">For example:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Keep all financial documents together.</li>
+                    <li style="margin-bottom: 0.5rem;">Keep all relationship evidence together.</li>
+                    <li style="margin-bottom: 0.5rem;">Keep immigration history documents together.</li>
+                </ul>
+                <p>When evidence is scattered, officers have to search for context. When it is grouped, the story becomes clearer.</p>
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/Fancy_Challenge768</div>
+                    <div class="callout-content">
+                        <p>"I suggest to have separate header page explaining what kinds of evidence it has. I had below header pages to organize the evidence. I submitted:</p>
+                        <p style="margin-top: 0.5rem; margin-bottom: 0.25rem;">0. Evidence for Bonafide Marriage</p>
+                        <ul style="list-style: none; padding-left: 1.5rem; margin-bottom: 0.5rem;">
+                            <li>1. Joint Financials</li>
+                            <li>2. Joint Insurances</li>
+                            <li>3. Join pictures and trips</li>
+                            <li>4. Evidence for Common Residence</li>
+                            <li>5. Affidavits from Friends and Family"</li>
+                        </ul>
+                        <a href="https://www.reddit.com/r/USCIS/comments/1gdrfqs/did_you_label_individual_evidence_documents_when/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="callout-anchor">
+                <p style="font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.75rem;">Keep It Clean and Easy to Scan</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Use single-sided printing unless instructions say otherwise.</li>
+                    <li style="margin-bottom: 0.5rem;">Avoid heavy stapling. Binder clips are often safer.</li>
+                    <li style="margin-bottom: 0.5rem;">Do not bind the packet in a way that makes it hard to separate.</li>
+                    <li style="margin-bottom: 0.5rem;">Place dividers between major sections if mailing physically.</li>
+                </ul>
+                <p style="margin-bottom: 0.5rem;">For digital uploads, use clear file names like:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">I-130.pdf</li>
+                    <li style="margin-bottom: 0.5rem;">Marriage-Certificate.pdf</li>
+                    <li style="margin-bottom: 0.5rem;">Joint-Bank-Statements-2022-2023.pdf</li>
+                </ul>
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/HeavyOpposite7338</div>
+                    <div class="callout-content">
+                        <p>"Take a look to the tips for filing on their website. If you want to label the documents with tabs, do so at the bottom of the page rather than on the side. According to the information on their website, this will make it easier for them to review. Also include the cover letter</p>
+                        <p><a href="https://www.uscis.gov/forms/filing-guidance/tips-for-filing-forms-by-mail" target="_blank" rel="noopener noreferrer" style="color: #AB3838; text-decoration: underline;">https://www.uscis.gov/forms/filing-guidance/tips-for-filing-forms-by-mail</a>"</p>
+                        <a href="https://www.reddit.com/r/USCIS/comments/1gdrfqs/did_you_label_individual_evidence_documents_when/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                </div>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 3rem 0 1rem;">A Final Note</h3>
+                <p>Preparing your evidence is about helping someone unfamiliar with your life understand your situation quickly and clearly.</p>
+                <p style="margin-bottom: 0.5rem;">If your packet is…</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Logically grouped</li>
+                    <li style="margin-bottom: 0.5rem;">Clearly labeled</li>
+                    <li style="margin-bottom: 0.5rem;">Easy to skim</li>
+                </ul>
+                <p>…then you are doing this very well.</p>
+                
+                <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin: 3rem 0 1rem;">Submitting Your Application</h2>
+                <p>At this stage, your goal is simple: Submit your application in a way that is clear, complete, and correctly paid.</p>
+                
+                <p style="margin-top: 1rem; margin-bottom: 0.5rem;">You can file:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Online through a USCIS account (for eligible forms), or</li>
+                    <li style="margin-bottom: 0.5rem;">By mailing a paper packet to a USCIS lockbox</li>
+                </ul>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Important: USCIS now only accepts electronic payments. They no longer accept paper checks or money orders. For mailed applications, you must include a payment authorization form for debit or credit card.</p>
+                
+                <div class="accordion" style="margin: 2rem 0;">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(4)">
+                            <span>File Online</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 1: Confirm your form can be filed online.</p>
+                <p style="margin-bottom: 1rem;">Not all forms are available online. Check the official USCIS website first.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 2: Create or log into your USCIS account.</p>
+                
+                <p style="font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem;">Step 3: Complete the online form</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Answer each question carefully.</li>
+                    <li style="margin-bottom: 0.5rem;">Do not guess.</li>
+                    <li style="margin-bottom: 0.5rem;">Save often.</li>
+                </ul>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 4: Upload your evidence</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Use clear scans.</li>
+                    <li style="margin-bottom: 0.5rem;">Use simple file names.</li>
+                    <li style="margin-bottom: 0.5rem;">Upload documents in the correct section.</li>
+                </ul>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 5: Pay online.</p>
+                <p style="margin-bottom: 1rem;">At the end of the process, you will pay electronically using a debit card or credit card.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 6: Submit and save confirmation</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 0;">
+                    <li style="margin-bottom: 0.5rem;">Download your receipt and keep a copy of everything you submitted.</li>
+                </ul>
+                
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(5)">
+                            <span>Mail a Paper Packet</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                
+                <p style="margin-bottom: 0.5rem;">If you are mailing your application, you must include a payment authorization form in your packet. USCIS no longer accepts checks or money orders.</p>
+                
+                <p style="margin-bottom: 0.5rem;">You have two payment options:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Form G-1650 — Authorizes a direct ACH debit from a U.S. bank account (checking or savings).</li>
+                    <li style="margin-bottom: 0.5rem;">Form G-1450 — Authorizes payment by credit card, debit card, or prepaid card.</li>
+                </ul>
+                <p style="margin-bottom: 0.5rem;">Both forms allow USCIS to process your payment electronically. The account must be from a U.S. financial institution.</p>
+                <p style="margin-bottom: 1rem;">You must choose one payment method for your filing. You cannot mix both forms in the same application packet.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 1: Confirm the correct mailing address</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Check the official USCIS website using the buttons below for the correct address for your form and state. Addresses can change, and they differ depending on what forms you are submitting.</li>
+                </ul>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <a href="https://www.uscis.gov/i-130-addresses" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; text-align: center;">I-130 Only</a>
+                    <a href="https://www.uscis.gov/forms/all-forms/uscis-lockbox-filing-locations-chart-for-certain-family-based-forms" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; text-align: center;">I-130 & I-485</a>
+                </div>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 2: Complete the payment authorization form.</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Use the latest edition of the form from the USCIS website.</li>
+                    <li style="margin-bottom: 0.5rem;">Fill it out in black ink (or type it).</li>
+                    <li style="margin-bottom: 0.5rem;">The account must be from a U.S. bank.</li>
+                    <li style="margin-bottom: 0.5rem;">The account holder must sign by hand.</li>
+                    <li style="margin-bottom: 0.5rem;">Typed signatures are not accepted.</li>
+                    <li style="margin-bottom: 0.5rem;">If someone else is paying for you, they must complete and sign the form.</li>
+                </ul>
+                
+                <div style="background: #FFE3E3; border-left: 4px solid #AB3838; padding: 1.5rem; margin: 1rem 0; border-radius: 4px;">
+                <p style="font-weight: bold; margin-bottom: 0.5rem; color: #AB3838;">Important Payment Rules</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Each USCIS form requires its own payment authorization form.</li>
+                    <li style="margin-bottom: 0.5rem;">Example: If filing I-485 and I-765 together, you must complete a separate G-1650 (or G-1450) for each.</li>
+                    <li style="margin-bottom: 0.5rem;">You cannot combine multiple filing fees on one payment form.</li>
+                    <li style="margin-bottom: 0.5rem;">You cannot mix debit and credit forms in the same filing.</li>
+                </ul>
+                <p style="margin-bottom: 0;">If splitting a fee between two cards, you must use the same form type and make sure the total equals the correct filing fee.</p>
+                </div>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 3: Notify your bank</p>
+                <p style="margin-bottom: 0.5rem;">Before mailing your packet:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Contact your bank.</li>
+                    <li style="margin-bottom: 0.5rem;">Tell them you are making a payment to the U.S. Department of Homeland Security.</li>
+                    <li style="margin-bottom: 0.5rem;">Ask them to allow the transaction.</li>
+                    <li style="margin-bottom: 0.5rem;">If using a debit card, ask them to remove any "ACH debit block." Many applications are rejected because the bank declines the payment.</li>
+                </ul>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 4: Assemble your packet</p>
+                <p style="margin-bottom: 0.5rem;">Place the payment authorization form on top of your entire packet. Then follow with:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Optional cover letter</li>
+                    <li style="margin-bottom: 0.5rem;">Completed forms</li>
+                    <li style="margin-bottom: 0.5rem;">Identity documents</li>
+                    <li style="margin-bottom: 0.5rem;">Relationship evidence</li>
+                    <li style="margin-bottom: 0.5rem;">Financial sponsorship evidence</li>
+                    <li style="margin-bottom: 0.5rem;">Immigration history (if applicable)</li>
+                    <li style="margin-bottom: 0.5rem;">Medical exam (if included)</li>
+                </ul>
+                <p style="margin-bottom: 1rem;">Keep everything grouped by category.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 5: Make a full copy</p>
+                <p style="margin-bottom: 1rem;">Scan or photocopy everything before mailing.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 6: Mail with tracking</p>
+                <p style="margin-bottom: 1rem;">Use a mailing service with tracking and keep your receipt.</p>
+                
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Step 7: Wait for your receipt notice</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 0;">
+                    <li style="margin-bottom: 0.5rem;">If payment is approved, USCIS will issue a receipt notice.</li>
+                    <li style="margin-bottom: 0.5rem;">If the payment is declined, USCIS may reject the entire filing.</li>
+                </ul>
+                
+                <h3 style="font-family: 'Open Sans', serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 2rem 0 1rem;">Final Reminder</h3>
+                <p style="margin-bottom: 0.5rem;">Before submitting your payment forms:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">Confirm the correct fee amount</li>
+                    <li style="margin-bottom: 0.5rem;">Confirm the form edition is current</li>
+                    <li style="margin-bottom: 0.5rem;">Confirm signatures are handwritten</li>
+                    <li style="margin-bottom: 0.5rem;">Confirm payment authorization is on top</li>
+                </ul>
+                <p>If your payment is correct and your packet is clearly organized, you are good to go.</p>
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Floating Footer Navigation -->
+    <div class="footer-nav" id="footer-nav">
+        <div class="footer-nav-content">
+            <a href="chapter-2.html" class="footer-nav-btn">
+                <span class="arrow">←</span>
+                <span>Previous: Plan Your Route</span>
+            </a>
+            <a href="chapter-4.html" class="footer-nav-btn">
+                <span>Next: The Waiting</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Accordion toggle
+        function toggleAccordion(index) {
+            const headers = document.querySelectorAll('.accordion-header');
+            const contents = document.querySelectorAll('.accordion-content');
+            
+            if (headers[index] && contents[index]) {
+                const isActive = headers[index].classList.contains('active');
+                headers[index].classList.toggle('active');
+                contents[index].classList.toggle('active');
+            }
+        }
+        
+        // Carousel functionality
+        let currentSlide = 0;
+        let currentFormsSlide = 0;
+        
+        function goToSlide(index) {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (!track || cards.length === 0) return;
+            
+            currentSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = track.closest('.category-carousel').querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+        
+        function nextSlide() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (currentSlide < cards.length - 1) goToSlide(currentSlide + 1);
+        }
+        
+        function goToFormsSlide(index) {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const formsCarousel = carousels[1];
+            const track = formsCarousel.querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            
+            currentFormsSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = formsCarousel.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousFormsSlide() {
+            if (currentFormsSlide > 0) goToFormsSlide(currentFormsSlide - 1);
+        }
+        
+        function nextFormsSlide() {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const track = carousels[1].querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            if (currentFormsSlide < cards.length - 1) goToFormsSlide(currentFormsSlide + 1);
+        }
+        
+        // Prevent callout boxes from overlapping in the right margin
+        function adjustCalloutPositions() {
+            const isWideScreen = window.innerWidth > 1200;
+            const callouts = document.querySelectorAll('.callout-box');
+            
+            // Reset all positions first
+            callouts.forEach(box => {
+                box.style.top = '0';
+            });
+            
+            if (!isWideScreen) return;
+            
+            const gap = 20;
+            
+            for (let i = 1; i < callouts.length; i++) {
+                const prevRect = callouts[i - 1].getBoundingClientRect();
+                const currRect = callouts[i].getBoundingClientRect();
+                
+                const overlap = prevRect.bottom + gap - currRect.top;
+                
+                if (overlap > 0) {
+                    const currentTop = parseInt(callouts[i].style.top) || 0;
+                    callouts[i].style.top = (currentTop + overlap) + 'px';
+                }
+            }
+        }
+        
+        window.addEventListener('load', adjustCalloutPositions);
+        window.addEventListener('resize', adjustCalloutPositions);
+        window.addEventListener('scroll', adjustCalloutPositions);
+    </script>
+</body>
+</html>
