@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Route - We've Been There</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            color: #3D517D;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #3D517D;
+            text-decoration: none;
+        }
+        
+        .chapter-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 999;
+            padding: 0;
+            overflow: visible;
+        }
+        
+        .chapter-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.25rem 1rem 0.5rem;
+            text-decoration: none;
+            color: #FFD0D0;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            background: #3D517D;
+        }
+        
+        .chapter-nav-item:hover {
+            background: #58647E;
+            color: white;
+        }
+        
+        .chapter-nav-item.active {
+            color: white;
+            border-bottom-color: #FFD0D0;
+            background: #58647E;
+        }
+        
+        .chapter-nav-number {
+            font-weight: bold;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+        
+        .chapter-nav-title {
+            font-size: 9pt;
+            line-height: 1.2;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+        
+        .chapter-nav-item:hover .chapter-nav-title,
+        .chapter-nav-item.active .chapter-nav-title {
+            max-height: 20px;
+            opacity: 1;
+            margin-top: 0.25rem;
+        }
+        
+        /* Victor's Experience Panel */
+        .victor-panel {
+            position: fixed;
+            right: -700px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: auto;
+            background: #FFE3E3;
+            padding: 1.5rem;
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .victor-panel:hover,
+        .victor-trigger:hover + .victor-panel {
+            right: 0;
+        }
+        
+        .victor-trigger {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 100px;
+            background: #FFD0D0;
+            opacity: 0.5;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .victor-trigger:hover {
+            opacity: 1;
+        }
+        
+        .victor-panel h3 {
+            color: #AB3838;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .victor-content {
+            color: #3D517D;
+            font-size: 12pt;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            padding-bottom: 200px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        .content-wrapper {
+            margin-top: 2rem;
+            position: relative;
+            overflow: visible;
+            max-width: 800px;
+        }
+        
+        .main-content-area {
+            max-width: 800px;
+        }
+        
+        .sidebar-callouts {
+            position: relative;
+        }
+        
+        .callout-box {
+            background: #FBEBDD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: absolute;
+            width: 380px;
+            top: 0;
+        }
+        
+        .callout-anchor {
+            position: relative;
+        }
+        
+        .callout-box .read-thread-btn {
+            display: inline-block;
+            padding: 0.5rem 16px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+        }
+        
+        .callout-box .read-thread-btn:hover {
+            background: #AB3838;
+            color: white;
+        }
+        
+        .callout-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-username {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #3D517D;
+            margin-bottom: 0.5rem;
+        }
+        
+        .callout-content {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+        }
+        
+        .callout-content p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .chapter-title-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .chapter-number-header {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 3rem;
+            color: #AB3838;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 25pt;
+            color: #3D517D;
+            line-height: 1.2;
+        }
+        
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .nav-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .footer-nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav-btn .arrow {
+            font-size: 1.2rem;
+        }
+
+        /* Category Carousel */
+        .category-carousel {
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .category-card {
+            min-width: calc(50% - 1rem);
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            transform: scale(0.95);
+            flex-shrink: 0;
+        }
+        
+        .category-card.active {
+            opacity: 1;
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-card:hover {
+            transform: scale(0.98) translateX(-5px);
+            cursor: pointer;
+        }
+        
+        .category-card.active:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-card h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 0.75rem;
+        }
+        
+        .category-card .category-subtitle {
+            font-style: italic;
+            color: #58647E;
+            margin-bottom: 0.5rem;
+            font-size: 12pt;
+        }
+        
+        .category-card .category-description {
+            color: #3D517D;
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .carousel-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot:hover {
+            background: #FFE3E3;
+        }
+        
+        .carousel-dot.active {
+            background: #AB3838;
+            color: white;
+            border-color: #AB3838;
+        }
+        
+        /* Legal Disclaimer Box */
+        .legal-disclaimer {
+            background: #FFE3E3;
+            border-left: 4px solid #AB3838;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .legal-disclaimer h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 1rem;
+        }
+        
+        .legal-disclaimer p {
+            margin-bottom: 1rem;
+            color: #3D517D;
+        }
+        
+        .legal-disclaimer p:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .resource-btn {
+            padding: 0.75rem 20px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+        }
+        
+        .resource-btn:hover {
+            background: #AB3838;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(171, 56, 56, 0.3);
+        }
+        
+        /* Accordion Styles */
+        .accordion {
+            margin: 1.5rem 0;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #3D517D;
+        }
+        
+        .accordion-header:hover {
+            background: #E3ECDC;
+        }
+        
+        .accordion-header.active {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content.active {
+            max-height: 3000px;
+            padding: 1.5rem;
+        }
+        
+        .accordion-content ul {
+            list-style: disc;
+            padding-left: 2rem;
+            margin: 0;
+        }
+        
+        .accordion-content li {
+            margin-bottom: 0.15rem;
+            line-height: 1.6;
+            color: #3D517D;
+        }
+        
+        /* Tighten bullet spacing globally */
+        ul li,
+        ol li {
+            margin-bottom: 0.15rem !important;
+        }
+        
+        /* Evidence Category Sections */
+        .evidence-category {
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .evidence-category.bg-pink {
+            background: #FFE3E3;
+        }
+        
+        .evidence-category.bg-green {
+            background: #E3ECDC;
+        }
+        
+        .evidence-category.bg-orange {
+            background: #FBEBDD;
+        }
+        
+        .evidence-category.bg-white {
+            background: white;
+        }
+        
+        /* Red numbered list */
+        ol.red-numbers {
+            list-style: none;
+            counter-reset: item;
+            padding-left: 2rem;
+        }
+        
+        ol.red-numbers li {
+            counter-increment: item;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        ol.red-numbers li::before {
+            content: counter(item) ".";
+            color: #AB3838;
+            font-weight: bold;
+            position: absolute;
+            left: -2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 2rem;
+            }
+            
+            .callout-anchor {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .callout-box {
+                position: relative;
+                left: 0 !important;
+                right: 0;
+                width: 100%;
+                margin-top: 1rem;
+                order: 999;
+            }
+            
+            .category-card {
+                min-width: calc(70% - 1rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chapter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-arrows-top {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                order: -1;
+            }
+            
+            .footer-nav {
+                padding: 1rem;
+            }
+            
+            .footer-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 11pt;
+            }
+            
+            .category-card {
+                min-width: calc(85% - 1rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">We've Been There</a>
+    </header>
+    
+    <nav class="chapter-nav">
+        <a href="chapter-1.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">Intro</span>
+            <span class="chapter-nav-title">Introduction</span>
+        </a>
+        <a href="#" class="chapter-nav-item active">
+            <span class="chapter-nav-number">01</span>
+            <span class="chapter-nav-title">Plan Your Route</span>
+        </a>
+        <a href="chapter-3-evidence.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">02</span>
+            <span class="chapter-nav-title">Evidence & Paperwork</span>
+        </a>
+        <a href="chapter-4.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">03</span>
+            <span class="chapter-nav-title">The Waiting</span>
+        </a>
+        <a href="chapter-5.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">04</span>
+            <span class="chapter-nav-title">Medical Exam</span>
+        </a>
+        <a href="chapter-6.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">05</span>
+            <span class="chapter-nav-title">Biometrics</span>
+        </a>
+        <a href="chapter-7.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">06</span>
+            <span class="chapter-nav-title">Work Auth & SSN</span>
+        </a>
+        <a href="chapter-8.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">07</span>
+            <span class="chapter-nav-title">Interview</span>
+        </a>
+        <a href="chapter-9.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">08</span>
+            <span class="chapter-nav-title">The Green Card</span>
+        </a>
+    </nav>
+    
+    <!-- Victor's Experience Panel -->
+    <div class="victor-trigger"></div>
+    
+    <div class="victor-panel">
+        <img src="Thesis_Profile_PlanYourRoute.png" alt="Victor's Journey infographic for the Plan Your Route chapter" style="width: 100%; height: auto;">
+    </div>
+    
+    <!-- Hero Image -->
+    <div style="position: relative; width: 100%; height: 400px; margin-top: 140px; overflow: hidden;">
+        <img src="Website_Heroes_PlanYourRoute.png" alt="Hero image for Plan Your Route chapter" style="width: 100%; height: 100%; object-fit: cover;">
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 3rem 3rem 2rem; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(transparent, rgba(255,255,255,0.9));">
+            <a href="chapter-1.html" class="nav-arrow" title="Previous Chapter">←</a>
+            <div class="chapter-title-wrapper">
+                <div class="chapter-number-header">02</div>
+                <h1>Plan Your Route</h1>
+            </div>
+            <a href="chapter-3-evidence.html" class="nav-arrow" title="Next Chapter">→</a>
+        </div>
+    </div>
+    
+    <div style="background: #E3ECDC; padding: 2rem 3rem;">
+        <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem;">In this Section...</h2>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <a href="#is-this-right-for-you" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">Is This Right for You?</a>
+            <a href="#choosing-your-path" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">Choosing Your Path</a>
+            <a href="#the-big-picture" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">The Big Picture</a>
+            <a href="#how-long-will-this-take" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">How Long Will This Take?</a>
+            <a href="#how-much-will-this-cost" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">How Much Will This Cost?</a>
+        </div>
+    </div>
+
+    <main id="main-content" style="margin-top: 0;">
+        
+        <div class="content-wrapper">
+            <div class="main-content-area">
+
+                <!-- ============================================================ -->
+                <!-- BEGIN CHAPTER 2 CONTENT                                      -->
+                <!-- ============================================================ -->
+
+                <h2 id="is-this-right-for-you" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">Is This Right for You?</h2>
+                
+                <p style="margin-bottom: 1.5rem;">If you are looking to apply for a family-based green card, the questions and guidelines below will help you understand if you qualify.</p>
+                
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <a href="#relationship-eligibility" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Relationship Eligibility</a>
+                    <a href="#what-is-a-family-preference-category" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">What is a Family Preference Category?</a>
+                    <a href="#things-that-could-affect-your-case" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Things That Could Affect Your Case</a>
+                </div>
+
+                <h3 id="relationship-eligibility" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Relationship Eligibility</h3>
+                <p style="margin-bottom: 1.5rem;">Are you applying through a family relationship? If your answer is yes, you are in the right place. Some relationships are not eligible for a family-based green card, however. Use the table below to determine if you can apply for one based on your specific case.</p>
+                
+                <div class="callout-anchor">
+                <div style="margin: 0.5rem 0; text-align: center;">
+                    <!-- TABLE GRAPHIC PLACEHOLDER -->
+                    <img src="Website_EligibilityTable.png" alt="Relationship eligibility table showing which family relationships qualify for a family-based green card" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+                
+                <p style="margin-top: 0.5rem; margin-bottom: 1rem; font-size: 11pt; color: #AB3838;"><span style="font-weight: bold;">*</span> Family Preference Category (subject to waiting list)</p>
+
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">About "Child"</p>
+                        <p>"Child" includes certain stepchildren and adopted children, but strict rules apply (especially timing and legal relationship requirements).</p>
+                    </div>
+                </div>
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">Upgrading Your Petition</p>
+                        <p>If a green card holder becomes a U.S. citizen, their petition can often be upgraded, which can speed things up.</p>
+                    </div>
+                </div>
+                </div>
+
+                <h3 id="what-is-a-family-preference-category" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">What is a Family Preference Category?</h3>
+                <p style="margin-bottom: 1rem;">A family preference category is a type of family-based green card that is subject to annual limits set by U.S. law. Because only a fixed number of visas are available each year in these categories, applicants are placed on a waiting list after their application is filed. Their place in line is determined by their priority date (the filing date of the application), and they must wait until that date becomes "current" in the U.S. Department of State's monthly Visa Bulletin before they can move forward with getting a green card.</p>
+                
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; margin-bottom: 0.75rem;"><img src="Petitioner.png" alt="Petitioner" style="width: 40px; height: 40px; flex-shrink: 0;"><p style="font-weight: bold; margin: 0;">Family Preference Categories by Petitioner Status</p></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 0 0 1.5rem;">
+                    <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                        <h4 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #3D517D; margin-bottom: 1rem; line-height: 1.2;">For U.S. Citizens</h4>
+                        <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                            <li style="line-height: 1.3;">F1 - Unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">21 or older</span></li>
+                            <li style="line-height: 1.3; margin-top: 0.75rem !important;">F3 - Married children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">any age</span></li>
+                            <li style="line-height: 1.3; margin-top: 0.75rem !important;">F4 - Siblings<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">petitioner must be 21+</span></li>
+                        </ul>
+                    </div>
+                    <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                        <h4 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #3D517D; margin-bottom: 1rem; line-height: 1.2;">For Green Card Holders</h4>
+                        <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                            <li style="line-height: 1.3;">F2A - Spouse and unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">under 21</span></li>
+                            <li style="line-height: 1.3; margin-top: 0.75rem !important;">F2B - Unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">21 or older</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p style="margin-bottom: 1rem;">You can view the most recent Visa Bulletin to check your preference category status here:</p>
+                <a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">Visa Bulletin</a>
+
+                <div class="callout-anchor">
+                <h3 id="things-that-could-affect-your-case" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Things That Could Affect Your Case</h3>
+
+                <div class="callout-box" style="background: #FFE3E3; border-left: 4px solid #AB3838;">
+                    <div class="callout-label" style="font-size: 14pt; margin-bottom: 0.75rem;">Need Help?</div>
+                    <div class="callout-content">
+                        <p>It would be a good idea to consult an immigration attorney if any of these describe your case. You can find low-cost or free legal help here:</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+                            <a href="https://www.justice.gov/eoir/list-pro-bono-legal-service-providers" target="_blank" rel="noopener noreferrer" class="resource-btn">Department of Justice</a>
+                            <a href="https://www.ailalawyer.com/" target="_blank" rel="noopener noreferrer" class="resource-btn">AILA</a>
+                            <a href="https://www.immi.org/en/Info/get-legal-help" target="_blank" rel="noopener noreferrer" class="resource-btn">Immi.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 1rem;">Even if you check all the boxes already mentioned, you may run into issues if:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                    <li style="margin-bottom: 0.5rem;">You entered the U.S. without inspection (for Adjustment of Status cases only)</li>
+                    <li style="margin-bottom: 0.5rem;">You have certain criminal history</li>
+                    <li style="margin-bottom: 0.5rem;">You have overstayed or violated a visa</li>
+                    <li style="margin-bottom: 0.5rem;">You have had prior immigration issues or denials</li>
+                </ul>
+                <p style="margin-bottom: 1rem;">If any of these apply, your case may still be possible, but you may need extra steps. You can learn more about "inadmissibility" and what you can do about it here:</p>
+                <div>
+                <a href="https://www.boundless.com/immigration-resources/grounds-of-inadmissibility-explained" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: auto; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">Grounds of Inadmissibility Explained</a>
+                </div>
+                </div>
+
+                <h2 id="choosing-your-path" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">Choosing Your Path</h2>
+
+                <h2 id="the-big-picture" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">The Big Picture</h2>
+
+                <h2 id="how-long-will-this-take" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">How Long Will This Take?</h2>
+
+                <h2 id="how-much-will-this-cost" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">How Much Will This Cost?</h2>
+
+                <!-- ============================================================ -->
+                <!-- END CHAPTER 2 CONTENT                                        -->
+                <!-- ============================================================ -->
+
+            </div>
+        </div>
+        <div style="height: 600px;"></div>
+    </main>
+    
+    <!-- Floating Footer Navigation -->
+    <div class="footer-nav" id="footer-nav">
+        <div class="footer-nav-content">
+            <a href="chapter-1.html" class="footer-nav-btn">
+                <span class="arrow">←</span>
+                <span>Previous: Introduction</span>
+            </a>
+            <a href="chapter-3-evidence.html" class="footer-nav-btn">
+                <span>Next: Evidence & Paperwork</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Accordion toggle
+        function toggleAccordion(index) {
+            const headers = document.querySelectorAll('.accordion-header');
+            const contents = document.querySelectorAll('.accordion-content');
+            
+            if (headers[index] && contents[index]) {
+                headers[index].classList.toggle('active');
+                contents[index].classList.toggle('active');
+            }
+        }
+        
+        // Carousel functionality
+        let currentSlide = 0;
+        let currentFormsSlide = 0;
+        
+        function goToSlide(index) {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (!track || cards.length === 0) return;
+            
+            currentSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = track.closest('.category-carousel').querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+        
+        function nextSlide() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (currentSlide < cards.length - 1) goToSlide(currentSlide + 1);
+        }
+        
+        function goToFormsSlide(index) {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const formsCarousel = carousels[1];
+            const track = formsCarousel.querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            
+            currentFormsSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = formsCarousel.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousFormsSlide() {
+            if (currentFormsSlide > 0) goToFormsSlide(currentFormsSlide - 1);
+        }
+        
+        function nextFormsSlide() {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const track = carousels[1].querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            if (currentFormsSlide < cards.length - 1) goToFormsSlide(currentFormsSlide + 1);
+        }
+        
+        // Prevent callout boxes from overlapping in the right margin
+        function adjustCalloutPositions() {
+            const isWideScreen = window.innerWidth > 1200;
+            const callouts = document.querySelectorAll('.callout-box');
+            
+            callouts.forEach(box => {
+                box.style.top = '0';
+            });
+            
+            if (!isWideScreen) return;
+            
+            const gap = 20;
+            
+            for (let i = 1; i < callouts.length; i++) {
+                const prevRect = callouts[i - 1].getBoundingClientRect();
+                const currRect = callouts[i].getBoundingClientRect();
+                
+                const overlap = prevRect.bottom + gap - currRect.top;
+                
+                if (overlap > 0) {
+                    const currentTop = parseInt(callouts[i].style.top) || 0;
+                    callouts[i].style.top = (currentTop + overlap) + 'px';
+                }
+            }
+        }
+        
+        window.addEventListener('load', adjustCalloutPositions);
+        window.addEventListener('resize', adjustCalloutPositions);
+        window.addEventListener('scroll', adjustCalloutPositions);
+        
+        // Ensure page is tall enough to show all absolute-positioned callout boxes
+        function ensurePageHeight() {
+            const callouts = document.querySelectorAll('.callout-box');
+            const main = document.querySelector('main');
+            let maxBottom = 0;
+            
+            callouts.forEach(box => {
+                const rect = box.getBoundingClientRect();
+                const absoluteBottom = window.scrollY + rect.bottom;
+                if (absoluteBottom > maxBottom) {
+                    maxBottom = absoluteBottom;
+                }
+            });
+            
+            const footerHeight = 100;
+            const neededHeight = maxBottom + footerHeight - main.offsetTop;
+            if (neededHeight > main.offsetHeight) {
+                main.style.minHeight = neededHeight + 'px';
+            }
+        }
+        
+        // Align all callout boxes to consistent left position
+        function alignCalloutBoxes() {
+            if (window.innerWidth <= 1200) return;
+            
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (!contentWrapper) return;
+            
+            const wrapperRect = contentWrapper.getBoundingClientRect();
+            const targetLeft = wrapperRect.width + 30;
+            
+            const callouts = document.querySelectorAll('.callout-box');
+            callouts.forEach(box => {
+                const anchor = box.closest('.callout-anchor');
+                if (!anchor) return;
+                const anchorRect = anchor.getBoundingClientRect();
+                const wrapperLeft = wrapperRect.left;
+                const anchorLeft = anchorRect.left;
+                const offset = wrapperLeft - anchorLeft;
+                box.style.left = (targetLeft + offset) + 'px';
+            });
+        }
+        
+        window.addEventListener('load', alignCalloutBoxes);
+        window.addEventListener('resize', alignCalloutBoxes);
+        
+        window.addEventListener('load', ensurePageHeight);
+        window.addEventListener('resize', ensurePageHeight);
+    </script>
+</body>
+</html>
