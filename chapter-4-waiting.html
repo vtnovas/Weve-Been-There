@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Waiting - We've Been There</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            color: #3D517D;
+            line-height: 1.8;
+            overflow-x: hidden;
+            background-color: #FDF8F4;
+            position: relative;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #3D517D;
+            text-decoration: none;
+        }
+        
+        .chapter-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 999;
+            padding: 0;
+            overflow: visible;
+        }
+        
+        .chapter-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.25rem 1rem 0.5rem;
+            text-decoration: none;
+            color: #FFD0D0;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            background: #3D517D;
+        }
+        
+        .chapter-nav-item:hover {
+            background: #58647E;
+            color: white;
+        }
+        
+        .chapter-nav-item.active {
+            color: white;
+            border-bottom-color: #FFD0D0;
+            background: #58647E;
+        }
+        
+        .chapter-nav-number {
+            font-weight: bold;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+        
+        .chapter-nav-title {
+            font-size: 9pt;
+            line-height: 1.2;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+        
+        .chapter-nav-item:hover .chapter-nav-title,
+        .chapter-nav-item.active .chapter-nav-title {
+            max-height: 20px;
+            opacity: 1;
+            margin-top: 0.25rem;
+        }
+        
+        /* Victor's Experience Panel */
+        .victor-panel {
+            position: fixed;
+            right: -700px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: auto;
+            background: #FFE3E3;
+            padding: 1.5rem;
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .victor-panel:hover,
+        .victor-trigger:hover + .victor-panel {
+            right: 0;
+        }
+        
+        .victor-trigger {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 100px;
+            background: #FFD0D0;
+            opacity: 0.5;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .victor-trigger:hover {
+            opacity: 1;
+        }
+        
+        .victor-panel h3 {
+            color: #AB3838;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .victor-content {
+            color: #3D517D;
+            font-size: 12pt;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            padding-bottom: 200px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        .content-wrapper {
+            margin-top: 2rem;
+            position: relative;
+            overflow: visible;
+            max-width: 800px;
+        }
+        
+        .main-content-area {
+            max-width: 800px;
+        }
+        
+        .sidebar-callouts {
+            position: relative;
+        }
+        
+        .callout-box {
+            background: #FBEBDD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: absolute;
+            width: 380px;
+            top: 0;
+        }
+        
+        .callout-anchor {
+            position: relative;
+        }
+        
+        .callout-box .read-thread-btn {
+            display: inline-block;
+            padding: 0.5rem 16px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+        }
+        
+        .callout-box .read-thread-btn:hover {
+            background: #AB3838;
+            color: white;
+        }
+        
+        .callout-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-username {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #3D517D;
+            margin-bottom: 0.5rem;
+        }
+        
+        .callout-content {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+        }
+        
+        .callout-content p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .chapter-title-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .chapter-number-header {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 3rem;
+            color: #AB3838;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 25pt;
+            color: #3D517D;
+            line-height: 1.2;
+        }
+        
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .nav-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .footer-nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav-btn .arrow {
+            font-size: 1.2rem;
+        }
+
+        /* Category Carousel */
+        .category-carousel {
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .category-card {
+            min-width: calc(50% - 1rem);
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            transform: scale(0.95);
+            flex-shrink: 0;
+        }
+        
+        .category-card.active {
+            opacity: 1;
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-card:hover {
+            transform: scale(0.98) translateX(-5px);
+            cursor: pointer;
+        }
+        
+        .category-card.active:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-card h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 0.75rem;
+        }
+        
+        .category-card .category-subtitle {
+            font-style: italic;
+            color: #58647E;
+            margin-bottom: 0.5rem;
+            font-size: 12pt;
+        }
+        
+        .category-card .category-description {
+            color: #3D517D;
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .carousel-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot:hover {
+            background: #FFE3E3;
+        }
+        
+        .carousel-dot.active {
+            background: #AB3838;
+            color: white;
+            border-color: #AB3838;
+        }
+        
+        /* Legal Disclaimer Box */
+        .legal-disclaimer {
+            background: #FFE3E3;
+            border-left: 4px solid #AB3838;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .legal-disclaimer h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 1rem;
+        }
+        
+        .legal-disclaimer p {
+            margin-bottom: 1rem;
+            color: #3D517D;
+        }
+        
+        .legal-disclaimer p:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .resource-btn {
+            padding: 0.75rem 20px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+        }
+        
+        .resource-btn:hover {
+            background: #AB3838;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(171, 56, 56, 0.3);
+        }
+        
+        /* Accordion Styles */
+        .accordion {
+            margin: 1.5rem 0;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #3D517D;
+        }
+        
+        .accordion-header:hover {
+            background: #E3ECDC;
+        }
+        
+        .accordion-header.active {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content.active {
+            max-height: 3000px;
+            padding: 1.5rem;
+        }
+        
+        .accordion-content ul {
+            list-style: disc;
+            padding-left: 2rem;
+            margin: 0;
+        }
+        
+        .accordion-content li {
+            margin-bottom: 0.15rem;
+            line-height: 1.6;
+            color: #3D517D;
+        }
+        
+        /* Tighten bullet spacing globally */
+        ul li,
+        ol li {
+            margin-bottom: 0.15rem !important;
+        }
+        
+        /* Evidence Category Sections */
+        .evidence-category {
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .evidence-category.bg-pink {
+            background: #FFE3E3;
+        }
+        
+        .evidence-category.bg-green {
+            background: #E3ECDC;
+        }
+        
+        .evidence-category.bg-orange {
+            background: #FBEBDD;
+        }
+        
+        .evidence-category.bg-white {
+            background: white;
+        }
+        
+        /* Red numbered list */
+        ol.red-numbers {
+            list-style: none;
+            counter-reset: item;
+            padding-left: 2rem;
+        }
+        
+        ol.red-numbers li {
+            counter-increment: item;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        ol.red-numbers li::before {
+            content: counter(item) ".";
+            color: #AB3838;
+            font-weight: bold;
+            position: absolute;
+            left: -2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 2rem;
+            }
+            
+            .callout-anchor {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .callout-box {
+                position: relative;
+                left: 0 !important;
+                right: 0;
+                width: 100%;
+                margin-top: 1rem;
+                order: 999;
+            }
+            
+            .category-card {
+                min-width: calc(70% - 1rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chapter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-arrows-top {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                order: -1;
+            }
+            
+            .footer-nav {
+                padding: 1rem;
+            }
+            
+            .footer-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 11pt;
+            }
+            
+            .category-card {
+                min-width: calc(85% - 1rem);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Background blobs -->
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;">
+  <svg style="position: absolute; top: -5%; left: -50%; width: 180vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.77-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.09-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.63,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 800px; right: -55%; width: 190vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M304.59,125.18c-37.64-22.33-79.33-44.43-122.76-39.02-42.29,5.27-78.68,37.84-93.31,77.86-14.63,40.02-8.97,85.87,10.41,123.83,20.82,40.79,57.16,75.43,62.95,120.86,6.34,49.7-25.85,95.3-56.94,134.58-31.1,39.29-64.56,83.29-61.34,133.28,3.52,54.59,53.09,98.25,106.68,109.2,53.6,10.95,109.31-4.76,158.8-28.06,49.49-23.3,95.19-54.18,145.18-76.39,49.99-22.21,106.72-35.49,159.48-21.05,56.46,15.45,103.04,61.02,161.26,67.03,56.04,5.79,110.45-28,143.8-73.41,33.34-45.41,49.26-101.03,62.57-155.78,14.78-60.81,27.19-123.06,23.64-185.55-3.55-62.48-24.57-125.92-68.68-170.31-44.11-44.39-113.64-65.92-172.05-43.46-46.75,17.98-79.51,59.39-116.37,93.3-38.76,35.66-105.48,72.71-159.05,50.14-64.54-27.19-123.77-81.18-184.26-117.06Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 1900px; left: -48%; width: 185vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M548.93,793.85c-26.48-7.81-50.63-23.68-67.36-45.68-21.54-28.32-31.9-65.86-60.43-87.13-37.4-27.89-89.86-16.92-134.75-4.24-54.23,15.32-118.51,29.95-157.42-23.03-7.6-10.35-12.77-22.41-15.75-34.9-12.15-50.96,5.01-98.74,15.91-147.07,8.03-35.61,12.55-73.74-.22-107.93-12.56-33.62-40.02-58.96-63.89-85.76-30.54-34.29-58.03-78.36-34.77-126.02,11.14-22.82,32.02-39.47,55.93-48.02,50.38-18.01,103.17-2.08,149.32,20.96,52.36,26.14,100.7,62.65,159.66,72.14,91.58,14.73,165.96-31.76,244.17-70.91,83.03-41.56,185.76-41.2,268.5.94,56.94,29,105.8,80.17,117.39,143.02,11.58,62.85-23.07,135.17-84.34,153.32-17.7,5.24-36.15,5.92-54.69,6.3-46.96.96-92.95,17.37-127.97,48.68-84.34,75.41-26.89,162.9-47.06,242.78-11.91,47.16-52.42,85.85-100.07,95.58-20.58,4.2-42.04,2.91-62.17-3.02Z" fill="#FFE3E3"/>
+  </svg>
+  <svg style="position: absolute; top: 3000px; right: -52%; width: 188vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M547.51,99.89c-48.63,23.79-86.43,68.73-101.54,120.71-8.23,28.31-11.96,61.58-35.99,78.66-24.42,17.36-58.86,9.12-84.68-6.07-25.82-15.19-48.3-36.66-76.58-46.53-60.31-21.06-127.45,18.66-162.59,72.01-46.75,71-52.31,165.25-21.69,244.55,30.62,79.3,94.75,143.43,170.56,181.87,75.81,38.45,162.57,52.4,247.49,48.51,67.37-3.08,140.71-21.12,179.94-75.97,24.9-34.82,31.93-78.8,44.27-119.79,12.34-40.99,34.15-83.76,73.94-99.54,36.47-14.47,78.11-2.33,116.67-9.62,66.43-12.55,110.67-84.66,106-152.1-4.67-67.44-49.07-127.19-104.33-166.13-88.63-62.45-246.67-121.82-351.46-70.56Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 4100px; left: -45%; width: 182vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M535.82,171.45c-48.08-38.68-100.99-73.68-160.88-88.56-59.89-14.88-128.08-6.88-175.2,32.96-37.85,32-57.99,80.07-72.28,127.53-39.72,131.94-44.09,274.35-12.54,408.48,8.7,36.97,20.61,74.35,44.75,103.68,24.14,29.33,62.92,49.18,100.14,41.57,46.42-9.49,74.38-55.17,108.85-87.68,39.23-37.01,92.19-59.12,146.1-60.99,53.9-1.88,108.27,16.5,149.98,50.69,35.27,28.91,64.88,70.24,109.74,78.44,35.82,6.55,72.85-11.22,97.47-38.04,24.62-26.82,38.72-61.56,49.66-96.28,22.63-71.82,33.91-147.21,33.28-222.51-.62-74.29-15.1-205.33-92.94-243.13-70.02-34.01-131.29,74.14-206.41,63.13-46.52-6.82-84.44-40.92-119.7-69.29Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 5200px; right: -50%; width: 186vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.77-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.09-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.63,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FFE3E3"/>
+  </svg>
+  <svg style="position: absolute; top: 6300px; left: -48%; width: 184vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M548.93,793.85c-26.48-7.81-50.63-23.68-67.36-45.68-21.54-28.32-31.9-65.86-60.43-87.13-37.4-27.89-89.86-16.92-134.75-4.24-54.23,15.32-118.51,29.95-157.42-23.03-7.6-10.35-12.77-22.41-15.75-34.9-12.15-50.96,5.01-98.74,15.91-147.07,8.03-35.61,12.55-73.74-.22-107.93-12.56-33.62-40.02-58.96-63.89-85.76-30.54-34.29-58.03-78.36-34.77-126.02,11.14-22.82,32.02-39.47,55.93-48.02,50.38-18.01,103.17-2.08,149.32,20.96,52.36,26.14,100.7,62.65,159.66,72.14,91.58,14.73,165.96-31.76,244.17-70.91,83.03-41.56,185.76-41.2,268.5.94,56.94,29,105.8,80.17,117.39,143.02,11.58,62.85-23.07,135.17-84.34,153.32-17.7,5.24-36.15,5.92-54.69,6.3-46.96.96-92.95,17.37-127.97,48.68-84.34,75.41-26.89,162.9-47.06,242.78-11.91,47.16-52.42,85.85-100.07,95.58-20.58,4.2-42.04,2.91-62.17-3.02Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 7400px; right: -52%; width: 188vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M304.59,125.18c-37.64-22.33-79.33-44.43-122.76-39.02-42.29,5.27-78.68,37.84-93.31,77.86-14.63,40.02-8.97,85.87,10.41,123.83,20.82,40.79,57.16,75.43,62.95,120.86,6.34,49.7-25.85,95.3-56.94,134.58-31.1,39.29-64.56,83.29-61.34,133.28,3.52,54.59,53.09,98.25,106.68,109.2,53.6,10.95,109.31-4.76,158.8-28.06,49.49-23.3,95.19-54.18,145.18-76.39,49.99-22.21,106.72-35.49,159.48-21.05,56.46,15.45,103.04,61.02,161.26,67.03,56.04,5.79,110.45-28,143.8-73.41,33.34-45.41,49.26-101.03,62.57-155.78,14.78-60.81,27.19-123.06,23.64-185.55-3.55-62.48-24.57-125.92-68.68-170.31-44.11-44.39-113.64-65.92-172.05-43.46-46.75,17.98-79.51,59.39-116.37,93.3-38.76,35.66-105.48,72.71-159.05,50.14-64.54-27.19-123.77-81.18-184.26-117.06Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 8500px; left: -46%; width: 183vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M535.82,171.45c-48.08-38.68-100.99-73.68-160.88-88.56-59.89-14.88-128.08-6.88-175.2,32.96-37.85,32-57.99,80.07-72.28,127.53-39.72,131.94-44.09,274.35-12.54,408.48,8.7,36.97,20.61,74.35,44.75,103.68,24.14,29.33,62.92,49.18,100.14,41.57,46.42-9.49,74.38-55.17,108.85-87.68,39.23-37.01,92.19-59.12,146.1-60.99,53.9-1.88,108.27,16.5,149.98,50.69,35.27,28.91,64.88,70.24,109.74,78.44,35.82,6.55,72.85-11.22,97.47-38.04,24.62-26.82,38.72-61.56,49.66-96.28,22.63-71.82,33.91-147.21,33.28-222.51-.62-74.29-15.1-205.33-92.94-243.13-70.02-34.01-131.29,74.14-206.41,63.13-46.52-6.82-84.44-40.92-119.7-69.29Z" fill="#FFE3E3"/>
+  </svg>
+</div>
+    <header>
+        <a href="index.html" class="logo">We've Been There</a>
+    </header>
+    
+    <nav class="chapter-nav">
+        <a href="chapter-1.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">Intro</span>
+            <span class="chapter-nav-title">Introduction</span>
+        </a>
+        <a href="chapter-2-plan.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">01</span>
+            <span class="chapter-nav-title">Plan Your Route</span>
+        </a>
+        <a href="chapter-3-evidence.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">02</span>
+            <span class="chapter-nav-title">Evidence & Paperwork</span>
+        </a>
+        <a href="#" class="chapter-nav-item active">
+            <span class="chapter-nav-number">03</span>
+            <span class="chapter-nav-title">The Waiting</span>
+        </a>
+        <a href="chapter-5.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">04</span>
+            <span class="chapter-nav-title">Medical Exam</span>
+        </a>
+        <a href="chapter-6.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">05</span>
+            <span class="chapter-nav-title">Biometrics</span>
+        </a>
+        <a href="chapter-7.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">06</span>
+            <span class="chapter-nav-title">Work Auth & SSN</span>
+        </a>
+        <a href="chapter-8.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">07</span>
+            <span class="chapter-nav-title">Interview</span>
+        </a>
+        <a href="chapter-9.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">08</span>
+            <span class="chapter-nav-title">The Green Card</span>
+        </a>
+    </nav>
+    
+    <!-- Victor's Experience Panel -->
+    <div class="victor-trigger"></div>
+    
+    <div class="victor-panel">
+        <img src="Thesis_Profile_Waiting.png" alt="Victor's Journey infographic for The Waiting chapter" style="width: 100%; height: auto;">
+    </div>
+    
+    <!-- Hero Image -->
+    <div style="position: relative; width: 100%; height: 400px; margin-top: 140px; overflow: hidden;">
+        <img src="Website_Heroes_Waiting.png" alt="Hero image for The Waiting chapter" style="width: 100%; height: 100%; object-fit: cover;">
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 3rem 3rem 2rem; display: flex; align-items: center; justify-content: space-between;">
+            <a href="chapter-3-evidence.html" class="nav-arrow" title="Previous Chapter">←</a>
+            <div class="chapter-title-wrapper">
+                <div class="chapter-number-header">03</div>
+                <h1>The Waiting</h1>
+            </div>
+            <a href="chapter-5.html" class="nav-arrow" title="Next Chapter">→</a>
+        </div>
+    </div>
+    
+    <div style="background: #E3ECDC; padding: 2rem 3rem; position: relative; z-index: 1;">
+        <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem;">In this Section...</h2>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <a href="#how-long-will-this-last" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">How Long Will This Last?</a>
+            <a href="#when-to-take-action" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">When To Take Action</a>
+            <a href="#what-to-do-while-you-wait" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">While You Wait</a>
+        </div>
+    </div>
+
+    <main id="main-content" style="margin-top: 0;">
+        
+        <div class="content-wrapper">
+            <div class="main-content-area">
+
+                <!-- ============================================================ -->
+                <!-- BEGIN CHAPTER 4 CONTENT                                      -->
+                <!-- ============================================================ -->
+
+                <h2 id="how-long-will-this-last" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">How Long Will This Last?</h2>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#waiting-period-examples" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Waiting Period Examples</a>
+                    <a href="#check-official-uscis-processing-times" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Check Official USCIS Processing Times</a>
+                </div>
+
+                <p style="margin-bottom: 1rem;">This is one of the most common questions people ask during the immigration process. The honest answer is: it depends.</p>
+
+                <p style="margin-bottom: 1.5rem;">Some family-based green card cases move quickly, while others can take much longer. This can feel stressful, confusing, and sometimes scary. Do not worry too much though, since in most cases, long periods of silence are a normal part of the process.</p>
+
+                <h3 id="waiting-period-examples" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Waiting Period Examples</h3>
+
+                <p style="margin-bottom: 1.5rem;">Below, you will find timelines that are based on real experiences shared by applicants. Every case is different, so they cannot help you predict exactly how long your case will take. However, knowing how long others waited may help you feel more at ease about your situation.</p>
+
+                <div style="margin-bottom: 2rem;">
+                    <img src="TimelineExamples.png" alt="Real Timeline Examples chart showing time from application submission to approval for various applicants" style="width: 100%; height: auto;">
+                </div>
+
+                <div class="callout-anchor">
+                <h3 id="check-official-uscis-processing-times" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem;">Check Official USCIS Processing Times</h3>
+
+                <div style="padding-right: 0;">
+                    <p style="margin-bottom: 1rem;">USCIS publishes estimated processing times for many immigration forms and offices. These estimates can help you understand general wait times for your case type. Keep in mind that these are only estimates.</p>
+
+                    <p style="margin-bottom: 1rem;">You can check USCIS processing times here:</p>
+
+                    <a href="https://egov.uscis.gov/processing-times/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">USCIS Processing Times</a>
+                </div>
+
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">Is Your Case Delayed?</p>
+                        <p>If you think your case may be delayed beyond normal processing times, you can:</p>
+                        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Submit a USCIS service request</li>
+                            <li style="margin-top: 0.25rem;">Contact USCIS for an update</li>
+                            <li style="margin-top: 0.25rem;">Speak with an immigration attorney if something seems unusual or urgent</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+
+                <h2 id="when-to-take-action" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">When To Take Action</h2>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#request-for-evidence" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Request for Evidence (RFE)</a>
+                </div>
+
+                <p style="margin-bottom: 1rem;">In most cases, long wait times do not mean something is wrong with your case. With that being said, there are situations where it may make sense to follow up.</p>
+
+                <p style="margin-bottom: 0.75rem;">You may want to take action if:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">Your case is outside the <a href="#check-official-uscis-processing-times" style="color: #AB3838; text-decoration: underline;">estimated USCIS processing time</a></li>
+                    <li style="margin-bottom: 0.5rem;">You have not received a receipt notice after filing</li>
+                    <li style="margin-bottom: 0.5rem;">USCIS says they mailed you something, but you never received it</li>
+                    <li style="margin-bottom: 0.5rem;">You received a <a href="#request-for-evidence" style="color: #AB3838; text-decoration: underline;">request for evidence (RFE)</a></li>
+                    <li style="margin-bottom: 0.5rem;">Your interview was canceled or delayed without a new update</li>
+                    <li style="margin-bottom: 0.5rem;">There appears to be a mistake in your case status or paperwork</li>
+                </ul>
+
+                <div class="callout-anchor">
+                <h3 id="request-for-evidence" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Request for Evidence (RFE)</h3>
+
+                <div style="">
+                    <p style="margin-bottom: 1rem;">USCIS might send you a request for evidence (RFE) while waiting. This means the officer reviewing your case needs more information before they can make a decision.</p>
+
+                    <p style="margin-bottom: 0.75rem;">USCIS may ask for:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Missing documents</li>
+                        <li style="margin-bottom: 0.5rem;">Updated financial information</li>
+                        <li style="margin-bottom: 0.5rem;">Proof of a real relationship or marriage</li>
+                        <li style="margin-bottom: 0.5rem;">Birth certificates, passports, or translations</li>
+                        <li style="margin-bottom: 0.5rem;">Medical exam records</li>
+                        <li style="margin-bottom: 0.5rem;">Additional forms or signatures</li>
+                    </ul>
+
+                    <p style="margin-bottom: 1rem;">Read the notice carefully. The letter will explain what USCIS is asking for, which documents you need to send, and the deadline to respond.</p>
+
+                    <p style="margin-bottom: 0.75rem;">It is important to:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Respond before the deadline</li>
+                        <li style="margin-bottom: 0.5rem;">Include all requested documents if possible</li>
+                        <li style="margin-bottom: 0.5rem;">Send copies unless the notice asks for originals</li>
+                        <li style="margin-bottom: 0.5rem;">Keep copies of everything you submit for your records</li>
+                    </ul>
+
+                    <p style="margin-bottom: 2rem;">After USCIS receives your response, your case will continue moving forward, but it will probably still take time before you receive another update.</p>
+
+                    <div style="border: 2px solid #AB3838; border-radius: 8px; padding: 1rem 1.5rem; margin: 1rem 0 2rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <svg style="width: 40px; height: 40px; flex-shrink: 0; display: block; overflow: visible;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                                <path fill="none" stroke="#ab3838" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M21.2,8.97L4.47,35.44c-2.2,3.48.3,8.02,4.42,8.02h32.22c4.04,0,6.55-4.38,4.51-7.87l-15.48-26.47c-1.98-3.38-6.84-3.47-8.94-.15Z"/>
+                                <g>
+                                    <circle fill="#ab3838" cx="25" cy="37" r="1.15"/>
+                                    <path fill="#ab3838" d="M25,33.56c-.48,0-.87-.39-.87-.87l-1.17-15.97c0-.48.77-.87,2.04-.87,1.17,0,2.04.39,2.04.87l-1.17,15.97c0,.48-.39.87-.87.87Z"/>
+                                </g>
+                            </svg>
+                            <div>
+                                <p style="font-weight: bold; margin-bottom: 0.5rem; color: #AB3838;">Do Not Ignore an RFE</p>
+                                <p style="margin-bottom: 1rem;">If you do not respond by the deadline, USCIS may deny your application.</p>
+                                <p>If you are confused about what the RFE is asking for or are unsure how to respond, it may help to speak with an immigration attorney or accredited representative.</p>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">Got an RFE?</p>
+                        <p>Receiving an RFE can feel stressful, but don't panic. It can happen to anyone.</p>
+                    </div>
+                </div>
+                </div>
+
+                <h2 id="what-to-do-while-you-wait" style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem; scroll-margin-top: 120px;">While You Wait</h2>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#focus-on-what-you-can-control" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Focus on What You Can Control</a>
+                    <a href="#stay-organized" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Stay Organized</a>
+                    <a href="#connect-with-others" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Connect with Others</a>
+                </div>
+
+                <p style="margin-bottom: 1rem;">Waiting for an immigration case to move forward can take a long time. Many applicants describe the waiting period as one of the most difficult parts of the process because there is often very little they can do to speed things up.</p>
+
+                <p style="margin-bottom: 1.5rem;">You may not be able to control the timeline, but there are things you can do to stay prepared and make the waiting period feel more manageable.</p>
+
+                <h3 id="focus-on-what-you-can-control" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Focus on What You Can Control</h3>
+
+                <p style="margin-bottom: 1rem;">Many applicants find themselves checking their case status multiple times a day. While it is natural to want updates, constantly monitoring your case can sometimes increase anxiety without providing new information.</p>
+
+                <p style="margin-bottom: 0.75rem;">Instead, try focusing on things that are within your control, such as:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">Work or school goals</li>
+                    <li style="margin-bottom: 0.5rem;">Spending time with family and friends</li>
+                    <li style="margin-bottom: 0.5rem;">Personal hobbies and interests</li>
+                    <li style="margin-bottom: 0.5rem;">Financial planning and budgeting</li>
+                    <li style="margin-bottom: 0.5rem;">Learning more about life in the United States</li>
+                </ul>
+
+                <h3 id="stay-organized" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Stay Organized</h3>
+
+                <p style="margin-bottom: 1rem;">Keeping your immigration documents organized can save time and reduce stress later.</p>
+
+                <p style="margin-bottom: 0.75rem;">Consider creating a folder for:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">USCIS notices and receipt numbers</li>
+                    <li style="margin-bottom: 0.5rem;">Copies of forms you submitted</li>
+                    <li style="margin-bottom: 0.5rem;">Supporting documents and evidence</li>
+                    <li style="margin-bottom: 0.5rem;">Important deadlines and appointment dates</li>
+                </ul>
+
+                <h3 id="connect-with-others" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Connect with Others</h3>
+
+                <p style="margin-bottom: 1rem;">Many people find comfort in talking with others who are going through the same process. Immigration forums, community groups, and support networks can help you understand what to expect and remind you that you are not going through this alone.</p>
+
+                <p style="margin-bottom: 1rem;">r/USCIS on Reddit is a great place to start if you are looking for an online community. The stories you see in the sidebar on the right are from this forum. You can visit their page here:</p>
+
+                <a href="https://www.reddit.com/r/USCIS/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">r/USCIS Page</a>
+
+                <!-- ============================================================ -->
+                <!-- END CHAPTER 4 CONTENT                                        -->
+                <!-- ============================================================ -->
+
+            </div>
+        </div>
+        <div style="height: 600px;"></div>
+    </main>
+    
+    <!-- Floating Footer Navigation -->
+    <div class="footer-nav" id="footer-nav">
+        <div class="footer-nav-content">
+            <a href="chapter-3-evidence.html" class="footer-nav-btn">
+                <span class="arrow">←</span>
+                <span>Previous: Evidence & Paperwork</span>
+            </a>
+            <a href="chapter-5.html" class="footer-nav-btn">
+                <span>Next: Medical Exam</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Accordion toggle
+        function toggleAccordion(index) {
+            const headers = document.querySelectorAll('.accordion-header');
+            const contents = document.querySelectorAll('.accordion-content');
+            
+            if (headers[index] && contents[index]) {
+                headers[index].classList.toggle('active');
+                contents[index].classList.toggle('active');
+            }
+        }
+        
+        // Carousel functionality
+        let currentSlide = 0;
+        let currentFormsSlide = 0;
+        
+        function goToSlide(index) {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (!track || cards.length === 0) return;
+            
+            currentSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = track.closest('.category-carousel').querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+        
+        function nextSlide() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (currentSlide < cards.length - 1) goToSlide(currentSlide + 1);
+        }
+        
+        function goToFormsSlide(index) {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const formsCarousel = carousels[1];
+            const track = formsCarousel.querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            
+            currentFormsSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = formsCarousel.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousFormsSlide() {
+            if (currentFormsSlide > 0) goToFormsSlide(currentFormsSlide - 1);
+        }
+        
+        function nextFormsSlide() {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const track = carousels[1].querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            if (currentFormsSlide < cards.length - 1) goToFormsSlide(currentFormsSlide + 1);
+        }
+        
+        // Prevent callout boxes from overlapping in the right margin
+        function adjustCalloutPositions() {
+            const isWideScreen = window.innerWidth > 1200;
+            const callouts = document.querySelectorAll('.callout-box');
+            
+            callouts.forEach(box => {
+                box.style.top = '0';
+            });
+            
+            if (!isWideScreen) return;
+            
+            const gap = 20;
+            
+            for (let i = 1; i < callouts.length; i++) {
+                const prevRect = callouts[i - 1].getBoundingClientRect();
+                const currRect = callouts[i].getBoundingClientRect();
+                
+                const overlap = prevRect.bottom + gap - currRect.top;
+                
+                if (overlap > 0) {
+                    const currentTop = parseInt(callouts[i].style.top) || 0;
+                    callouts[i].style.top = (currentTop + overlap) + 'px';
+                }
+            }
+        }
+        
+        window.addEventListener('load', adjustCalloutPositions);
+        window.addEventListener('resize', adjustCalloutPositions);
+        window.addEventListener('scroll', adjustCalloutPositions);
+        
+        // Ensure page is tall enough to show all absolute-positioned callout boxes
+        function ensurePageHeight() {
+            const callouts = document.querySelectorAll('.callout-box');
+            const main = document.querySelector('main');
+            let maxBottom = 0;
+            
+            callouts.forEach(box => {
+                const rect = box.getBoundingClientRect();
+                const absoluteBottom = window.scrollY + rect.bottom;
+                if (absoluteBottom > maxBottom) {
+                    maxBottom = absoluteBottom;
+                }
+            });
+            
+            const footerHeight = 100;
+            const neededHeight = maxBottom + footerHeight - main.offsetTop;
+            if (neededHeight > main.offsetHeight) {
+                main.style.minHeight = neededHeight + 'px';
+            }
+        }
+        
+        // Align all callout boxes to consistent left position
+        function alignCalloutBoxes() {
+            if (window.innerWidth <= 1200) return;
+            
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (!contentWrapper) return;
+            
+            const wrapperRect = contentWrapper.getBoundingClientRect();
+            const targetLeft = wrapperRect.width + 30;
+            
+            const callouts = document.querySelectorAll('.callout-box');
+            callouts.forEach(box => {
+                const anchor = box.closest('.callout-anchor');
+                if (!anchor) return;
+                const anchorRect = anchor.getBoundingClientRect();
+                const wrapperLeft = wrapperRect.left;
+                const anchorLeft = anchorRect.left;
+                const offset = wrapperLeft - anchorLeft;
+                box.style.left = (targetLeft + offset) + 'px';
+            });
+        }
+        
+        window.addEventListener('load', alignCalloutBoxes);
+        window.addEventListener('resize', alignCalloutBoxes);
+        
+        window.addEventListener('load', ensurePageHeight);
+        window.addEventListener('resize', ensurePageHeight);
+    </script>
+</body>
+</html>
