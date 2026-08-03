@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Waiting - We've Been There</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            color: #3D517D;
+            line-height: 1.8;
+            overflow-x: hidden;
+            background-color: #FDF8F4;
+            position: relative;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #3D517D;
+            text-decoration: none;
+        }
+        
+        .chapter-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 999;
+            padding: 0;
+            overflow: visible;
+        }
+        
+        .chapter-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.25rem 1rem 0.5rem;
+            text-decoration: none;
+            color: #FFD0D0;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            background: #3D517D;
+        }
+        
+        .chapter-nav-item:hover {
+            background: #58647E;
+            color: white;
+        }
+        
+        .chapter-nav-item.active {
+            color: white;
+            border-bottom-color: #FFD0D0;
+            background: #58647E;
+        }
+        
+        .chapter-nav-number {
+            font-weight: bold;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+        
+        .chapter-nav-title {
+            font-size: 9pt;
+            line-height: 1.2;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+        
+        .chapter-nav-item:hover .chapter-nav-title,
+        .chapter-nav-item.active .chapter-nav-title {
+            max-height: 20px;
+            opacity: 1;
+            margin-top: 0.25rem;
+        }
+        
+        /* Victor's Experience Panel */
+        .victor-panel {
+            position: fixed;
+            right: -700px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 700px;
+            height: auto;
+            background: #FFE3E3;
+            padding: 1.5rem;
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .victor-panel:hover,
+        .victor-trigger:hover + .victor-panel {
+            right: 0;
+        }
+        
+        .victor-trigger {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 100px;
+            background: #FFD0D0;
+            opacity: 0.5;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .victor-trigger:hover {
+            opacity: 1;
+        }
+        
+        .victor-panel h3 {
+            color: #AB3838;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .victor-content {
+            color: #3D517D;
+            font-size: 12pt;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            padding-bottom: 200px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        .content-wrapper {
+            margin-top: 2rem;
+            position: relative;
+            overflow: visible;
+            max-width: 800px;
+        }
+        
+        .main-content-area {
+            max-width: 800px;
+        }
+        
+        .sidebar-callouts {
+            position: relative;
+        }
+        
+        .callout-box {
+            background: #FBEBDD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: absolute;
+            width: 380px;
+            top: 0;
+        }
+        
+        .callout-anchor {
+            position: relative;
+        }
+        
+        .callout-box .read-thread-btn {
+            display: inline-block;
+            padding: 0.5rem 16px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+        }
+        
+        .callout-box .read-thread-btn:hover {
+            background: #AB3838;
+            color: white;
+        }
+        
+        .callout-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-username {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #3D517D;
+            margin-bottom: 0.5rem;
+        }
+        
+        .callout-content {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+        }
+        
+        .callout-content p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .callout-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .chapter-title-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .chapter-number-header {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 3rem;
+            color: #AB3838;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 25pt;
+            color: #3D517D;
+            line-height: 1.2;
+        }
+        
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .nav-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-nav-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .footer-nav-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .footer-nav-btn .arrow {
+            font-size: 1.2rem;
+        }
+
+        /* Category Carousel */
+        .category-carousel {
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .category-card {
+            min-width: calc(50% - 1rem);
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            transform: scale(0.95);
+            flex-shrink: 0;
+        }
+        
+        .category-card.active {
+            opacity: 1;
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-card:hover {
+            transform: scale(0.98) translateX(-5px);
+            cursor: pointer;
+        }
+        
+        .category-card.active:hover {
+            transform: scale(1.02);
+        }
+        
+        .category-card h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 0.75rem;
+        }
+        
+        .category-card .category-subtitle {
+            font-style: italic;
+            color: #58647E;
+            margin-bottom: 0.5rem;
+            font-size: 12pt;
+        }
+        
+        .category-card .category-description {
+            color: #3D517D;
+            font-size: 12pt;
+            line-height: 1.6;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .carousel-arrow {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .carousel-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .carousel-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot:hover {
+            background: #FFE3E3;
+        }
+        
+        .carousel-dot.active {
+            background: #AB3838;
+            color: white;
+            border-color: #AB3838;
+        }
+        
+        /* Legal Disclaimer Box */
+        .legal-disclaimer {
+            background: #FFE3E3;
+            border-left: 4px solid #AB3838;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .legal-disclaimer h3 {
+            font-family: 'Open Sans', serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            margin-bottom: 1rem;
+        }
+        
+        .legal-disclaimer p {
+            margin-bottom: 1rem;
+            color: #3D517D;
+        }
+        
+        .legal-disclaimer p:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .resource-btn {
+            padding: 0.75rem 20px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+        }
+        
+        .resource-btn:hover {
+            background: #AB3838;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(171, 56, 56, 0.3);
+        }
+        
+        /* Accordion Styles */
+        .accordion {
+            margin: 1.5rem 0;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #3D517D;
+        }
+        
+        .accordion-header:hover {
+            background: #E3ECDC;
+        }
+        
+        .accordion-header.active {
+            background: #3D517D;
+            color: white;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-content.active {
+            max-height: 3000px;
+            padding: 1.5rem;
+        }
+        
+        .accordion-content ul {
+            list-style: disc;
+            padding-left: 2rem;
+            margin: 0;
+        }
+        
+        .accordion-content li {
+            margin-bottom: 0.15rem;
+            line-height: 1.6;
+            color: #3D517D;
+        }
+        
+        /* Tighten bullet spacing globally */
+        ul li,
+        ol li {
+            margin-bottom: 0.15rem !important;
+        }
+        
+        /* Evidence Category Sections */
+        .evidence-category {
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .evidence-category.bg-pink {
+            background: #FFE3E3;
+        }
+        
+        .evidence-category.bg-green {
+            background: #E3ECDC;
+        }
+        
+        .evidence-category.bg-orange {
+            background: #FBEBDD;
+        }
+        
+        .evidence-category.bg-white {
+            background: white;
+        }
+        
+        /* Red numbered list */
+        ol.red-numbers {
+            list-style: none;
+            counter-reset: item;
+            padding-left: 2rem;
+        }
+        
+        ol.red-numbers li {
+            counter-increment: item;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        ol.red-numbers li::before {
+            content: counter(item) ".";
+            color: #AB3838;
+            font-weight: bold;
+            position: absolute;
+            left: -2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 2rem;
+            }
+            
+            .callout-anchor {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .callout-box {
+                position: relative;
+                left: 0 !important;
+                right: 0;
+                width: 100%;
+                margin-top: 1rem;
+                order: 999;
+            }
+            
+            .category-card {
+                min-width: calc(70% - 1rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chapter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-arrows-top {
+                display: flex;
+                gap: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                order: -1;
+            }
+            
+            .footer-nav {
+                padding: 1rem;
+            }
+            
+            .footer-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 11pt;
+            }
+            
+            .category-card {
+                min-width: calc(85% - 1rem);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Background blobs -->
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;">
+  <svg style="position: absolute; top: -5%; left: -50%; width: 180vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.77-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.09-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.63,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 800px; right: -55%; width: 190vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M304.59,125.18c-37.64-22.33-79.33-44.43-122.76-39.02-42.29,5.27-78.68,37.84-93.31,77.86-14.63,40.02-8.97,85.87,10.41,123.83,20.82,40.79,57.16,75.43,62.95,120.86,6.34,49.7-25.85,95.3-56.94,134.58-31.1,39.29-64.56,83.29-61.34,133.28,3.52,54.59,53.09,98.25,106.68,109.2,53.6,10.95,109.31-4.76,158.8-28.06,49.49-23.3,95.19-54.18,145.18-76.39,49.99-22.21,106.72-35.49,159.48-21.05,56.46,15.45,103.04,61.02,161.26,67.03,56.04,5.79,110.45-28,143.8-73.41,33.34-45.41,49.26-101.03,62.57-155.78,14.78-60.81,27.19-123.06,23.64-185.55-3.55-62.48-24.57-125.92-68.68-170.31-44.11-44.39-113.64-65.92-172.05-43.46-46.75,17.98-79.51,59.39-116.37,93.3-38.76,35.66-105.48,72.71-159.05,50.14-64.54-27.19-123.77-81.18-184.26-117.06Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 1900px; left: -48%; width: 185vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M548.93,793.85c-26.48-7.81-50.63-23.68-67.36-45.68-21.54-28.32-31.9-65.86-60.43-87.13-37.4-27.89-89.86-16.92-134.75-4.24-54.23,15.32-118.51,29.95-157.42-23.03-7.6-10.35-12.77-22.41-15.75-34.9-12.15-50.96,5.01-98.74,15.91-147.07,8.03-35.61,12.55-73.74-.22-107.93-12.56-33.62-40.02-58.96-63.89-85.76-30.54-34.29-58.03-78.36-34.77-126.02,11.14-22.82,32.02-39.47,55.93-48.02,50.38-18.01,103.17-2.08,149.32,20.96,52.36,26.14,100.7,62.65,159.66,72.14,91.58,14.73,165.96-31.76,244.17-70.91,83.03-41.56,185.76-41.2,268.5.94,56.94,29,105.8,80.17,117.39,143.02,11.58,62.85-23.07,135.17-84.34,153.32-17.7,5.24-36.15,5.92-54.69,6.3-46.96.96-92.95,17.37-127.97,48.68-84.34,75.41-26.89,162.9-47.06,242.78-11.91,47.16-52.42,85.85-100.07,95.58-20.58,4.2-42.04,2.91-62.17-3.02Z" fill="#FFE3E3"/>
+  </svg>
+  <svg style="position: absolute; top: 3000px; right: -52%; width: 188vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M547.51,99.89c-48.63,23.79-86.43,68.73-101.54,120.71-8.23,28.31-11.96,61.58-35.99,78.66-24.42,17.36-58.86,9.12-84.68-6.07-25.82-15.19-48.3-36.66-76.58-46.53-60.31-21.06-127.45,18.66-162.59,72.01-46.75,71-52.31,165.25-21.69,244.55,30.62,79.3,94.75,143.43,170.56,181.87,75.81,38.45,162.57,52.4,247.49,48.51,67.37-3.08,140.71-21.12,179.94-75.97,24.9-34.82,31.93-78.8,44.27-119.79,12.34-40.99,34.15-83.76,73.94-99.54,36.47-14.47,78.11-2.33,116.67-9.62,66.43-12.55,110.67-84.66,106-152.1-4.67-67.44-49.07-127.19-104.33-166.13-88.63-62.45-246.67-121.82-351.46-70.56Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 4100px; left: -45%; width: 182vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M535.82,171.45c-48.08-38.68-100.99-73.68-160.88-88.56-59.89-14.88-128.08-6.88-175.2,32.96-37.85,32-57.99,80.07-72.28,127.53-39.72,131.94-44.09,274.35-12.54,408.48,8.7,36.97,20.61,74.35,44.75,103.68,24.14,29.33,62.92,49.18,100.14,41.57,46.42-9.49,74.38-55.17,108.85-87.68,39.23-37.01,92.19-59.12,146.1-60.99,53.9-1.88,108.27,16.5,149.98,50.69,35.27,28.91,64.88,70.24,109.74,78.44,35.82,6.55,72.85-11.22,97.47-38.04,24.62-26.82,38.72-61.56,49.66-96.28,22.63-71.82,33.91-147.21,33.28-222.51-.62-74.29-15.1-205.33-92.94-243.13-70.02-34.01-131.29,74.14-206.41,63.13-46.52-6.82-84.44-40.92-119.7-69.29Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 5200px; right: -50%; width: 186vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.77-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.09-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.63,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FFE3E3"/>
+  </svg>
+  <svg style="position: absolute; top: 6300px; left: -48%; width: 184vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M548.93,793.85c-26.48-7.81-50.63-23.68-67.36-45.68-21.54-28.32-31.9-65.86-60.43-87.13-37.4-27.89-89.86-16.92-134.75-4.24-54.23,15.32-118.51,29.95-157.42-23.03-7.6-10.35-12.77-22.41-15.75-34.9-12.15-50.96,5.01-98.74,15.91-147.07,8.03-35.61,12.55-73.74-.22-107.93-12.56-33.62-40.02-58.96-63.89-85.76-30.54-34.29-58.03-78.36-34.77-126.02,11.14-22.82,32.02-39.47,55.93-48.02,50.38-18.01,103.17-2.08,149.32,20.96,52.36,26.14,100.7,62.65,159.66,72.14,91.58,14.73,165.96-31.76,244.17-70.91,83.03-41.56,185.76-41.2,268.5.94,56.94,29,105.8,80.17,117.39,143.02,11.58,62.85-23.07,135.17-84.34,153.32-17.7,5.24-36.15,5.92-54.69,6.3-46.96.96-92.95,17.37-127.97,48.68-84.34,75.41-26.89,162.9-47.06,242.78-11.91,47.16-52.42,85.85-100.07,95.58-20.58,4.2-42.04,2.91-62.17-3.02Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 7400px; right: -52%; width: 188vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M304.59,125.18c-37.64-22.33-79.33-44.43-122.76-39.02-42.29,5.27-78.68,37.84-93.31,77.86-14.63,40.02-8.97,85.87,10.41,123.83,20.82,40.79,57.16,75.43,62.95,120.86,6.34,49.7-25.85,95.3-56.94,134.58-31.1,39.29-64.56,83.29-61.34,133.28,3.52,54.59,53.09,98.25,106.68,109.2,53.6,10.95,109.31-4.76,158.8-28.06,49.49-23.3,95.19-54.18,145.18-76.39,49.99-22.21,106.72-35.49,159.48-21.05,56.46,15.45,103.04,61.02,161.26,67.03,56.04,5.79,110.45-28,143.8-73.41,33.34-45.41,49.26-101.03,62.57-155.78,14.78-60.81,27.19-123.06,23.64-185.55-3.55-62.48-24.57-125.92-68.68-170.31-44.11-44.39-113.64-65.92-172.05-43.46-46.75,17.98-79.51,59.39-116.37,93.3-38.76,35.66-105.48,72.71-159.05,50.14-64.54-27.19-123.77-81.18-184.26-117.06Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 8500px; left: -46%; width: 183vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M535.82,171.45c-48.08-38.68-100.99-73.68-160.88-88.56-59.89-14.88-128.08-6.88-175.2,32.96-37.85,32-57.99,80.07-72.28,127.53-39.72,131.94-44.09,274.35-12.54,408.48,8.7,36.97,20.61,74.35,44.75,103.68,24.14,29.33,62.92,49.18,100.14,41.57,46.42-9.49,74.38-55.17,108.85-87.68,39.23-37.01,92.19-59.12,146.1-60.99,53.9-1.88,108.27,16.5,149.98,50.69,35.27,28.91,64.88,70.24,109.74,78.44,35.82,6.55,72.85-11.22,97.47-38.04,24.62-26.82,38.72-61.56,49.66-96.28,22.63-71.82,33.91-147.21,33.28-222.51-.62-74.29-15.1-205.33-92.94-243.13-70.02-34.01-131.29,74.14-206.41,63.13-46.52-6.82-84.44-40.92-119.7-69.29Z" fill="#FFE3E3"/>
+  </svg>
+</div>
+    <header>
+        <a href="index.html" class="logo">We've Been There</a>
+    </header>
+    
+    <nav class="chapter-nav">
+        <a href="chapter-1.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">Intro</span>
+            <span class="chapter-nav-title">Introduction</span>
+        </a>
+        <a href="chapter-2-plan.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">01</span>
+            <span class="chapter-nav-title">Plan Your Route</span>
+        </a>
+        <a href="chapter-3-evidence.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">02</span>
+            <span class="chapter-nav-title">Evidence & Paperwork</span>
+        </a>
+        <a href="#" class="chapter-nav-item active">
+            <span class="chapter-nav-number">03</span>
+            <span class="chapter-nav-title">The Waiting</span>
+        </a>
+        <a href="chapter-5-medical.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">04</span>
+            <span class="chapter-nav-title">Medical Exam</span>
+        </a>
+        <a href="chapter-6-biometrics.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">05</span>
+            <span class="chapter-nav-title">Biometrics</span>
+        </a>
+        <a href="chapter-7-work.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">06</span>
+            <span class="chapter-nav-title">Work Auth & SSN</span>
+        </a>
+        <a href="chapter-8-interview.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">07</span>
+            <span class="chapter-nav-title">Interview</span>
+        </a>
+        <a href="chapter-9-green.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">08</span>
+            <span class="chapter-nav-title">The Green Card</span>
+        </a>
+    </nav>
+    
+    <!-- Victor's Experience Panel -->
+    <div class="victor-trigger"></div>
+    
+    <div class="victor-panel">
+        <img src="Thesis_Profile_Waiting.png" alt="Victor's Journey infographic for The Waiting chapter" style="width: 100%; height: auto;">
+    </div>
+    
+    <!-- Hero Section -->
+    <div style="margin-top: 140px; position: relative; z-index: 2;">
+        <div style="overflow: hidden; line-height: 0;">
+        <svg id="hero-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 400" style="width: 100%; height: auto; display: block; overflow: visible;">
+  <defs>
+    <style>
+      .cls-1, .cls-2 { fill: #ab3939; }
+      .cls-3 { fill: #f6d6b8; }
+      .cls-4 { fill: #fbcfd0; }
+      .cls-5, .cls-6 { fill: #3d517e; }
+      .cls-7 { fill: #ebf2e4; }
+      .cls-2, .cls-6 { opacity: .4; }
+      .cls-8 { fill: #d1e0c5; }
+    </style>
+  </defs>
+  <g>
+    <rect class="cls-7" x="1.32" width="1920" height="400"/>
+    <g>
+      <polygon class="cls-4" points="1069.94 360.75 874.35 360.75 972.15 201.16 1069.94 360.75"/>
+      <rect class="cls-2" x="863.34" y="336.89" width="217.62" height="32.95" rx="12.27" ry="12.27"/>
+      <polygon class="cls-4" points="874.35 38.9 1069.94 38.9 972.15 198.5 874.35 38.9"/>
+      <rect class="cls-2" x="863.34" y="29.81" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(1944.2966 92.5726) rotate(-180)"/>
+    </g>
+    <g>
+      <polygon class="cls-3" points="961.18 462.23 708.93 578.47 740.2 314.53 961.18 462.23"/>
+      <polygon class="cls-3" points="517.65 163.4 769.9 47.15 738.62 311.1 517.65 163.4"/>
+      <rect class="cls-2" x="493.65" y="91.4" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(1284.872 -52.2163) rotate(155.2587)"/>
+    </g>
+    <g>
+      <polygon class="cls-8" points="1344.34 421.6 1095.34 298.54 1320.25 156.9 1344.34 421.6"/>
+      <rect class="cls-6" x="1069.97" y="327.27" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(282.11 -506.23) rotate(26.3)"/>
+      <polygon class="cls-8" points="1297.83 -111.18 1546.83 11.88 1321.92 153.51 1297.83 -111.18"/>
+      <rect class="cls-6" x="1263.18" y="-63.65" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(2706.4631 551.7794) rotate(-153.7005)"/>
+    </g>
+    <g>
+      <polygon class="cls-4" points="1726.16 363.45 1548.53 445.31 1570.55 259.43 1726.16 363.45"/>
+      <rect class="cls-2" x="1525.45" y="381.2" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(-16.42 720.48) rotate(-24.74)"/>
+      <polygon class="cls-4" points="1413.83 153 1591.46 71.14 1569.44 257.02 1413.83 153"/>
+      <rect class="cls-2" x="1396.93" y="102.3" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(2922.9654 -403.5281) rotate(155.2587)"/>
+    </g>
+    <g>
+      <polygon class="cls-3" points="1824.3 226.05 1692.67 190.31 1787.65 100.78 1824.3 226.05"/>
+      <rect class="cls-2" x="1683.96" y="191.73" width="151.76" height="22.98" rx="8.56" ry="8.56" transform="translate(114.75 -454.05) rotate(15.19)"/>
+      <polygon class="cls-3" points="1751.48 -26.29 1883.12 9.45 1788.14 98.99 1751.48 -26.29"/>
+      <rect class="cls-2" x="1740.07" y="-14.94" width="151.76" height="22.98" rx="8.56" ry="8.56" transform="translate(3569.3524 469.0728) rotate(-164.8088)"/>
+    </g>
+    <g>
+      <polygon class="cls-4" points="448.47 326.55 274.39 237.38 434.19 139.92 448.47 326.55"/>
+      <rect class="cls-2" x="255.99" y="258.92" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(165.68 -136.03) rotate(27.12)"/>
+      <polygon class="cls-4" points="421.12 -49.07 595.21 40.1 435.4 137.56 421.12 -49.07"/>
+      <rect class="cls-2" x="395.99" y="-14.39" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(953.13 234.09) rotate(-152.88)"/>
+    </g>
+    <g>
+      <polygon class="cls-8" points="274.25 362.84 138.06 423.17 156.93 281.88 274.25 362.84"/>
+      <rect class="cls-6" x="121.02" y="375.32" width="165.72" height="25.1" rx="9.35" ry="9.35" transform="translate(-139.62 115.81) rotate(-23.89)"/>
+      <polygon class="cls-8" points="38.8 199.07 174.99 138.74 156.11 280.03 38.8 199.07"/>
+      <rect class="cls-6" x="26.31" y="161.5" width="165.72" height="25.1" rx="9.35" ry="9.35" transform="translate(279.47 288.96) rotate(156.11)"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path class="cls-1" d="M555.3,217.61c-2.89,14.79-9.8,26.33-23.13,33.46-10.71,5.73-25.08,7.13-34.63-2.08-9.34-9.01-13.71-22.51-14.63-35.33l-2.66-37.34c-.28-3.94,4.24-11.68,6.9-14.59,11.86-12.95,29.77-16.47,46.52-12.1,10.59,2.76,17.26,11.82,20.84,22.06,5.17,14.78,3.8,30.53.79,45.92ZM508.58,230.54c1.93,2.72,6.68,6.13,9.77,5.98,12.04-.59,25.27-30.31,19.98-54.54-1.04-4.78-3.62-12.29-8.15-13.88-8.22-2.9-18.12-.73-25.08,1.68l-3,25.73c-.61,5.26,4.96,14.58,5.41,19.74-1.87,6.37-3.56,8.77,1.07,15.3Z"/>
+      <path class="cls-1" d="M615.92,231.89c6.06-1.98,10.54-7.36,11.7-11.98,1.6-6.37,1.24-14.02-3.15-17.44-9.21-7.17-19.34-5.14-29.36-5.7-6.84-1.35-8.42-14.11-5.05-18.91,5.97-2.94,10.31-6.34,13.85-11.43l5.16-12.14c-4.56-.83-8.74,1.74-10.15,5.56-2.42,6.56-9.88,11.33-16.3,7.11-4.66-3.06-7.37-10.54-5.27-14.79,7.25-14.59,21.43-22.06,36.73-18.14,13.33,3.42,19.3,17.6,13.96,29.64l-5.99,13.49c8.85,4.79,18.26,8.39,23.12,17.11,9.43,16.92,3.87,38.64-11.58,50.46-10,7.65-24.31,10.11-36.36,6.4-10.52-3.25-14.62-15.6-10.26-25.3.79-1.77,4.76-4.31,6.69-4.28,8.01.15,7.18,15.25,22.26,10.32Z"/>
+    </g>
+    <g>
+      <path class="cls-5" d="M808.75,211.88l-.73-34.66-.35-16.24-20.41.84c-1.98.08-3.95,3.76-3.89,5.59l.47,13.17.71,31.52c.14,6.41,3.14,14.52-1.27,20.31-4.17,5.48-18.03.93-18.22-6.04l-1.77-62.47-27,3.88c-7.21,1.04-13.88-4.91-13.65-10.98.29-7.38,5.45-11.95,12.81-12.46l73.65-5.1c5.4-.37,9.68-1.77,14.04,1.46s4.88,8.27,5.19,13.88l1.15,20.48c5.91-6.46,12.53-8.34,20.63-6.18,11.86,3.15,18.05,14.61,18.69,26.72l1.42,26.72c.35,6.59,1.36,12.76-5.4,17.61-8.55-1.38-14.24-3.07-14.74-11.43l-2.4-39.97c-13.22,3.84-17.42,24.85-15.46,38.17.68,4.58-2.43,11.83-7.24,11.23-5.54-.68-14.53-4.4-14.98-10.08l-1.26-15.95Z"/>
+      <path class="cls-5" d="M922.69,207.21c6.64,6.44,4.49,16.26.04,22.39-4.83,6.66-13.96,8.57-22.19,6.15-12.07-3.56-17.72-13.13-22.89-24.08l-3.98-8.43c-1.05-2.21,3.41-6.8,4.38-9.43,3.64-9.89,7.87-19.74,17.98-24.85,6.97-3.53,16.01-2,20.02,3.87,5.05,7.39,3.8,15.88-2.4,21.8l-14.35,13.71c.46,1.85,2.76,5.63,4.67,5.93,7.97,1.25,13.39-12.22,18.74-7.04Z"/>
+    </g>
+    <g>
+      <path class="cls-5" d="M1365.86,277.59c3.12-1.58,8.28,2.93,8.37,6.74,5.46,8.17,13.08,14.16,23.1,14.04,28.17-15.11,27.19-57.2,16.31-86.56-5.2,5.5-11.72,10.92-18.75,11.75-18.73,2.21-24.27-31.09-20.16-52.32l13.32-12.71c8.79-8.39,34.57,9.39,36.37,20.81,1.52,9.64,2.91,18.12,6.43,27.36,8.56,22.48,11.68,46.64,6.14,70.28-4.09,17.44-23.5,43.72-43.04,39.52-7.09-1.53-14.2-5.97-19.98-10.25-8.7-6.45-13.08-17.6-8.11-28.65ZM1406.53,186.17c1.12-1.57.17-6.57-1.22-7.78-1.19-1.04-4.32-2.32-6.05-2.25-4.48,6.59-6.83,15.85-2.17,23.21l9.45-13.18Z"/>
+      <path class="cls-5" d="M992.55,166.73c-1.44-2.15-2.33-6.92-.84-8.36,4.2-4.07,12.59-3.72,15.89.78,7.68,10.47,10.62,21.77,15.94,35.05l7.47-20.71c.81-2.24,4.52-6.27,6.73-6.56,8.51-.73,15.72,5.73,20.3,12.39l13.71,19.94,3.36-21.98,2.02-23.48c4.14-7.96,14.38-8.56,21.66-2.66,3.83,4.96,1.94,11.09-1.83,16.17l-8.09,52.97c-.66,4.33-4.03,8.85-7.22,9.74-4.14,1.16-9.73.39-12.21-3.25l-16.79-24.58-7.15-11.04-8.2,31.33c-1.12,4.27-2.83,7.63-6.41,9.25-3.66,1.66-9.73.36-12.33-3.9-14.97-24.58-15.29-45.06-26.01-61.1Z"/>
+      <path class="cls-5" d="M1263.23,185.63l-26.71,3.9,1.79,22.01c.4,4.93,2.89,11.13,1.84,16.32-1.04,5.14-10.74,7.22-13.79,3.42l-6.67-8.31-3.43-31.04c-8.51,2.08-17.75-4.55-17.21-13.4.46-7.62,10.25-9.21,16.93-6.21l3.09-25.62c.29-2.44,2.18-6.14,3.82-7.43,2.09-1.64,7.12-2.47,9.32-.97,4.89,3.33,7.36,9.44,6.76,14.81l-1.77,15.95,18.92-2.67c12.61-1.78,23.48,5.82,26.43,18.06s4.52,24.16,4.71,37.12c.04,2.45-5.5,5.68-7.88,5.45-2.51-.24-6.39-2.18-8.64-3.95-5.1-4.01-5.02-8.02-5.5-13.74l-2-23.7Z"/>
+      <path class="cls-5" d="M1342.81,177.32c-12.15,9.42-20.6,23.97-18.69,38.95.7,5.49,1.6,10.44-3.32,13.23-5.08,2.88-10.25,1.26-13.76-3-3.81-4.63-5.03-8.8-5.16-14.39l-.88-38.95c-.06-2.47.87-6.45,2.15-7.86s5.68-3.08,7.55-2.5c3.86,1.19,7.84,4.88,10.99,8,5.49-5.17,10.85-11.28,18.77-11.79,5.83-.37,12.86,3.24,16.71,8.02,16.14,20.03,15.3,37.8,16.1,62.88-2.09,2.15-5.97,4.08-8.37,3.99-6.13-.22-12.68-8.44-12.93-12.58l-1.72-28.5c-.34-5.62-2.89-9.53-7.42-15.5Z"/>
+      <path class="cls-5" d="M1136.66,212.28c-4.82,9.05-13.6,15.22-21.77,10.47-14.47-8.42-14.62-32.32-8.82-48.41l10.73-8.04c6.86-5.14,14.5-2.4,21.05-.51,10.23,2.96,16.09,9.09,17.05,19.55l4.04,44.14c.24,2.58-7.17,4.83-9.56,4.67-8.3-4.25-10.36-11.64-12.72-21.86ZM1131.32,184.76c-.26-.73-5.76-2.53-6.11-1.86l-5.43,16.46,11.54-14.6Z"/>
+      <path class="cls-5" d="M1186.08,229.7c-8.22-.6-13.11-8.05-13.74-15.09l-2.87-32.06c-.25-2.81-.8-6.53.4-8.16,1.5-2.03,6.17-4.1,8.56-3.51,7.3,1.8,11.25,7.96,11.86,14.91l3.22,36.81c.29,3.29-3.2,7.41-7.42,7.1Z"/>
+      <path class="cls-5" d="M1281.19,150.21c2.68,3.95,3.11,8.82-.65,11.88-2.82,2.3-7.32,1.12-10.87-2.4-2.21-2.2-4.39-5.85-4.41-8.53-.03-3.06,3.6-6.02,6.4-6.42,3.57-.51,7.11,1.89,9.53,5.46Z"/>
+      <path class="cls-5" d="M1188.44,162.15c-3.66,4.79-10.48,2.03-13.14-2.8-1.23-2.24-3.14-5.72-2.43-7.59.87-2.29,5.27-4.34,8.34-4.96l8.48,5.19c.24,2.24.18,8.3-1.25,10.16Z"/>
+    </g>
+  </g>
+</svg>
+        </div>
+        <a href="chapter-3-evidence.html" class="nav-arrow" aria-label="Previous Chapter" style="position: absolute; left: 2rem; bottom: 0; transform: translateY(50%); z-index: 10;">←</a>
+        <a href="chapter-5-medical.html" class="nav-arrow" aria-label="Next Chapter" style="position: absolute; right: 2rem; bottom: 0; transform: translateY(50%); z-index: 10;">→</a>
+    </div>
+  <g>
+    <rect class="cls-7" x="1.32" width="1920" height="400"/>
+    <g>
+      <polygon class="cls-4" points="1069.94 360.75 874.35 360.75 972.15 201.16 1069.94 360.75"/>
+      <rect class="cls-2" x="863.34" y="336.89" width="217.62" height="32.95" rx="12.27" ry="12.27"/>
+      <polygon class="cls-4" points="874.35 38.9 1069.94 38.9 972.15 198.5 874.35 38.9"/>
+      <rect class="cls-2" x="863.34" y="29.81" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(1944.2966 92.5726) rotate(-180)"/>
+    </g>
+    <g>
+      <polygon class="cls-3" points="961.18 462.23 708.93 578.47 740.2 314.53 961.18 462.23"/>
+      <polygon class="cls-3" points="517.65 163.4 769.9 47.15 738.62 311.1 517.65 163.4"/>
+      <rect class="cls-2" x="493.65" y="91.4" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(1284.872 -52.2163) rotate(155.2587)"/>
+    </g>
+    <g>
+      <polygon class="cls-8" points="1344.34 421.6 1095.34 298.54 1320.25 156.9 1344.34 421.6"/>
+      <rect class="cls-6" x="1069.97" y="327.27" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(282.11 -506.23) rotate(26.3)"/>
+      <polygon class="cls-8" points="1297.83 -111.18 1546.83 11.88 1321.92 153.51 1297.83 -111.18"/>
+      <rect class="cls-6" x="1263.18" y="-63.65" width="309.02" height="46.79" rx="12.27" ry="12.27" transform="translate(2706.4631 551.7794) rotate(-153.7005)"/>
+    </g>
+    <g>
+      <polygon class="cls-4" points="1726.16 363.45 1548.53 445.31 1570.55 259.43 1726.16 363.45"/>
+      <rect class="cls-2" x="1525.45" y="381.2" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(-16.42 720.48) rotate(-24.74)"/>
+      <polygon class="cls-4" points="1413.83 153 1591.46 71.14 1569.44 257.02 1413.83 153"/>
+      <rect class="cls-2" x="1396.93" y="102.3" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(2922.9654 -403.5281) rotate(155.2587)"/>
+    </g>
+    <g>
+      <polygon class="cls-3" points="1824.3 226.05 1692.67 190.31 1787.65 100.78 1824.3 226.05"/>
+      <rect class="cls-2" x="1683.96" y="191.73" width="151.76" height="22.98" rx="8.56" ry="8.56" transform="translate(114.75 -454.05) rotate(15.19)"/>
+      <polygon class="cls-3" points="1751.48 -26.29 1883.12 9.45 1788.14 98.99 1751.48 -26.29"/>
+      <rect class="cls-2" x="1740.07" y="-14.94" width="151.76" height="22.98" rx="8.56" ry="8.56" transform="translate(3569.3524 469.0728) rotate(-164.8088)"/>
+    </g>
+    <g>
+      <polygon class="cls-4" points="448.47 326.55 274.39 237.38 434.19 139.92 448.47 326.55"/>
+      <rect class="cls-2" x="255.99" y="258.92" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(165.68 -136.03) rotate(27.12)"/>
+      <polygon class="cls-4" points="421.12 -49.07 595.21 40.1 435.4 137.56 421.12 -49.07"/>
+      <rect class="cls-2" x="395.99" y="-14.39" width="217.62" height="32.95" rx="12.27" ry="12.27" transform="translate(953.13 234.09) rotate(-152.88)"/>
+    </g>
+    <g>
+      <polygon class="cls-8" points="274.25 362.84 138.06 423.17 156.93 281.88 274.25 362.84"/>
+      <rect class="cls-6" x="121.02" y="375.32" width="165.72" height="25.1" rx="9.35" ry="9.35" transform="translate(-139.62 115.81) rotate(-23.89)"/>
+      <polygon class="cls-8" points="38.8 199.07 174.99 138.74 156.11 280.03 38.8 199.07"/>
+      <rect class="cls-6" x="26.31" y="161.5" width="165.72" height="25.1" rx="9.35" ry="9.35" transform="translate(279.47 288.96) rotate(156.11)"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path class="cls-1" d="M555.3,217.61c-2.89,14.79-9.8,26.33-23.13,33.46-10.71,5.73-25.08,7.13-34.63-2.08-9.34-9.01-13.71-22.51-14.63-35.33l-2.66-37.34c-.28-3.94,4.24-11.68,6.9-14.59,11.86-12.95,29.77-16.47,46.52-12.1,10.59,2.76,17.26,11.82,20.84,22.06,5.17,14.78,3.8,30.53.79,45.92ZM508.58,230.54c1.93,2.72,6.68,6.13,9.77,5.98,12.04-.59,25.27-30.31,19.98-54.54-1.04-4.78-3.62-12.29-8.15-13.88-8.22-2.9-18.12-.73-25.08,1.68l-3,25.73c-.61,5.26,4.96,14.58,5.41,19.74-1.87,6.37-3.56,8.77,1.07,15.3Z"/>
+      <path class="cls-1" d="M615.92,231.89c6.06-1.98,10.54-7.36,11.7-11.98,1.6-6.37,1.24-14.02-3.15-17.44-9.21-7.17-19.34-5.14-29.36-5.7-6.84-1.35-8.42-14.11-5.05-18.91,5.97-2.94,10.31-6.34,13.85-11.43l5.16-12.14c-4.56-.83-8.74,1.74-10.15,5.56-2.42,6.56-9.88,11.33-16.3,7.11-4.66-3.06-7.37-10.54-5.27-14.79,7.25-14.59,21.43-22.06,36.73-18.14,13.33,3.42,19.3,17.6,13.96,29.64l-5.99,13.49c8.85,4.79,18.26,8.39,23.12,17.11,9.43,16.92,3.87,38.64-11.58,50.46-10,7.65-24.31,10.11-36.36,6.4-10.52-3.25-14.62-15.6-10.26-25.3.79-1.77,4.76-4.31,6.69-4.28,8.01.15,7.18,15.25,22.26,10.32Z"/>
+    </g>
+    <g>
+      <path class="cls-5" d="M808.75,211.88l-.73-34.66-.35-16.24-20.41.84c-1.98.08-3.95,3.76-3.89,5.59l.47,13.17.71,31.52c.14,6.41,3.14,14.52-1.27,20.31-4.17,5.48-18.03.93-18.22-6.04l-1.77-62.47-27,3.88c-7.21,1.04-13.88-4.91-13.65-10.98.29-7.38,5.45-11.95,12.81-12.46l73.65-5.1c5.4-.37,9.68-1.77,14.04,1.46s4.88,8.27,5.19,13.88l1.15,20.48c5.91-6.46,12.53-8.34,20.63-6.18,11.86,3.15,18.05,14.61,18.69,26.72l1.42,26.72c.35,6.59,1.36,12.76-5.4,17.61-8.55-1.38-14.24-3.07-14.74-11.43l-2.4-39.97c-13.22,3.84-17.42,24.85-15.46,38.17.68,4.58-2.43,11.83-7.24,11.23-5.54-.68-14.53-4.4-14.98-10.08l-1.26-15.95Z"/>
+      <path class="cls-5" d="M922.69,207.21c6.64,6.44,4.49,16.26.04,22.39-4.83,6.66-13.96,8.57-22.19,6.15-12.07-3.56-17.72-13.13-22.89-24.08l-3.98-8.43c-1.05-2.21,3.41-6.8,4.38-9.43,3.64-9.89,7.87-19.74,17.98-24.85,6.97-3.53,16.01-2,20.02,3.87,5.05,7.39,3.8,15.88-2.4,21.8l-14.35,13.71c.46,1.85,2.76,5.63,4.67,5.93,7.97,1.25,13.39-12.22,18.74-7.04Z"/>
+    </g>
+    <g>
+      <path class="cls-5" d="M1365.86,277.59c3.12-1.58,8.28,2.93,8.37,6.74,5.46,8.17,13.08,14.16,23.1,14.04,28.17-15.11,27.19-57.2,16.31-86.56-5.2,5.5-11.72,10.92-18.75,11.75-18.73,2.21-24.27-31.09-20.16-52.32l13.32-12.71c8.79-8.39,34.57,9.39,36.37,20.81,1.52,9.64,2.91,18.12,6.43,27.36,8.56,22.48,11.68,46.64,6.14,70.28-4.09,17.44-23.5,43.72-43.04,39.52-7.09-1.53-14.2-5.97-19.98-10.25-8.7-6.45-13.08-17.6-8.11-28.65ZM1406.53,186.17c1.12-1.57.17-6.57-1.22-7.78-1.19-1.04-4.32-2.32-6.05-2.25-4.48,6.59-6.83,15.85-2.17,23.21l9.45-13.18Z"/>
+      <path class="cls-5" d="M992.55,166.73c-1.44-2.15-2.33-6.92-.84-8.36,4.2-4.07,12.59-3.72,15.89.78,7.68,10.47,10.62,21.77,15.94,35.05l7.47-20.71c.81-2.24,4.52-6.27,6.73-6.56,8.51-.73,15.72,5.73,20.3,12.39l13.71,19.94,3.36-21.98,2.02-23.48c4.14-7.96,14.38-8.56,21.66-2.66,3.83,4.96,1.94,11.09-1.83,16.17l-8.09,52.97c-.66,4.33-4.03,8.85-7.22,9.74-4.14,1.16-9.73.39-12.21-3.25l-16.79-24.58-7.15-11.04-8.2,31.33c-1.12,4.27-2.83,7.63-6.41,9.25-3.66,1.66-9.73.36-12.33-3.9-14.97-24.58-15.29-45.06-26.01-61.1Z"/>
+      <path class="cls-5" d="M1263.23,185.63l-26.71,3.9,1.79,22.01c.4,4.93,2.89,11.13,1.84,16.32-1.04,5.14-10.74,7.22-13.79,3.42l-6.67-8.31-3.43-31.04c-8.51,2.08-17.75-4.55-17.21-13.4.46-7.62,10.25-9.21,16.93-6.21l3.09-25.62c.29-2.44,2.18-6.14,3.82-7.43,2.09-1.64,7.12-2.47,9.32-.97,4.89,3.33,7.36,9.44,6.76,14.81l-1.77,15.95,18.92-2.67c12.61-1.78,23.48,5.82,26.43,18.06s4.52,24.16,4.71,37.12c.04,2.45-5.5,5.68-7.88,5.45-2.51-.24-6.39-2.18-8.64-3.95-5.1-4.01-5.02-8.02-5.5-13.74l-2-23.7Z"/>
+      <path class="cls-5" d="M1342.81,177.32c-12.15,9.42-20.6,23.97-18.69,38.95.7,5.49,1.6,10.44-3.32,13.23-5.08,2.88-10.25,1.26-13.76-3-3.81-4.63-5.03-8.8-5.16-14.39l-.88-38.95c-.06-2.47.87-6.45,2.15-7.86s5.68-3.08,7.55-2.5c3.86,1.19,7.84,4.88,10.99,8,5.49-5.17,10.85-11.28,18.77-11.79,5.83-.37,12.86,3.24,16.71,8.02,16.14,20.03,15.3,37.8,16.1,62.88-2.09,2.15-5.97,4.08-8.37,3.99-6.13-.22-12.68-8.44-12.93-12.58l-1.72-28.5c-.34-5.62-2.89-9.53-7.42-15.5Z"/>
+      <path class="cls-5" d="M1136.66,212.28c-4.82,9.05-13.6,15.22-21.77,10.47-14.47-8.42-14.62-32.32-8.82-48.41l10.73-8.04c6.86-5.14,14.5-2.4,21.05-.51,10.23,2.96,16.09,9.09,17.05,19.55l4.04,44.14c.24,2.58-7.17,4.83-9.56,4.67-8.3-4.25-10.36-11.64-12.72-21.86ZM1131.32,184.76c-.26-.73-5.76-2.53-6.11-1.86l-5.43,16.46,11.54-14.6Z"/>
+      <path class="cls-5" d="M1186.08,229.7c-8.22-.6-13.11-8.05-13.74-15.09l-2.87-32.06c-.25-2.81-.8-6.53.4-8.16,1.5-2.03,6.17-4.1,8.56-3.51,7.3,1.8,11.25,7.96,11.86,14.91l3.22,36.81c.29,3.29-3.2,7.41-7.42,7.1Z"/>
+      <path class="cls-5" d="M1281.19,150.21c2.68,3.95,3.11,8.82-.65,11.88-2.82,2.3-7.32,1.12-10.87-2.4-2.21-2.2-4.39-5.85-4.41-8.53-.03-3.06,3.6-6.02,6.4-6.42,3.57-.51,7.11,1.89,9.53,5.46Z"/>
+      <path class="cls-5" d="M1188.44,162.15c-3.66,4.79-10.48,2.03-13.14-2.8-1.23-2.24-3.14-5.72-2.43-7.59.87-2.29,5.27-4.34,8.34-4.96l8.48,5.19c.24,2.24.18,8.3-1.25,10.16Z"/>
+    </g>
+  </g>
+</svg>
+        </div>
+        <a href="chapter-3-evidence.html" class="nav-arrow" aria-label="Previous Chapter" style="position: absolute; left: 2rem; bottom: 0; transform: translateY(50%); z-index: 10;">←</a>
+        <a href="chapter-5-medical.html" class="nav-arrow" aria-label="Next Chapter" style="position: absolute; right: 2rem; bottom: 0; transform: translateY(50%); z-index: 10;">→</a>
+    </div>
+    
+    <div style="background: #E3ECDC; padding: 2rem 3rem; position: relative; z-index: 1;">
+        <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem;">In this Section...</h2>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <a href="#how-long-will-this-last" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">How Long Will This Last?</a>
+            <a href="#when-to-take-action" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">When To Take Action</a>
+            <a href="#what-to-do-while-you-wait" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">While You Wait</a>
+        </div>
+    </div>
+
+    <main id="main-content" style="margin-top: 0;">
+        
+        <div class="content-wrapper">
+            <div class="main-content-area">
+
+                <!-- ============================================================ -->
+                <!-- BEGIN CHAPTER 4 CONTENT                                      -->
+                <!-- ============================================================ -->
+
+                <h2 id="how-long-will-this-last" style="scroll-margin-top: 120px; margin-bottom: 1rem;">
+                    <svg style="display: block; overflow: visible; height: 60px; width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3501.53 498.91"><g><path style="fill:#3d517d;" d="M2199.42,333.42l-5.56-113.85c-.25-5.2-8.5-14.16-13.38-13.31l-49.14,8.51,13.36,126.37c.66,6.27-9,21.52-14.74,20.11l-28.67-7.04c-4.79-14.87-4.9-28.11-6.28-43.16l-8.44-92c-20.72.42-37.64,1.36-54.83-5-8.3-3.08-10.17-16.91-8.64-25.12,1.21-6.48,9.99-16.1,18.5-15.8l46.04,1.61,33.09-3.26,62.61-7.45c13.72-1.63,33.55,2.68,42,13.77,11.71,15.36,14.57,34.22,18.57,53.76,17.48-16.86,38.83-21.07,57.8-9.48,21.4,13.07,28.16,35.37,31.32,59.19l4.6,34.72c1.8,13.57,7.01,34.01-.47,46.67-9.44,15.95-43.63,7.49-45.39-9.79l-5.25-51.64c-1.31-12.92-1.85-24.96-5.67-39.5-25.66,23.89-33.45,59.26-30.25,90.7.54,5.33-5.72,13.57-9.91,15.04-5.12,1.8-16.14.76-21.29-1-16.69-5.69-19.19-16.61-20-33.09Z"/><path style="fill:#3d517d;" d="M2506.73,391.35c-46.09,7.23-90.42-18.53-88.81-63.19.23-6.47,13.46-16.99,19.45-14.56l32.41,29.76c2.68,2.46,13.03,4.72,16.48,3.59,6.59-2.18,16.11-17.64,14.26-22.94-1-2.85-8.04-4.51-11.55-5.45l-36.51-9.75c-19.46-5.2-41.26-18.37-47.26-39.86-4.98-17.84,6.09-36.7,15.29-50.83,16.47-25.3,39.83-38.66,72.08-34.89,18.91,2.21,42.35,27.64,33.46,47.83-5.14,11.68-27.46,1.23-30.72-8.01-5.78-16.39-32.5,4.32-47.22,30.67,28.11,27.39,74.34,13.69,94.69,50.16,18.9,33.88-1.28,63.62-36.06,87.49Z"/><path style="fill:#3d517d;" d="M2391.77,343.92c-4.93,13.6-21.94,9.94-30.5,5.3-8.57-4.65-14.79-14.5-15.51-26.32-3.4-56.04-23.68-80.6-3.18-92.36,6.16-3.54,17.74-3.66,25.39,2.21,16.75,12.86,19.67,32.1,21.72,52.69,1.81,18.21,8.78,40.02,2.09,58.48Z"/></g><g><path style="fill:#3d517d;" d="M1427.58,307.81l-40.97-83.97c-3.75-7.68-6.04-16.74-3.26-23.61,2.93-7.21,14.63-13.08,25.28-10.83,10.6,2.23,20.04,19.14,25.4,29.94l24.82,49.97c9.62-16.63,11.93-35.01,25.35-43.44,15.48-9.73,40.19,2.75,50.35,16.22l24.42,32.36,10.19-56.84c3.25-18.13,6.59-38.96,26.02-47.72,13.82-6.24,34.32,8.57,38.11,23.14-15.61,40.07-22.19,79.94-28.94,122.61l-6.71,42.37c-1.14,7.18-6.41,16.14-11.5,19.02-6.01,3.4-21.55,2.58-26.88-1.43-32.63-24.55-30.75-58.19-50.04-90.23-10.41,24.05-14.35,45.39-19.33,69.68-4.93,5.71-18.36,9.87-26.6,7.68-7.06-1.87-17.08-10.74-20.55-18.96l-15.18-35.95Z"/><path style="fill:#3d517d;" d="M1917.23,362.91c-3.3,6.2-19.14,11.11-24.97,9.86-9.33-5.94-23.04-15.74-24.45-25.85l-13.21-94.64-12.86-101.39c-1.64-12.9-6.56-21.82,4.81-30.64,10.3-7.99,23.47-5.51,33.37,5.95,8.12,9.4,11.39,24.77,13.26,38.74l22.93,170.43c1.04,7.72,5.95,18.47,1.1,27.55Z"/><path style="fill:#3d517d;" d="M1826.9,331.3c.61,5.44-5.16,13.35-9.26,15-20.03,8.06-39.08-15.21-40.26-22.89-7.87-51.36-11.51-100.12-9.48-151.9.45-11.53,4.6-27.27,15.27-31.68,9.35-3.87,22.31,5.45,27.65,10.31,8.6,10.51,10.1,22.3,4.94,35.04l2.71,70.89,8.42,75.23Z"/><path style="fill:#3d517d;" d="M1688.83,350.69c-13-11.45-17.94-23.6-18.94-40.62l-3.99-67.8,16.72-16.3c11.79,2.27,31.52,10.37,32.66,23.39l6.97,79.95c.84,9.59,1.83,19.87-6.24,24.88-8.64,5.36-19.74,3.04-27.17-3.5Z"/><path style="fill:#3d517d;" d="M1687.21,197.1c-8-3.13-19.12-17.57-22.55-25.05,3.82-13.21,17.56-17.41,28.6-11.72,9.22,4.75,13.32,12.02,13.94,22.25.4,6.67-8,19.22-19.99,14.52Z"/></g><path style="fill:#3d517d;" d="M2368.5,178.37c1.66,6.72-2.63,16.95-6.47,18.55-10.49,4.38-33.05-8.15-33.68-21.21-.46-9.4,8.88-17.4,19.63-15.84,6.94,1,18.47,10.16,20.52,18.5Z"/><g><path style="fill:#3d517d;" d="M3084.24,254.52c-13.23,6.33-27.08-7.66-38.13-2.59-1.93.89-3.72,7.19-1.96,8.39l26.72,18.28c10.29,7.04,17.07,13.33,24.57,22.82,12.96,16.4,12.29,38.3-6.93,51.9-27.3,19.32-67.87,18.24-96.93-3.12.39,7.06-.73,17.5-6.75,22.15-11.1,8.58-31.22,3.46-40.3-6.18l-9.78-26.61c-12.54,20.63-24.66,30.81-42.57,31.71-20.22,1.02-35.89-6.27-47.71-24.25-33.23,22.11-73.97,38.72-109.17,24.63-20.09-8.04-28.79-29.65-30.82-49.17l-3.54-33.88-3.95-115.74c-.56-16.38,25.62-23.21,35.21-15.34,14.08,11.55,15.16,24.04,14.41,40.09-2.05,44.16-1.59,87.46,7,131.64,28.16,1.45,51.63-13.18,72.52-29.28l3.27-49.54c1.21-18.38,6.96-23.76,23.43-30.41,9.96-4.02,21.88-16.53,35.18-15.8,12.27.67,24,10.28,32.1,17.47,4.93-10.78,17.72-15.1,27.98-10.89,15.45,6.33,20.47,20.63,20.54,36.19.13,28.82,6.99,57.51,16.51,84.87,6.92-14.18,14.38-24.88,23.85-36.96-8.85-13.24-20.91-29.1-17.73-45.8,4.33-22.74,19.3-38.71,40.27-43.56,20.6-4.77,40.65,4.28,55.02,21.43,6.1,7.28,9.05,22.14-2.29,27.56ZM2887.81,319.69c21.55-24.82,17.27-41.7-1.35-67.47-13.1,15.05-12.97,53.12,1.35,67.47ZM3049.72,319.11l-22.54-14.39,2.98,19.53,19.56-5.14Z"/><path style="fill:#3d517d;" d="M3398.14,234.78c6.88-23.13,13.45-44.83,16.46-68.02.72-5.55-7.11-18.65-12.4-17.96-17.89,2.34-32.03,19.34-36.86,35.79l-10.13,34.52c-9.93,3.58-27.08-.24-32.93-8.17-10.37-14.05-4.46-27.99-1.39-41.69,10.5-46.88,52.47-75.9,100.15-64.6,18.24,9.95,29.91,25.43,40.33,45.16,1.3,41.05-5.81,82.25-21.47,122.15l-8.69,34.79c-2.58,10.31-14.41,19.08-23.98,16.31-18.59-5.38-29.14-20.86-23.53-39.71l14.44-48.56Z"/><path style="fill:#3d517d;" d="M3199.06,393.03c-9.84,7.81-38.6-.58-41.37-21.62l-9.88-75.05c-16.16-.41-29.64-1.83-40.19-10.53-8.53-7.04-7.4-19.69-3.23-27.24,10.67-19.34,37.94-8.47,37.6-14.19l-.6-9.91-2.72-45.06c-.67-11.02,4.62-23.67,17.47-26.64,15.85-3.67,30.8,13.81,31.61,30.23l2.6,52.78c17.51-9.95,32.58-8.28,43.61,3.71,4.16,4.53,2.71,19.62-1.28,24.28-9.82,11.5-21.93,17.43-36.72,19.93l10.16,79.75c.71,5.57-2.73,16.11-7.06,19.55Z"/><path style="fill:#3d517d;" d="M3454.17,379.29c-3.63,13.75-12.79,16.98-23.92,15.44-13.75-1.91-24.63-9.11-27.21-21.1-2.64-12.26,1.35-30.08,16-33.09,20.92-4.29,40.63,17.94,35.14,38.75Z"/></g><g><path style="fill:#3d517d;" d="M49.41,282.68c-14.4-.99-22.31-4.11-27.24-13.34-4.36-8.17-4.56-24.71,5.52-28.51l19.09-7.2-.51-38.7-1.24-45.15c-.24-8.77-2.7-21.45,2.91-28.07,4.67-5.51,22.61-7.67,28.32-3.44,7.78,5.77,13.55,20.15,13.6,29.66l.46,80.39,24.31-2.2,46.24-4.19-3.14-49.35-6-64.91c2.62-7.73,17.5-13.31,25.94-13.63,7.42-.28,23.89,5.58,24.59,14.89l2.98,39.16,2.4,52.45,21.5,160.31c-2.64,10.26-15.74,24.83-24.79,25.72-14.65,1.44-25.04-9.15-26.57-21.16l-13.26-104.12-70.91,12.12,1.77,38.38,2.55,32.68c1.33,17.02-2.66,39.7-20.86,39.66-19.79-.04-24.02-14.89-24.63-29.33l-3.05-72.12Z"/><path style="fill:#3d517d;" d="M371.61,229.83c2.47-18.72,38.22-13.72,43.64-5.13,10.63,16.87-2.97,55.96,16.16,86.55,21.93-28.98,13.67-52.01,20.66-65.14,4.44-8.34,32.6-8.42,41.88-1.84,7.94,5.63,9.36,55.49,43.56,83.01,16.38-47-12.69-116.63-.73-124.87,8.83-6.08,32.49-7.95,38.65-5.45,3.76,1.52,6.78,11.52,7.01,15.57l3.81,68.09c1.68,29.98.56,60.33-17.34,84.19-10.1,13.46-26.34,16.62-41.67,11.56-22.41-7.4-40.16-23.46-52.49-45.62-12.39,17.02-25.11,34.64-46.36,35.72-49.75,2.53-63.44-86.04-56.77-136.64Z"/><path style="fill:#3d517d;" d="M357.7,297.55c-7.51,28.21-21.01,58.04-50.63,67.27-24.59,7.67-44.6-13.46-51.01-34.78-9.98-33.17-12.78-65.98-3.7-99.17,1.52-5.54,5.46-19.55,10.95-19.18l41.82,2.82c20.01,1.35,33.58,4.07,46.74,20.38,14.22,17.62,12.2,38.74,5.83,62.66ZM306.72,310.31l11.94-41.51c1.09-3.78-7.42-12.54-8.58-10.42l-10.2,34.92c-1.2,4.1,2.39,12.06,6.85,17.01Z"/></g><g><path style="fill:#3d517d;" d="M1081.89,372.33c-13.15-1.07-23.46-22.82-25.32-43.85l-6.58-74.25c-18.32,17.44-18.34,36.95-13.81,58.87,2.04,9.87-7.05,26.81-15.97,31.28-14.96,7.49-33-7.07-36.01-38.25l-3.57-36.93c-1.37-14.22-3.46-31.61-2.1-46.23,1.22-13.12,21.83-15.43,31.27-10.97,7.54,3.56,16.03,4.41,23.7,1.6,25.43-9.3,56.17.94,63.71,28.16l5.38,27.73,6.34-31.66c31.23-18.14,33.83-42.22,84.01-27.3,19.55,5.82,27.99,23.46,29.21,42.6,1.13,17.66,9.34,33,14.66,49.37l12.3,37.85c19.06,58.67-10.32,124.62-68.62,145.87-37.41,13.63-77.66-7.4-85.82-44.23-2.98-13.45-.45-29.05,11.95-32.47l17.83,14.29c6.36,12.11,14.9,22.77,25.86,25.6,14.55,3.76,26.76-1.89,35.33-12.66,23.1-29.03,29.24-64.51,16.66-98.51-10.07,14.15-18.22,23.52-31.41,28.2-11.7,4.16-27.62.87-35.02-8.68l-24.65-31.82c-.61,26.87-11.72,47.8-29.3,46.37ZM1182.66,247.12c-3.02-1.91-11.25-4.31-14.4-3.49-12.57,3.28-15.68,41.3-7.25,68.87,15.85-16.93,21.31-41.62,21.65-65.38Z"/><path style="fill:#3d517d;" d="M960.55,314.89c-4.68,18.88-12.68,41.41-32.56,45.28-23.23,4.52-40.3-15.78-48.98-36.35-22.67,23.95-57.06,29.15-89.7,26.72-22.16-1.65-37.92-10.03-50.24-28.53-5.27-7.91-10.69-17.73-10.87-28.31l-1.28-73.36,2.2-73.71-1.12-44.94c-.21-8.49,15.43-11.93,23.19-12.44,6.72-.44,19.63,7.34,19.55,16.64l-.67,78.68c-.31,36.63-2.18,73.65,3.3,110.6,18.65,13.69,46.03,8.25,65.68-1.14,16.8-8.02,26.07-21.59,23.85-40.68-1.87-16.03,7.27-27.78,15.85-40.23,8.34-12.12,19.18-23.61,31-26.8,16.27-4.4,31.68.41,41.9,13.82,26.48,34.75,19.91,70.39,8.91,114.76ZM920.87,222.97c-11.94,25.36-16.15,51.93-5.52,78.93,16.4-20.18,25.51-59.66,5.52-78.93Z"/></g></svg>
+                </h2>
+
+                <p style="margin-bottom: 1rem;">This is one of the most common questions people ask during the immigration process. The honest answer is: it depends.</p>
+
+                <p style="margin-bottom: 1.5rem;">Some family-based green card cases move quickly, while others can take much longer. This can feel stressful, confusing, and sometimes scary. Do not worry too much though, since in most cases, long periods of silence are a normal part of the process.</p>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#waiting-period-examples" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Waiting Period Examples</a>
+                    <a href="#check-official-uscis-processing-times" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Check Official USCIS Processing Times</a>
+                </div>
+
+                <h3 id="waiting-period-examples" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Waiting Period Examples</h3>
+
+                <p style="margin-bottom: 1.5rem;">Below, you will find timelines that are based on real experiences shared by applicants. Every case is different, so they cannot help you predict exactly how long your case will take. However, knowing how long others waited may help you feel more at ease about your situation.</p>
+
+                <div style="margin-bottom: 2rem; text-align: center;">
+                    <img src="TimelineExamples.png" alt="Real Timeline Examples chart showing time from application submission to approval for various applicants" style="width: 130%; margin-left: -15%; height: auto;">
+                </div>
+
+                <div class="callout-anchor">
+                <h3 id="check-official-uscis-processing-times" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem;">Check Official USCIS Processing Times</h3>
+
+                <div style="padding-right: 0;">
+                    <p style="margin-bottom: 1rem;">USCIS publishes estimated processing times for many immigration forms and offices. These estimates can help you understand general wait times for your case type. Keep in mind that these are only estimates.</p>
+
+                    <p style="margin-bottom: 1rem;">You can check USCIS processing times here:</p>
+
+                    <a href="https://egov.uscis.gov/processing-times/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">USCIS Processing Times</a>
+                </div>
+
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">Is Your Case Delayed?</p>
+                        <p>If you think your case may be delayed beyond normal processing times, you can:</p>
+                        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Submit a USCIS service request</li>
+                            <li style="margin-top: 0.25rem;">Contact USCIS for an update</li>
+                            <li style="margin-top: 0.25rem;">Speak with an immigration attorney if something seems unusual or urgent</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+
+                <h2 id="when-to-take-action" style="scroll-margin-top: 120px; margin-bottom: 1rem;">
+                    <svg style="display: block; overflow: visible; height: 40px; width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3011.89 334.12"><g><path style="fill:#3d517d;" d="M1794.41,236.81l-10.75,27.36c-3.93,9.99-12.72,17.41-22.9,18.14-7.33.53-22.72-8.51-22.62-19.64l.97-105.28-1.84-28.97c-.49-7.71,13.47-13.18,20.12-13.24,8.42-.08,19,5.86,21.56,15.17l9.26,33.69c13.12-20.24,24.67-37.22,39.44-53.2,8.37-1.72,22.78.64,29.97,3.94,18.44,39.6-37.1,41.47-34.8,84.73l54.73,57.53c7.6,7.99,3.51,23.09-3.99,28.32-5.93,4.13-19.63,7.71-27.51.25l-51.64-48.81Z"/><path style="fill:#3d517d;" d="M1487.22,275.06c-18.48-4.16-19.43-27.42-19.76-41.38l-2.21-91.51c-32.53-5.26-59.18,11.84-73.47-6.36-4.6-5.86-9.39-17.67-6.04-24.73,4.75-10.02,17.35-13.97,27.34-13.72,61.11,1.48,111.61-17.02,166.46-14.33,5.42.27,12.83,9.08,14.51,13.93,2.18,6.29.59,19.14-4.5,23.13-11.01,8.62-22.54,6.76-33.62,7.28l-47.4,2.2,2.13,68.69,4.24,51.16c.49,5.87-.94,15.62-3.9,19.34-3.37,4.25-15.36,8.21-23.77,6.32Z"/><path style="fill:#3d517d;" d="M1671.18,292.94l-14.51-23.99c-14.75,15.92-36.27,28.4-56.15,17.79-18.43-9.84-28.15-33.8-28.01-54.08l.34-49.74c.1-14.77,24.56-12.87,33.72-10.19,8.65-7.71,19.01-16.72,31.36-16.01l49.2,2.8c6.92,11.02,13.29,29.05,13.6,42.89l1.76,78.27c.12,5.28-6.43,15.22-10.89,17.08-5.02,2.1-17.39.18-20.42-4.83ZM1649.15,212.73c5.21-6.84.9-22.09-6.24-22.93-12.38,9.34-18.73,28.77-10.19,44.5l16.43-21.57Z"/><path style="fill:#3d517d;" d="M2032.49,209.43c6.42,5.87-5.77,67.07-67.09,69.51-57.24,2.28-42.81-51.26-81.83-43.36-7.33-5.39-14.8-18.01-12.69-25.03,3.33-11.11,16.07-16.3,27.22-16.43,13.28-32.89,31.82-63.82,65.71-56.81,10.88,2.25,25.38,11.59,28.62,23.69,5.83,21.73-7.7,42.41-27.15,50.15-8.42,3.35-12.06,12.23-8.35,19.37,2.8,5.4,16.06,8.1,21.28,3.73l42.53-35.56,11.75,10.74Z"/></g><g><path style="fill:#3d517d;" d="M1087.97,279.65c.55,16.16-26.22,24.79-35.39,19.24-6.59-3.98-6.41-14.91-6.71-22.88l-5.06-134.63c-10.55-6.39-22.77-3.8-34.49-3.98l-34.38-.54c-12.39-.19-20.85-5.9-24.32-17.89-2.22-7.66-.43-24.16,9.89-27.09,13.07-3.72,38.38,10.65,72.76,4.82l97.74-16.57c17.02-2.88,42.61-4.44,51.38,15.39,5.19,11.74-12.78,21.28-21.22,21.87l-22.05,1.55-52.42,9.88,1.64,74.21,2.63,76.63Z"/><path style="fill:#3d517d;" d="M1199.13,295.33c-27.9-.85-43.81-19.12-47.85-48.42-4.13-29.91-4.48-57.54,1.38-87.22,1.24-6.3,14.78-7.03,20.15-4.78,15.34,6.44,23.23-19.11,48.51-4.98,35.15,19.64,60.5,77.54,35.72,112.01-14.05,19.54-35.2,34.07-57.91,33.39ZM1200.32,255.66c15.39-11.12,19.44-16.42,25.58-28.81-3.42-18.64-11.35-33.44-26.13-42.87-8.91,11.36-12.14,25.14-8.65,37.92l9.21,33.76Z"/></g><g><path style="fill:#3d517d;" d="M633.22,249.4c13.91,2.35,22.98-15.31,32.49-14.1,2.82.36,7.14,7.01,7.71,10.35,2.41,14.16-9.73,25.37-21.48,31.01-16.35,7.85-29.94,13.8-47.29,6.03-12.99-5.81-25.23-15.83-28.74-34.76l-20.26,26.71c-3.21,4.24-15.61,7.04-21.06,6-5.22-1-12.91-9.72-13.59-15.48l-5.76-48.81c-2.6-22.01-7.62-42.25-29.43-56.3-7.78,10.02-12.75,21.03-17.48,32.45-23.4,56.51-2.43,72.13-10.05,89.86-3.7,8.62-23.94,20.01-35.01,18.8-5.57-.61-12.41-7.11-13.39-12.82l-16.73-98.29-17.24-103.26c-6.47-14.26-3.98-28.55,8.84-36.93,10.72-9.01,30.19-4.86,37.11,9.03l12.26,89.45,8.42,14.73,16-25.77c14.03-22.6,47.64-22.27,68.19-5.12,28.07,23.43,25.83,39.02,39.4,71.16l8.03-22.97c5.73-16.4,13.46-33.06,28.06-45.21,15.29-12.72,39.82-5.02,54.27,9,7.17,6.96,9.94,17.91,7.78,27.63s-8.68,17.79-17.85,23.6l-30.75,19.47c3.7,12.45,9.09,25.4,17.54,34.53Z"/><path style="fill:#3d517d;" d="M345.12,139.74l-14.54,41.01-25.8,76.94c-5.33,15.88-16.87,29.76-36,30.83-6.39.36-15.22-9.65-17.88-15.97-13.44-32.03-26.51-59.66-43.89-91.86l-19.22,50.52-8.92,30.1c-4.01,13.55-7.48,24.91-19.44,32.87-6.44,4.29-15.54,7.45-21.94,6.05-5.61-1.22-14.85-9.3-16.76-15.47l-33.48-108.29-25.1-70.92c-4.16-11.76,10.42-26.51,19.27-27.34,13.66-1.28,24.69,5.59,29.92,20.11l39.78,110.45,23.56-62.52c4.91-13.04,7.35-24.79,20.4-30.13,36.45-14.92,52.93,38.59,69.61,66.77l15.34,25.92c9.84-29.78,22.93-57.2,27.88-88.72,2.75-17.5,5.04-36.14,25.66-41.58l23.12,6.28c7.86,7.74,1.38,20.68-2.11,29.92l-9.46,25.03Z"/><path style="fill:#3d517d;" d="M761.94,164.63l-13.67,20.54c-14.7,22.08-14.36,47.71-13.63,74.38-11.06,17.73-31.48,26.81-44.03,18.27-4.1-2.79-7.72-12.09-8.1-18.22l-5.96-94.1c-.74-11.77,8.89-20.22,18.3-22.71,11.63-3.08,21.46,2.08,30.87,12.44l28.98-24.33c28.61-8.11,56.71-4.25,74.65,18.66,13.29,16.97,18.39,40.95,20.98,62.57l7.03,58.71c-5.25,5.77-14.33,14.59-20.88,17.64-11.98,5.59-26.84-.7-28.15-12.37l-9.15-81.49c-1.98-17.62-17.8-33.65-37.25-30Z"/></g><g><path style="fill:#3d517d;" d="M2570.96,185.82c-8.61-3.54-38.71,1.72-37.81,9.68l9.85,87.37c-15.57,10.99-31.65,5.12-42.24-6.73l-10.91-75.71c-12.77-1.62-24.86-2.42-33.46-9.56-4.68-3.89-2.4-19.11,2-22.91,5.27-4.56,16.22-5.76,26.77-5.72,6.15-16.9,6.89-39.87.77-58.34-4.22-12.73,2.63-30.14,16.21-30.57,8.91-.29,23.44,13.34,25.27,21.84,4.11,19.07,3.17,33.7,3.51,55.61l39.27-1.75c6.26-.28,20.08,1.48,25.56,4.68,19.81,15.02,26.84,39.25,28.32,63.18l2.86,46.11c-5.5,9.06-23.83,8.98-31.89,5.05-13.38-6.53-13.65-18.82-14.76-32.88l-2.87-36.19c-.28-3.54-3.16-11.81-6.44-13.15Z"/><path style="fill:#3d517d;" d="M2841.93,196.16c-27.72,36.17-1.12,78.73-18.24,87.74-4.24,2.23-13.96,1.83-18.72.17-14.48-5.06-18.29-13.51-21.11-26.44-5.62-25.79-7.31-50-7.71-77.04-.19-13.14,1.47-28.23,17.3-32.61,6.54-1.81,16.99,6.7,22.8,13.59,27.82-28.31,66.67-35.46,98.44-12.78,26.36,18.82,43.99,47.23,44.13,80.46.09,20.04,8.66,44.16-2.18,62.33-6.83,11.45-38.82,1.52-39.36-11.59l-2.7-65.35c-.86-20.86-19.38-42.1-40.72-42.11-12.9,0-23.86,13.07-31.94,23.61Z"/><path style="fill:#3d517d;" d="M2745.83,252.68c-18.24,25.29-46.62,35.73-74.02,23.68-21.63-9.52-28.21-34.39-28.75-55.99-.6-24.43,5.68-41.72,18.01-62.01,7.1-11.68,15.72-24.01,27.57-25.79,15.96-2.41,31.93,1.03,39.5,16.42l18.77,38.16c10.01,20.35,12.63,46.53-1.08,65.54ZM2715.39,221.06c.91-17.95-5.12-33.23-13.55-47.9-4.62,2.8-6.99,8.82-8.8,14.16-6.33,18.66-12.19,37.41-1.17,55.31,9.2-2.82,23.02-11.53,23.52-21.56Z"/><path style="fill:#3d517d;" d="M2409.63,238.76c16.65,7.76,35.55-25.33,61.56-12.37,9.47,26.82-26.17,49.66-57.86,49.99-36.77.38-58.94-29.56-56.26-65.67,3.05-41.23,20.03-89.64,56.11-84.38,13.96,2.03,38.05,31.64,25.67,46.43l-19.45-7.12c-17.52,18.48-26.83,65.19-9.76,73.13Z"/><path style="fill:#3d517d;" d="M2601.96,128.94c-6.81,1.19-22.09-3.6-25.94-9.08-2.28-3.24-1.16-13.92,1.02-17.19,2.18-3.27,11.05-4.52,16.43-3.4,10.49,2.18,17.84,20.61,8.49,29.67Z"/><path style="fill:#3d517d;" d="M2298.44,275.6l-19.26-65.25-43.59,3.29-11.68.88c-9.05.68,1.24,38.7-13.19,57.36-7.61,9.84-21.72,3.68-28.54-.67-11.16-7.12-11.78-17.35-10.33-31.42l12.1-117.25c1.82-17.65,2.54-31.03,23.15-35.41l17.67-42.39c39.93-17.3,66.93,29.92,76.96,75.44l9.68,43.94c14.27,6.46,16.18,21.32,9.37,34.08,10.64,35.11,33.37,89.27,11.4,107.01-16.53-.19-29.03-13.6-33.76-29.61ZM2267,169.69l-17.98-73.51c-12.03,25.13-18.4,47.41-20.54,74.25l38.51-.74Z"/></g></svg>
+                </h2>
+
+                <p style="margin-bottom: 1rem;">In most cases, long wait times do not mean something is wrong with your case. With that being said, there are situations where it may make sense to follow up.</p>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#request-for-evidence" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Request for Evidence (RFE)</a>
+                </div>
+
+                <p style="margin-bottom: 0.75rem;">You may want to take action if:</p>
+                <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 2rem;">
+                    <li style="margin-bottom: 0.5rem;">Your case is outside the <a href="#check-official-uscis-processing-times" style="color: #AB3838; text-decoration: underline;">estimated USCIS processing time</a></li>
+                    <li style="margin-bottom: 0.5rem;">You have not received a receipt notice after filing</li>
+                    <li style="margin-bottom: 0.5rem;">USCIS says they mailed you something, but you never received it</li>
+                    <li style="margin-bottom: 0.5rem;">You received a <a href="#request-for-evidence" style="color: #AB3838; text-decoration: underline;">request for evidence (RFE)</a></li>
+                    <li style="margin-bottom: 0.5rem;">Your interview was canceled or delayed without a new update</li>
+                    <li style="margin-bottom: 0.5rem;">There appears to be a mistake in your case status or paperwork</li>
+                </ul>
+
+                <div class="callout-anchor">
+                <h3 id="request-for-evidence" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Request for Evidence (RFE)</h3>
+
+                <div style="">
+                    <p style="margin-bottom: 1rem;">USCIS might send you a request for evidence (RFE) while waiting. This means the officer reviewing your case needs more information before they can make a decision.</p>
+
+                    <p style="margin-bottom: 0.75rem;">USCIS may ask for:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Missing documents</li>
+                        <li style="margin-bottom: 0.5rem;">Updated financial information</li>
+                        <li style="margin-bottom: 0.5rem;">Proof of a real relationship or marriage</li>
+                        <li style="margin-bottom: 0.5rem;">Birth certificates, passports, or translations</li>
+                        <li style="margin-bottom: 0.5rem;">Medical exam records</li>
+                        <li style="margin-bottom: 0.5rem;">Additional forms or signatures</li>
+                    </ul>
+
+                    <p style="margin-bottom: 1rem;">Read the notice carefully. The letter will explain what USCIS is asking for, which documents you need to send, and the deadline to respond.</p>
+
+                    <p style="margin-bottom: 0.75rem;">It is important to:</p>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Respond before the deadline</li>
+                        <li style="margin-bottom: 0.5rem;">Include all requested documents if possible</li>
+                        <li style="margin-bottom: 0.5rem;">Send copies unless the notice asks for originals</li>
+                        <li style="margin-bottom: 0.5rem;">Keep copies of everything you submit for your records</li>
+                    </ul>
+
+                    <p style="margin-bottom: 2rem;">After USCIS receives your response, your case will continue moving forward, but it will probably still take time before you receive another update.</p>
+
+                    <div style="border: 2px solid #AB3838; border-radius: 8px; padding: 1rem 1.5rem; margin: 1rem 0 2rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <svg style="width: 40px; height: 40px; flex-shrink: 0; display: block; overflow: visible;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                                <path fill="none" stroke="#ab3838" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M21.2,8.97L4.47,35.44c-2.2,3.48.3,8.02,4.42,8.02h32.22c4.04,0,6.55-4.38,4.51-7.87l-15.48-26.47c-1.98-3.38-6.84-3.47-8.94-.15Z"/>
+                                <g>
+                                    <circle fill="#ab3838" cx="25" cy="37" r="1.15"/>
+                                    <path fill="#ab3838" d="M25,33.56c-.48,0-.87-.39-.87-.87l-1.17-15.97c0-.48.77-.87,2.04-.87,1.17,0,2.04.39,2.04.87l-1.17,15.97c0,.48-.39.87-.87.87Z"/>
+                                </g>
+                            </svg>
+                            <div>
+                                <p style="font-weight: bold; margin-bottom: 0.5rem; color: #AB3838;">Do Not Ignore an RFE</p>
+                                <p style="margin-bottom: 1rem;">If you do not respond by the deadline, USCIS may deny your application.</p>
+                                <p>If you are confused about what the RFE is asking for or are unsure how to respond, it may help to speak with an immigration attorney or accredited representative.</p>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/renegaderunningdog</div>
+                    <div class="callout-content">
+                        <p><em>In response to the question "How to know if USCIS is satisfied with my RFE response?"</em></p>
+                        <p style="margin-top: 0.5rem;">"If they deny your case, they were not satisfied. That's the only feedback you will get. They don't tell send you anything explicitly saying they are satisfied."</p>
+                        <a href="https://www.reddit.com/r/USCIS/comments/1svddh7/how_to_know_if_uscis_is_satisfied_with_my_rfe/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                </div>
+
+                <div class="callout-box" style="background: #E3ECDC;">
+                    <div class="callout-label">Field Notes</div>
+                    <div class="callout-content">
+                        <p style="font-weight: bold; margin-bottom: 0.5rem; color: #3D517D;">Got an RFE?</p>
+                        <p>Receiving an RFE can feel stressful, but don't panic. It can happen to anyone.</p>
+                    </div>
+                </div>
+                </div>
+
+                <h2 id="what-to-do-while-you-wait" style="scroll-margin-top: 120px; margin-bottom: 1rem;">
+                    <svg style="display: block; overflow: visible; height: 60px; width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2252.39 498.91"><g><path style="fill:#3d517d;" d="M279.92,290.39l-6.73,26.49c-5.01,19.71-3.8,45.05-12.09,63.03-7.94,17.24-36.76,4.47-42.58-9.56l-37.63-90.64c-10.96,5.49-17.36,12.78-19.72,21.53l-6.25,23.09-16.1,63.07c-6.55,4.95-22.05,2.24-30.8-2.47-6.72-3.62-12.43-15.88-14.51-25.35l-10.21-46.55-33-144.76c-1.22-5.34,2.15-17.88,5.64-21.56,3.93-4.14,16.91-3.69,23.04,1.29,11.73,9.53,15.49,27.76,19.76,42.94l24.81,88.19,31.96-67.33c7.01-4.71,25.21-5.08,31.58-.52,13.75,9.83,19.67,23.14,27.58,37.01l20.42,35.81c11.33-39.32,22.15-77.35,39.29-114.91,5.82-12.75,26.53-9.07,33.7-3.17,10.05,8.29,12.71,23.09,6.99,35.14l-23.99,50.59c-5.24,11.06-8.02,26.18-11.18,38.62Z"/><path style="fill:#3d517d;" d="M454.93,352.68l-8.36-85.69c-.25-2.55-4.76-7.99-6.98-8.96-2.22-.96-8.79,1.28-10.33,3.11l-14.65,17.3c-26.56,46.62-6.85,95.82-21.63,107.03-11.15,8.46-35.7,1.3-37.29-11.99l-5.55-46.37-10.04-93.31-1.93-95.94c-.25-12.21.98-25.72,15.7-30.58,6.83-2.25,21.3,3.6,25.27,9.75,10.66,16.47-4.22,41.26,2.01,79.83l7.67,47.47,16.15-19c13.42-15.79,38.57-26.87,59.66-13.35,23.25,14.91,31.61,45.52,33.97,72.91l6.3,73.11c1.36,15.82-8.81,33.07-26.18,30.78-16.63-2.19-22.14-19.16-23.79-36.1Z"/><path style="fill:#3d517d;" d="M572.91,301.25c2.31,17.14,18.07,56.51-10.79,66.69-8.28,2.92-27.01-5.26-28.75-16.77l-8.63-57.04-4.42-41.85c.27-6.22,9.72-17.1,15.69-20.27,17.22-.46,29.37,13.43,31.65,30.38l5.25,38.86Z"/><path style="fill:#3d517d;" d="M568.36,180.32c-6.95,7.39-21.4,1.74-25.88-5.5-5.37-8.67-5.45-22.21,6.03-28.77,6.66-3.81,19.38,1.2,23.54,6.78,5.26,7.05,4.39,18.91-3.68,27.49Z"/><path style="fill:#3d517d;" d="M743.17,322.95c3.54,12.75,13.92,18.92,23.73,18.8,11.57-.14,20.9-6.01,26.71-15.87,2.18-3.71,12.29-9.88,15.4-7.27l14.25,11.95c3.1,31.21-21.6,62.26-52.97,62.63-52.37.62-62.35-40.67-76.43-42.65-12.81-1.8-4.69,41.49-26.41,49.28-15.6,5.59-31.82-10.49-34.45-25.44-7.67-43.51-10.39-85.25-12.66-129.53-1.88-36.72-1.02-95.76,24.81-88.01,13.97,4.2,16.97,23.26,17.36,37.86l.84,31.92,1.48,28.83,7.54,50.07,17.81-14.52c10.05-31.22,22.41-70.17,47.72-80.35,10.99-4.42,22.38-.32,32.95,5.65,28.57,16.15,39.3,34.76,25.83,63.85-12.34,19.41-30.61,35.88-53.51,42.79ZM743.25,270.26l12.34-5.58c2.5-1.13-1.27-12.22-3.85-11.38-5.26,1.71-10.62,12.45-8.49,16.95Z"/></g><g><path style="fill:#3d517d;" d="M997.6,296.16c-.94-17.29-.8-30.29-10.28-42.82-12.48-16.5-20.03-35.19-28.85-53.92l-30.52-64.84c-4.3-9.14-3.26-22.2,4.94-26.43,6.1-3.15,21.86-2.1,26.24,5.77l50.12,90.1c12.67-47.39,27.05-118.05,62.51-100.33,14.77,12.58,11.7,25.22,5.52,40.08-26.96,64.73-34.78,135.14-25.03,205.37,1.41,10.13,6.65,21.37,4.12,31.83-2.94,12.14-17.17,17.43-28.19,11.85-9.18-4.65-26.33-18.42-26.9-29.05l-3.67-67.6Z"/><path style="fill:#3d517d;" d="M1285.5,384.73c-50.58-30.82-64.37-91.46-49.57-148.85,3.3-12.79,15.04-16.77,25.47-15.96,8.33.64,21.47,12.56,20.1,24.45-3.66,31.74-7.49,62.62,9.43,91.78,1.27,2.2,5.35,6.37,7.65,7.29,2.87,1.15,9.05-3.69,10.87-6.27,19.41-40.02,21.59-80.92,4.09-122.96,4.44-7.8,13.66-14.72,21.81-15.51,8.57-.83,19.64,5.58,24.24,12.86,15.63,24.72,11.17,50.87,9.35,77.9-1.92,28.48-1.76,55.96-18.55,79.08-15.76,21.71-40.35,31.16-64.9,16.2Z"/><path style="fill:#3d517d;" d="M1143.44,374.79c-22.82,1.77-40.1-17.7-49.33-36.66-12.76-26.22-11.15-56.19-9.44-85.56l18.57-17.15c8.21-16.18,19.77-24.43,38.49-25.85,17.84-1.36,30.59,3.38,42.75,15.66,15.58,15.73,27.07,34.04,25.48,57.25-2.85,41.76-33.53,89.74-66.52,92.3ZM1137.71,322.97c20.87-13.06,34.22-32.46,30.45-57.24-.84-5.5-7.85-13.64-12.54-14.24-4.69-.6-15.21,6.08-15.89,10.95l-3.25,23.25c-1.82,13.05-2.85,23.06,1.24,37.29Z"/></g><g><path style="fill:#3d517d;" d="M1573.11,346.47l-45.27-115.24c-4.84-12.32-16.22-22.61-7.99-38.24,3.91-7.43,15.91-14.36,23.01-13.56,10.63,1.2,22.89,6.6,26.97,16.68l18.93,46.79,18.45,44.59,17.14-60.96c3.32-11.79,3.65-21.65,13.73-27.3,30.61-17.17,49.56,20.99,65.76,53.08l25.45,50.38c13.66-47.88,19.03-90.61,24.36-138.28,1.72-15.36,28.59-18.82,37.18-11.07,17.73,16.02,13.79,32.24,10.21,52.1l-16.44,91.4-16.96,54.89c-4.46,14.43-17.92,24.69-35.33,19.39-18.41-5.61-36.6-23.9-46.37-41.47l-25.14-45.19-19.66,62.07c-2.55,8.05-6.98,25.57-14.33,28.94-25.86,11.87-44.77-6.31-53.68-28.99Z"/><g><path style="fill:#3d517d;" d="M1939.04,351.71l-6.94-30.27-26.3,26.9c-14.76,15.1-33.95,18-53.64,10.47-36.65-14.03-33.3-74.56-21.59-118.72,4.66-17.58,13.8-22.91,28.96-29.51,24.05-10.47,46.94-14.67,70.99,2.76,5.7-2.32,20.25-5.46,25.86-2.29,12.84,7.25,19.41,25.66,21.42,41.05l10,76.76c2.26,17.34,18.19,40.91-4.94,52.43-17.14,8.54-39.65-11.42-43.82-29.59ZM1908.62,263.36c1.82-2.4,1.47-15.76-1.42-15.33-2.17.32-10.01,1.15-11.74,2.49-9.23,7.16-19.85,29.67-10.69,44.33l23.85-31.49Z"/><path style="fill:#3d517d;" d="M2172.43,292.61c-5.76,36.49,17.3,76.04,1.43,90.6-3.96,3.63-18.05,6.03-22.49,2.79l-23.59-17.21-9.93-67.26c-15.46-2.5-33.88-7.24-42.68-18.31-10.09-12.69-6.15-26.44,3.56-36.65,7.81-8.22,23.5-10.01,38.17-6.1l5.79-78.69c1.1-14.97,12.97-26.85,26.32-25.73,11.12.93,25.76,11.59,25.45,26.1l-1.55,71.9,45.1-16.51c9.3-3.4,21.86,6.97,25.71,15.82,13.15,30.26-26.36,53.77-71.29,59.23Z"/><path style="fill:#3d517d;" d="M2048.1,377.12c-13.1,3.45-30.67-12.85-31.71-25.78l-7.23-89.78c-1.18-14.65,2.34-26.35,16.44-30.74,39.98-12.45,39.52,57.29,40.16,106.95.18,14.26.78,34.49-17.66,39.34Z"/><path style="fill:#3d517d;" d="M2059.54,194.94c-5.3,5.58-12.91,11.16-17.24,10.66-4.34-.5-11.69-5.95-16.04-9.7-11.24-9.69-13.18-29.55.4-37.99,10.67-6.63,23.05-1.46,29.61,6.58,6.18,7.57,11.43,21.88,3.27,30.46Z"/></g></g></svg>
+                </h2>
+
+                <p style="margin-bottom: 1rem;">Waiting for an immigration case to move forward can take a long time. Many applicants describe the waiting period as one of the most difficult parts of the process because there is often very little they can do to speed things up.</p>
+
+                <p style="margin-bottom: 1.5rem;">You may not be able to control the timeline, but there are things you can do to stay prepared and make the waiting period feel more manageable.</p>
+
+                <h3 style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin: 1.5rem 0 0.5rem;">Jump to...</h3>
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <a href="#focus-on-what-you-can-control" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Focus on What You Can Control</a>
+                    <a href="#connect-with-others" style="color: #3D517D; text-decoration: underline; font-family: 'Open Sans', sans-serif; font-size: 12pt;">Connect with Others</a>
+                </div>
+
+                <div class="callout-anchor">
+                <h3 id="focus-on-what-you-can-control" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Focus on What You Can Control</h3>
+
+                <div>
+                    <p style="margin-bottom: 1rem;">Many applicants find themselves checking their case status multiple times a day. While it is natural to want updates, constantly monitoring your case can sometimes increase anxiety without providing new information.</p>
+
+                    <p style="margin-bottom: 0.75rem;">Instead, try focusing on things that are within your control, such as:</p>
+
+                    <!-- TODO: Replace placeholder icon boxes with finalized icons -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.5rem 0 0;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <svg style="width: 80px; height: auto; display: block; margin: 0 auto 1rem; overflow: visible;" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60.77 50">
+  <defs>
+    <style>
+      .schoolwork-cls-1 {
+        fill: #ab3939;
+      }
+
+      .schoolwork-cls-2 {
+        fill: #d1e0c5;
+      }
+    </style>
+  </defs>
+  <path class="schoolwork-cls-2" d="M59.5,20.71c-.83-7.43-5.6-14.4-12.43-17.43-6.04-2.68-13.08-2.24-19.39-.3-3.19.98-6.29,2.32-9.57,2.91-6.18,1.12-13.71,1.19-16.22,8.24-.92,2.57-.91,5.39-.52,8.08.96,6.72,4.26,13.07,9.18,17.76,4.91,4.69,11.4,7.68,18.14,8.44,7.72.87,15.85-1.29,21.82-6.26,5.97-4.97,9.61-12.8,9.09-20.56-.03-.3-.06-.6-.09-.9Z"/>
+  <g>
+    <polygon class="schoolwork-cls-1" points="45.12 25.2 45.01 25.19 44.85 25.15 44.76 25.12 44.61 25.04 44.54 24.99 44.43 24.89 44.36 24.81 44.29 24.68 44.25 24.58 44.23 24.45 44.23 23.91 44.23 23.45 44.22 22.98 44.18 22.5 44.14 22 44.08 21.5 44.01 20.98 43.92 20.45 43.84 20.02 43.74 19.61 43.62 19.2 43.49 18.79 43.33 18.4 43.16 18.01 42.98 17.63 42.77 17.25 42.55 16.89 42.31 16.53 42.06 16.19 41.79 15.85 41.5 15.52 41.2 15.21 40.88 14.9 40.55 14.6 40.2 14.33 39.85 14.06 39.48 13.8 39.09 13.56 38.7 13.32 38.29 13.1 37.86 12.89 37.43 12.7 36.99 12.52 36.54 12.35 36.07 12.19 35.6 12.05 35.12 11.92 34.62 11.81 34.12 11.71 33.61 11.62 33.29 11.58 32.95 11.54 32.59 11.51 31.78 11.46 31.35 11.45 30.41 11.43 29.47 11.45 29.03 11.46 28.23 11.51 27.52 11.58 27.2 11.62 26.69 11.71 26.19 11.81 25.7 11.92 25.22 12.05 24.74 12.19 24.28 12.34 23.82 12.51 23.38 12.69 22.95 12.89 22.53 13.09 22.12 13.31 21.72 13.55 21.33 13.79 20.96 14.05 20.61 14.32 20.26 14.6 19.93 14.89 19.61 15.2 19.31 15.51 19.02 15.84 18.75 16.18 18.5 16.52 18.25 16.88 18.03 17.24 17.83 17.62 17.64 18 17.47 18.39 17.31 18.78 17.18 19.19 17.06 19.59 16.96 20.01 16.88 20.43 16.79 20.96 16.72 21.48 16.66 21.99 16.61 22.48 16.58 22.96 16.56 23.44 16.56 23.89 16.57 24.36 16.55 24.52 16.5 24.67 16.4 24.83 16.29 24.95 16.15 25.04 15.99 25.12 15.82 25.16 15.65 25.18 15.47 25.17 15.3 25.13 15.15 25.07 15.01 24.98 14.9 24.88 14.79 24.72 14.74 24.59 14.71 24.44 14.7 23.63 14.7 23.24 14.72 22.47 14.78 21.73 14.82 21.37 14.86 21.02 14.98 20.33 15.04 19.99 15.2 19.34 15.29 19.02 15.38 18.7 15.49 18.39 15.71 17.79 15.84 17.5 15.97 17.21 16.12 16.93 16.26 16.65 16.42 16.38 16.58 16.11 16.75 15.85 16.93 15.6 17.12 15.35 17.31 15.1 17.51 14.86 17.72 14.63 17.94 14.4 18.16 14.17 18.63 13.73 18.87 13.52 19.35 13.12 19.61 12.93 19.86 12.74 20.12 12.56 20.38 12.38 20.64 12.21 21.19 11.9 21.75 11.6 22.32 11.33 22.61 11.2 22.91 11.08 23.5 10.86 24.11 10.66 24.42 10.57 24.74 10.48 25.38 10.33 26.04 10.19 26.71 10.08 27.39 10 27.75 9.96 28.13 9.93 28.97 9.89 29.43 9.88 30.41 9.87 30.91 9.87 31.85 9.9 32.28 9.91 33.07 9.97 33.43 10 34.1 10.09 34.45 10.14 35.11 10.26 35.43 10.33 35.76 10.41 36.39 10.58 37.01 10.77 37.31 10.87 37.62 10.98 38.2 11.21 38.78 11.47 39.06 11.61 39.35 11.76 39.9 12.06 40.44 12.4 40.7 12.57 40.96 12.75 41.46 13.13 41.95 13.53 42.42 13.96 42.87 14.41 43.09 14.64 43.29 14.87 43.5 15.11 43.88 15.61 44.23 16.13 44.39 16.4 44.69 16.94 44.83 17.23 44.97 17.52 45.09 17.81 45.21 18.11 45.32 18.41 45.42 18.72 45.52 19.03 45.61 19.35 45.69 19.68 45.76 20.01 45.89 20.69 45.94 21.03 46.02 21.75 46.05 22.11 46.09 22.87 46.1 23.65 46.09 24.05 46.08 24.46 46.05 24.65 45.98 24.79 45.88 24.92 45.75 25.02 45.61 25.11 45.44 25.17 45.28 25.2 45.21 25.2 45.12 25.2"/>
+    <path class="schoolwork-cls-1" d="M30.41,10.07h.5s.48.01.48.01h.45s.43.03.43.03l.41.02.38.03.35.03.33.04.34.05.34.05.33.06.33.06.32.07.32.07.31.08.31.09.31.09.3.1.3.1.3.11.29.11.29.12.28.12.28.13h0l.28.14.28.14.27.15.27.16.26.16.26.17.26.17.25.18.25.18.25.19.24.19.24.2.23.21.23.21.23.22.22.22.21.23.2.23.2.24.19.24.18.25.17.25.17.26.16.26.15.27.15.27.14.28.13.28.12.29.12.29.11.3.1.3.09.31.09.32.08.32.07.33.06.33.06.34.05.34.04.35.04.35.03.36.02.37.02.38v.38s.01.39.01.39v.4s-.02.41-.02.41h0s0,.06,0,.06v.06s-.03.05-.03.05l-.03.05-.03.05-.04.05-.04.04-.05.04-.05.04-.06.03-.06.03-.06.02-.07.02h-.07s-.07.02-.07.02h-.15s-.07-.02-.07-.02l-.07-.02-.07-.02-.06-.03-.06-.03-.06-.04-.05-.04-.05-.04-.04-.05-.03-.05-.03-.05-.02-.05-.02-.06v-.06s0-.06,0-.06v-.45s0-.46,0-.46l-.02-.48-.03-.49-.04-.5-.06-.51-.07-.52-.09-.53-.08-.43-.1-.42-.12-.42-.14-.41-.16-.41-.17-.4-.19-.39-.21-.38-.23-.37-.24-.36-.26-.35-.27-.34-.29-.34-.31-.32-.32-.31-.34-.3-.35-.28-.36-.27-.38-.26-.39-.25-.4-.24-.42-.22-.43-.21-.44-.2-.45-.18-.46-.17-.47-.16-.48-.14-.49-.13-.5-.12-.5-.1-.52-.09-.32-.05-.35-.04-.37-.03-.39-.03-.42-.02-.44-.02h-.46s-.49-.01-.49-.01h-.48s-.46.01-.46.01h-.44s-.41.04-.41.04l-.4.03-.37.03-.35.04-.33.05-.52.09-.51.1-.5.11-.49.13-.48.14-.47.16-.46.17-.45.18-.44.2-.43.21-.42.22-.4.24-.39.25-.38.26-.36.27-.35.28-.34.3-.32.31-.31.32-.29.33-.28.34-.26.35-.25.36-.23.37-.21.38-.19.39-.18.4-.16.41-.14.41-.12.42-.1.42-.08.43-.09.53-.07.52-.06.51-.05.5-.03.49-.02.48v.46s0,.45,0,.45v.12s-.02.06-.02.06l-.02.06-.03.05-.03.05-.04.05-.05.05-.05.04-.06.04-.06.03-.06.03-.07.02-.07.02h-.07s-.07.02-.07.02h-.15s-.07-.02-.07-.02l-.07-.02-.06-.02-.06-.03-.06-.03-.05-.04-.05-.04-.04-.04-.04-.05-.03-.05-.03-.05-.02-.05v-.06s-.02-.06-.02-.06h0s-.01-.41-.01-.41v-.4s0-.39,0-.39v-.38s.03-.38.03-.38l.02-.37.03-.36.04-.35.05-.35.05-.34.06-.34.06-.33.07-.33.08-.32.09-.32.1-.31.1-.3.11-.3.11-.29.13-.29.13-.28.14-.28.14-.27.15-.27.16-.26.17-.25.18-.25.18-.25.19-.24.2-.24.21-.23.21-.23.22-.22.23-.22.23-.21.23-.21.24-.2.24-.19.25-.19.25-.18.25-.18.26-.17.26-.17.27-.16.27-.16.27-.15.28-.14.28-.14h0l.28-.13.29-.12.29-.12.29-.11.29-.11.3-.1.3-.1.31-.09.31-.09.31-.08.32-.07.32-.07.33-.06.33-.06.33-.05.34-.05.33-.04.36-.03.38-.03.4-.02.43-.02h.45s.48-.02.48-.02h.5Z"/>
+    <path class="schoolwork-cls-1" d="M30.16,23.53l-.16-.02-.16-.03-.16-.04-.15-.06-.14-.07-.14-.08-.13-.09-3.78-3.06-.11-.1-.1-.11-.09-.12-.08-.13-.06-.13-.04-.14-.03-.14v-.15s0-.14,0-.14l.02-.15.04-.14.06-.14.07-.13.09-.12.1-.12.11-.1,3.74-3.1.12-.09.13-.08.14-.07.15-.06.16-.05.16-.03.16-.02h.17s.17,0,.17,0l.16.02.16.03.16.04.15.06.14.07.14.08.13.09,3.78,3.06.11.1.1.11.09.12.08.13.06.13.04.14.03.14v.15s0,.14,0,.14l-.02.15-.04.14-.06.14-.07.13-.09.12-.1.11-.11.11-3.74,3.1-.12.09-.13.08-.15.07-.15.06-.16.05-.16.03-.16.02h-.17s-.16,0-.16,0ZM30.16,21.83l.11.04.14-.03,3.36-2.89-3.38-2.75-.11-.04h0s-.07,0-.07,0l-.09.05-3.33,2.87,3.38,2.75Z"/>
+    <path class="schoolwork-cls-1" d="M31.38,22.97l-.11.08-.12.07-.13.06-.13.05-.14.04-.14.03-.15.02h-.15s-.15,0-.15,0l-.15-.02-.14-.03-.14-.04-.14-.05-.13-.06-.12-.07-.11-.08-3.77-3.06-.1-.09-.09-.1-.08-.1-.06-.11-.05-.11-.04-.12-.02-.12v-.12s0-.12,0-.12l.02-.12.04-.12.05-.12.06-.11.08-.11.09-.1.1-.09,3.73-3.09.11-.08.12-.07.13-.06.13-.05.14-.04.14-.03.15-.02h.15s.15,0,.15,0l.15.02.14.03.14.04.14.05.13.06.12.07.11.08,3.77,3.06.1.09.09.1.08.1.06.11.05.11.04.12.02.12v.12s0,.12,0,.12l-.02.12-.04.12-.05.12-.06.11-.08.11-.09.1-.1.09-3.73,3.09ZM33.9,19.22l.04-.05.03-.05.02-.06v-.06s0-.06,0-.06l-.02-.06-.03-.05-.05-.04-3.7-2.83-.07.02-.12.06-3.35,2.77-.04.05-.03.05-.02.06v.06s0,.06,0,.06l.02.06.03.05.05.04,3.37,2.75.06.04.06.03.07.02h.07s.07,0,.07,0l.13-.04.05-.04,3.35-2.77Z"/>
+    <path class="schoolwork-cls-1" d="M19.91,44.16l-.4-.02-.2-.02-.2-.03-.2-.04-.19-.04-.19-.05-.19-.06-.18-.07-.18-.08-.17-.08-.17-.09-.17-.1-.16-.1-.3-.22-.27-.25-.13-.13-.12-.13-.11-.14-.1-.14-.09-.15-.08-.16-.08-.16-.06-.16-.06-.17-.05-.17-.04-.17-.03-.17v-.17s-.02-.17-.02-.17v-9.11s.02-.17.02-.17l.03-.17.03-.17.04-.17.05-.16.07-.16.07-.16.08-.16.09-.15.1-.15.11-.14.12-.14.12-.13.27-.25.31-.23.16-.1.17-.1.17-.09.17-.08.18-.08.18-.07.38-.11.2-.04.2-.04.2-.03.2-.02h.2s.2-.02.2-.02h20.97l.4.02.2.02.2.03.2.04.19.04.19.05.19.06.18.07.18.08.34.17.17.1.16.1.16.11.15.11.28.25.24.27.11.15.1.14.09.15.08.16.07.16.06.16.06.17.05.17.04.17.03.17v.17s.02.17.02.17v9.11s-.02.17-.02.17l-.02.17-.03.17-.05.17-.05.16-.07.16-.07.16-.08.15-.09.15-.21.29-.12.14-.12.13-.27.25-.3.23-.32.2-.17.09-.17.08-.18.08-.19.07-.19.06-.19.05-.2.04-.2.04-.2.03-.2.02h-.2s-.2.02-.2.02h-20.97ZM18.09,41.77l.11.11.11.1.12.09.12.09.12.07.13.07.14.06.12.05.27.08.13.03.29.04h.31s20.14.02,20.14.02l.6-.02.47-.03.18-.03.15-.03.12-.03.3-.11.13-.06.12-.07.11-.07.1-.07.1-.08.08-.08.07-.08.06-.08.06-.09.1-.2.04-.11.06-.24.02-.13.03-.29v-.16s.02-.38.02-.38v-.93s-.02-1.65-.02-1.65v-3.44s-2.33.06-2.33.06v2.13s-.02.15-.02.15l-.07.17-.08.11-.12.11-.13.08-.13.06-.15.03h-.15s-.14.01-.14.01l-.17-.02-.16-.04-.15-.07-.13-.09-.11-.11-.08-.14-.05-.15-.02-.14v-2.12h-21.26s0,2.13,0,2.13v1.76s0,1.28,0,1.28l-.02,1.08v.24s.04.22.04.22l.04.2.05.18.06.15.07.13.08.12.11.13ZM19.71,29.98l-.23.03-.22.05-.21.06-.21.08-.19.09-.18.11-.17.12-.15.13-.14.14-.11.15-.09.16-.07.16-.05.17-.03.15v.18s-.01.82-.01.82h25.47v-.95s-.04-.17-.04-.17l-.05-.17-.08-.17-.09-.16-.11-.16-.13-.14-.15-.13-.08-.06-.17-.11-.19-.1-.2-.08-.21-.07-.22-.05-.22-.03-.23-.02-21.01-.03h-.23Z"/>
+    <path class="schoolwork-cls-1" d="M44.81,40.73v.16s-.02.16-.02.16l-.02.16-.03.16-.04.16-.05.15-.06.15-.07.15-.08.14-.09.14-.1.14-.1.13-.11.13-.12.12-.13.12-.13.12-.14.11-.15.11-.15.1-.16.09-.16.08-.17.08-.17.07-.18.06-.18.06-.18.05-.19.04-.19.04-.19.03-.19.02h-.19s-.19.02-.19.02h-21.16s-.19-.02-.19-.02l-.19-.02-.19-.03-.19-.04-.19-.04-.18-.05-.18-.06-.18-.06-.17-.07-.17-.08-.16-.08-.16-.09-.15-.1-.15-.11-.14-.11-.13-.12-.13-.12-.12-.12-.11-.13-.1-.13-.1-.14-.09-.14-.08-.14-.07-.15-.06-.15-.05-.15-.04-.16-.03-.16-.02-.16v-.16s-.02-.16-.02-.16v-9.1s.02-.16.02-.16l.02-.16.03-.16.04-.16.05-.15.06-.15.07-.15.08-.14.09-.14.1-.14.1-.13.11-.13.12-.12.13-.12.13-.12.14-.11.15-.11.15-.1.16-.09.16-.08.17-.08.17-.07.18-.06.18-.06.18-.05.19-.04.19-.04.19-.03.19-.02h.19s.19-.02.19-.02h21.16s.19.02.19.02l.19.02.19.03.19.04.19.04.18.05.18.06.18.06.17.07.17.08.16.08.16.09.15.1.15.11.14.11.13.12.13.12.12.12.11.13.1.13.1.14.09.14.08.14.07.15.06.15.05.15.04.16.03.16.02.16v.16s.02.16.02.16v8.94ZM17.65,32.73l25.48.04h.06s.05-.03.05-.03l.04-.03.03-.04v-.03s.02-.03.02-.03v-.82h0v-.1s-.01-.1-.01-.1v-.1s-.03-.1-.03-.1l-.03-.09-.07-.19-.05-.09-.05-.09-.06-.09-.06-.09-.06-.08-.07-.08-.07-.08-.08-.07-.08-.07-.09-.07-.09-.06-.1-.06-.1-.05-.1-.05-.11-.05-.11-.04-.11-.04-.11-.04-.12-.03-.12-.03-.12-.02-.12-.02h-.12s-.12-.02-.12-.02h-.12s-20.9-.03-20.9-.03h-.12s-.12,0-.12,0h-.12s-.12.03-.12.03l-.12.02-.12.03-.12.03-.11.04-.11.04-.11.04-.11.05-.1.05-.1.06-.1.06-.09.06-.09.07-.08.07-.08.07-.07.08-.07.08-.06.08-.06.09-.05.09-.05.09-.04.09-.04.09-.03.09-.03.1-.02.09-.02.1v.1s-.01.92-.01.92v.04s.02.02.02.02v.02s.03.02.03.02l.02.02h.03s.03.03.03.03h.03s.03,0,.03,0ZM43.15,33.98h-2.49s-.04.03-.04.03l-.03.04v.04s-.01,2.22-.01,2.22v.05s-.01.05-.01.05v.05s-.03.05-.03.05l-.03.05-.03.04-.04.04-.04.04-.05.04-.05.03-.05.03-.06.02-.06.02h-.06s-.06.02-.06.02h-.06s-.13,0-.13,0h-.07s-.07-.01-.07-.01h-.07s-.06-.03-.06-.03l-.06-.02-.06-.03-.06-.04-.05-.04h0l-.05-.04-.04-.05-.03-.05-.03-.05-.02-.05-.02-.05v-.05s-.01-.05-.01-.05v-2.22s-.01-.02-.01-.02v-.02s-.03-.02-.03-.02l-.02-.02h-.03s-.03-.02-.03-.02h-.03s-21.4,0-21.4,0h-.05s-.04.03-.04.03l-.02.03v.04s0,2.24,0,2.24v1.76s0,1.28,0,1.28l-.02.81v.26s0,.25,0,.25l.03.23.04.21.06.19.07.18.04.08.09.15.05.07.11.13.11.12.12.11.13.1.13.09.14.08.14.07.15.07h0l.14.05.14.04.14.04.15.03.15.02.15.02h.16s.17.01.17.01h19.79s.35,0,.35,0h.32s.29-.02.29-.02l.25-.02.22-.02.19-.03.16-.03.13-.04.17-.06.15-.06.14-.07.13-.07.13-.08.11-.08.11-.09.09-.09.08-.09.07-.09.07-.1.06-.11.05-.11.05-.12.04-.13.03-.13.03-.14.02-.15.02-.16v-.17s.02-.39.02-.39v-.56s-.01-.38-.01-.38v-1.64s0-3.44,0-3.44v-.03s-.01-.03-.01-.03v-.02s-.03-.02-.03-.02l-.03-.02h-.03s-.03-.02-.03-.02h-.03Z"/>
+    <path class="schoolwork-cls-1" d="M54.43,33.55v-.23s-.02-.24-.02-.24l-.05-.46-.04-.22-.05-.21-.06-.22-.07-.21-.08-.21-.09-.2-.1-.19-.11-.19-.12-.18-.13-.18-.13-.16-.15-.16-.15-.15-.16-.15-.16-.13-.17-.13-.18-.13-.19-.12-.19-.11-.2-.11-.21-.1-.21-.1-.22-.09-.23-.08-.47-.15-.19-.05v-1.16s0-1.58,0-1.58l-.02-3.44-.02-.71-.02-.36-.03-.36-.08-.71-.12-.71-.09-.45-.1-.45-.12-.44-.13-.45-.14-.45-.15-.44-.17-.44-.17-.4-.06-.15-.04-.15-.03-.15v-.18s0-4.75,0-4.75v-2.19s-.02-2.08-.02-2.08v-.26s-.04-.25-.04-.25l-.05-.23-.07-.24-.09-.23-.1-.2-.13-.21-.14-.19-.14-.17-.16-.16-.18-.15-.2-.15-.19-.11-.19-.08-.43-.15-.45-.14-.47-.13-.49-.12-.51-.12-.53-.11-.55-.1-.57-.09-.37-.05-.35-.03h-.32s-.32,0-.32,0l-.3.03-.14.02-.15.03-.28.07-.14.05-.14.05-.2.09-.19.1-.18.11-.18.13-.17.14-.16.15-.15.16-.15.18-.27.35-.26.36-.26.38-.24.38-.24.4-.22.4-.11.21-.17-.59-.16-.46-.19-.45-.21-.44-.23-.42-.13-.21-.27-.4-.14-.19-.15-.19-.31-.35-.16-.17-.33-.32-.17-.15-.18-.14-.18-.14-.19-.13-.2-.13-.39-.23-.2-.11-.41-.19-.22-.09-.21-.08-.22-.07-.27-.08-.27-.07-.28-.06-.28-.04-.28-.04-.29-.03-.29-.02h-.3s-.29,0-.29,0h-.3s-.29.04-.29.04l-.29.04-.28.05-.27.06-.28.07-.48.15-.21.08-.21.09-.21.09-.2.1-.2.1-.21.12-.19.12-.37.25-.19.14-.35.29-.33.32-.31.34-.15.18-.14.18-.14.2-.26.39-.13.21-.24.42-.21.43-.1.23-.18.47-.24.79-.12-.22-.23-.41-.24-.39-.25-.39-.25-.37-.26-.37-.28-.35-.15-.18-.16-.16-.17-.16-.17-.14-.18-.12-.19-.12-.19-.1-.2-.09-.13-.05-.28-.08-.28-.06-.3-.04h-.14s-.32-.02-.32-.02h-.33s-.35.04-.35.04l-.35.05-.56.09-.55.1-.53.11-.51.12-.5.13-.47.14-.45.14-.47.17-.19.09-.18.11-.19.15-.17.15-.16.17-.15.18-.14.2-.12.2-.11.22-.08.23-.06.23-.04.23-.03.25v.23s-.02,4.25-.02,4.25v4.73s.01.15.01.15l-.02.15-.04.16-.07.18-.18.44-.17.45-.15.44-.14.45-.12.44-.12.45-.1.45-.09.46-.11.71-.08.71-.03.36-.04.72v2.12s-.02,1.67-.02,1.67v1.58s.02,1.16.02,1.16l-.46.13-.45.16-.23.09-.42.2-.19.11-.19.11-.19.12-.18.13-.16.13-.16.14-.16.15-.15.15-.14.16-.14.18-.12.17-.12.18-.11.19-.1.2-.08.19-.08.2-.07.21-.06.22-.05.21-.04.23-.03.22-.02.24-.02.46v6.92s0,.55,0,.55l.02.51.03.46.04.42.06.38.04.18.08.32.05.15.06.15.06.13.11.19.12.19.13.18.14.18.15.17.15.15.17.16.18.15.17.13.19.13.2.12.21.12.2.1.22.1.22.09.23.08.23.07.23.06.24.06.51.1.12.03.14.24.23.34.25.32.27.3.28.28.15.13.15.12.16.12.16.12.34.22.26.14.26.13.27.12.29.11.14.05.17.04.34.07.41.06.47.04.53.03.6.02h.66s.73.02.73.02h12.26s12.26-.02,12.26-.02h.73s.67-.02.67-.02l.6-.02.54-.03.47-.05.21-.03.38-.06.17-.04.17-.04.14-.05.28-.11.28-.12.26-.13.26-.14.17-.1.17-.11.16-.11.32-.26.28-.27.14-.15.13-.15.13-.15.25-.32.22-.34.14-.23.09-.02.56-.11.25-.06.23-.07.23-.07.22-.08.22-.09.21-.1.21-.11.2-.11.19-.12.2-.14.17-.14.17-.15.17-.15.15-.16.15-.17.14-.18.14-.2.11-.18.11-.21.06-.14.05-.13.05-.16.04-.15.08-.35.05-.37.04-.42.03-.46v-.5s.02-.54.02-.54l-.02-6.93ZM10.45,37.5l-.02,6.32-.12-.05-.2-.1-.18-.1-.16-.1-.15-.12-.15-.13-.08-.08-.08-.1-.14-.18-.05-.11-.02-.06-.04-.19-.04-.24-.03-.29-.02-.34v-.38s-.02-.43-.02-.43v-3.32s.01-3.31.01-3.31v-.43s.02-.37.02-.37l.02-.33.03-.28.04-.23.04-.18.02-.07.04-.1.07-.1.15-.19.09-.09.14-.13.15-.12.17-.11.18-.1.2-.1.16-.07v1.29s0,5.03,0,5.03ZM44.88,9.95l.11-.26.23-.52.26-.51.33-.57.18-.28.27-.4-.02,4.66-.1-.11-.43-.46-.23-.22-.47-.44-.34-.3.22-.6ZM40.04,7.5l.18-.34.19-.33.2-.33.2-.32.21-.31.21-.29.12-.14.11-.1.11-.08.06-.03.19-.07.13-.03.17-.02h.18s.21.01.21.01l.26.04.3.05.44.09,1.01.23-.26.36-.33.48-.31.49-.29.5-.26.5-.12.25-.23.51-.16.38-.42-.23-.43-.22-.44-.21-.44-.2-.45-.19-.46-.18.13-.27ZM30.4,3.49c1.86,0,3.36,1.18,3.36,2.62h-6.72c0-1.45,1.51-2.62,3.36-2.62ZM16.92,5.4l.68-.15.29-.06.24-.04.22-.02h.1s.22,0,.22,0h.08s.17.06.17.06l.06.02.13.07.12.09.12.12.07.08.23.3.22.31.21.32.2.32.19.34.18.34.14.28-.47.19-.45.2-.43.21-.43.22-.43.23-.4.23-.17-.4-.24-.51-.26-.51-.28-.5-.31-.5-.33-.48-.43-.59.75-.18ZM14.69,7.84l.17.28.17.28.16.28.26.5.23.51.21.52.12.34-.34.3-.47.44-.44.45-.29.32-.03-4.6.25.37ZM47.7,44.81l-.03.12-.06.2-.08.2-.09.18-.07.11-.13.18-.15.18-.17.17-.19.15-.22.15-.21.12-.13.06-.24.1-.26.09-.26.07-.14.03-.27.04h-.14s-.29.02-.29.02l-28.46.04-.31-.02-.32-.05-.3-.07-.29-.1-.14-.06-.27-.13-.12-.07-.24-.16-.22-.17-.1-.09-.09-.09-.09-.1-.16-.21-.12-.21-.1-.22-.07-.23-.04-.22v-.12s-.02-.13-.02-.13l-.05-22.46v-.33s.02-.33.02-.33l.06-.66.04-.33.05-.33.06-.33.07-.32.08-.33.09-.32.1-.32.11-.31.12-.32.12-.31.13-.31.15-.31.15-.3.16-.3.17-.3.18-.3.19-.29.2-.29.21-.29.21-.28.22-.28.23-.27.24-.27.24-.26.52-.51.27-.24.28-.24.28-.23.29-.23.6-.44.31-.21.31-.2.32-.2.33-.19.33-.18.34-.18.34-.17.34-.16.71-.31.36-.14.37-.13.37-.13.37-.12.37-.11.38-.1.77-.18.39-.08.39-.07.39-.06.39-.06.79-.08.4-.03.4-.02h.4s2.76-.02,2.76-.02h.79s.4.04.4.04l.4.03.39.04.79.1.39.06.39.07.39.08.38.08.38.09.38.1.37.11.37.12.37.13.36.13.36.14.36.15.35.15.35.16.34.17.34.18.33.18.65.39.32.2.31.21.3.21.59.45.28.23.28.24.27.24.26.25.25.25.25.26.24.27.23.27.22.28.21.28.21.28.39.58.18.29.17.3.16.3.16.3.28.62.13.32.12.32.11.31.19.65.08.32.07.33.06.32.05.33.04.33.04.33.02.33v.33s.02.34.02.34l.05,22.56-.02.23ZM51.81,40.81v.42s-.02.38-.02.38l-.02.33-.03.28-.03.23-.04.18-.05.16-.07.1-.16.2-.09.09-.13.12-.15.12-.17.11-.18.1-.2.1-.16.07-.02-6.32v-5.03s0-1.29,0-1.29l.13.05.2.09.18.1.17.11.16.12.15.13.08.08.16.2.07.1.04.1.02.06.04.19.04.24.03.29.03.33v.38s.02.43.02.43v3.32s.01,3.32.01,3.32Z"/>
+  </g>
+</svg>
+                        <p style="margin: 0; font-family: 'Open Sans', sans-serif; font-weight: bold; color: #3D517D; font-size: 11pt;">Work or School Goals</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <svg style="width: 80px; height: auto; display: block; margin: 0 auto 1rem; overflow: visible;" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.44 50">
+  <defs>
+    <style>
+      .friendsfamily-cls-1 {
+        fill: #ab3939;
+      }
+
+      .friendsfamily-cls-2 {
+        fill: #f6d6b8;
+      }
+    </style>
+  </defs>
+  <path class="friendsfamily-cls-2" d="M42.14,46.64c3.69-1.34,6.77-3.83,9.19-6.72,2.49-2.98,4.29-6.39,5.93-9.84,1.22-2.57,2.38-5.31,2.13-8.13-.53-5.81-6.27-9.87-11.03-12.97-5.54-3.6-11.76-6.93-18.68-7.15-5.34-.16-10.61,1.61-14.86,4.53-4.24,2.93-7.5,6.96-9.81,11.36-1.5,2.88-2.63,5.98-2.91,9.19-.28,3.21.34,6.54,2.13,9.33,1.83,2.88,4.8,5.05,8.03,6.57,3.23,1.51,6.74,2.43,10.25,3.26,6.35,1.51,13.2,2.77,19.3.69.1-.03.22-.08.33-.12Z"/>
+  <path class="friendsfamily-cls-1" d="M53.51,21.68c3.46,1.68,5.53,4.34,6.22,7.98.12.65.2,1.61.22,2.88.02,1.3.02,2.26,0,2.89-.03.74-.4,1.24-1.09,1.5-4.19,1.6-8.49,2.24-12.89,1.94-.05,0-.09.04-.09.09.02,1.56.32,2.72-1.17,3.28-3.56,1.33-7.09,2.13-10.6,2.4-1.75.13-3.71.15-5.89.05-3.88-.17-7.42-1.08-11.02-2.25-.79-.25-1.62-.71-1.66-1.62,0-.04,0-.65.01-1.84,0-.07-.06-.12-.13-.12-4.42.32-8.74-.35-12.96-1.99-.67-.26-1-.84-1-1.72.02-2.03-.08-3.96.26-5.62.72-3.51,2.97-6.41,6.29-7.82.06-.03.08-.1.04-.16-.03-.05-.22-.25-.55-.62-2.1-2.34-2.33-5.95-.67-8.59.41-.64,1.07-1.32,1.98-2.04.7-.55,1.56-.94,2.58-1.18,7.3-1.7,12.1,7.02,6.91,12.38-.07.07-.05.18.04.22,1.23.58,2.32,1.32,3.28,2.22.07.07.19.08.27.02.86-.58,1.79-1.06,2.8-1.44.08-.03.1-.14.03-.19-4.05-3.33-4.86-9.15-1.62-13.38,2.81-3.67,7.88-4.72,11.94-2.7,3.5,1.74,5.67,5.65,5.23,9.57-.3,2.6-1.48,4.78-3.57,6.53-.05.05-.04.13.03.15.97.36,1.92.86,2.87,1.48.09.06.2.05.28-.02,1.01-.96,2.11-1.7,3.32-2.23.07-.03.09-.11.05-.17,0,0-.16-.18-.48-.52-1.71-1.88-2.23-4.43-1.5-6.9,1.15-3.91,5.52-6.15,9.4-4.84,3.45,1.17,5.39,4.34,4.95,8-.2,1.64-.91,3.05-2.14,4.24-.05.04-.03.12.02.15M37.26,14.82c0-3.61-2.92-6.53-6.53-6.53s-6.53,2.92-6.53,6.53,2.92,6.53,6.53,6.53,6.53-2.92,6.53-6.53M52.63,16.24c0-2.37-1.92-4.29-4.28-4.29s-4.29,1.92-4.29,4.29,1.92,4.29,4.29,4.29,4.28-1.92,4.28-4.29M17.42,16.24c0-2.37-1.92-4.29-4.29-4.29s-4.29,1.92-4.29,4.29,1.92,4.29,4.29,4.29,4.29-1.92,4.29-4.29M42.24,26.24c2.36,2.55,3.58,5.67,3.65,9.38,0,.11.09.2.19.21,3.57.29,7.11-.17,10.62-1.37.12-.04.2-.15.2-.28,0-.87-.02-1.7-.05-2.5-.1-3.08-1.56-5.7-4.29-7.08-2.36-1.19-4.83-1.34-7.42-.42-1.12.39-2.08.97-2.89,1.74-.09.09-.1.24-.01.33M19.26,26.25c.09-.09.08-.24,0-.33-.81-.77-1.78-1.35-2.89-1.75-2.58-.92-5.06-.78-7.42.4-2.74,1.38-4.2,3.98-4.31,7.07-.03.8-.05,1.63-.06,2.5,0,.13.08.24.2.28,3.51,1.21,7.05,1.68,10.61,1.4.11,0,.19-.1.19-.21.09-3.7,1.31-6.82,3.68-9.36M30.73,41.71c4.12,0,8.08-.65,11.9-1.95.12-.04.2-.15.21-.28.01-1.28,0-2.57-.03-3.86-.1-3.63-1.56-6.52-4.37-8.67-2.3-1.76-4.81-2.47-7.69-2.48-2.88,0-5.39.71-7.7,2.46-2.82,2.15-4.28,5.04-4.39,8.66-.04,1.29-.05,2.58-.04,3.86,0,.13.08.24.2.28,3.82,1.31,7.79,1.97,11.9,1.97h0Z"/>
+  <path class="friendsfamily-cls-1" d="M33.61,29.91c.79,0,1.54.47,1.82,1.14.34.82-.17,1.56-.65,2.04l-4.08,4.08-4.08-4.08c-.46-.46-.93-1.17-.61-1.96.29-.69,1.05-1.17,1.86-1.17.62,0,1.23.28,1.76.82l1.06,1.06,1.06-1.06c.57-.57,1.2-.87,1.85-.87M33.61,28.41c-.96,0-1.98.38-2.91,1.3-.89-.89-1.89-1.26-2.82-1.26-2.71,0-4.89,3.12-2.31,5.7l5.14,5.14,5.14-5.14c2.63-2.63.5-5.74-2.23-5.74h0Z"/>
+</svg>
+                        <p style="margin: 0; font-family: 'Open Sans', sans-serif; font-weight: bold; color: #3D517D; font-size: 11pt;">Family and Friends</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <svg style="width: 80px; height: auto; display: block; margin: 0 auto 1rem; overflow: visible;" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.44 50">
+  <defs>
+    <style>
+      .hobbies-cls-1, .hobbies-cls-2 {
+        fill: #ab3838;
+      }
+
+      .hobbies-cls-3 {
+        fill: #ffd0d0;
+      }
+
+      .hobbies-cls-2, .hobbies-cls-4, .hobbies-cls-5 {
+        stroke: #ab3838;
+        stroke-miterlimit: 10;
+      }
+
+      .hobbies-cls-4 {
+        stroke-width: 2px;
+      }
+
+      .hobbies-cls-4, .hobbies-cls-5 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <path class="hobbies-cls-3" d="M7.05,35.54c.94,1.62,2.07,3.16,3.41,4.6,3.91,4.21,9.57,7.26,15.39,8.27,6.33,1.09,11.26-.41,14.38-4.89,1.51-2.16,2.88-4.55,5.38-5.83,2.89-1.48,6.88-1.23,9.5-3.05,2.93-2.04,3.15-6.02,2.34-9.51-1.35-5.8-5.01-11.41-10.17-15.61-5.16-4.2-11.76-6.95-18.38-7.67-4.95-.54-9.96.06-14.05,2.02-6,2.88-9.7,8.52-10.85,14.63-1.05,5.54-.06,11.69,3.06,17.05Z"/>
+  <g>
+    <path class="hobbies-cls-5" d="M17.64,27.94c-1.51,2.08-3.94,2.89-5.43,1.81-1.49-1.08-1.48-3.64.03-5.72,1.51-2.08,3.94-2.89,5.43-1.81s1.48,3.64-.03,5.72ZM46.6,11.13c1.71,0,3.09,1.38,3.09,3.09s-1.38,3.09-3.09,3.09-3.09-1.38-3.09-3.09,1.38-3.09,3.09-3.09ZM30.33,12.36c-1.71,0-3.09-1.38-3.09-3.09s1.38-3.09,3.09-3.09,3.09,1.38,3.09,3.09-1.38,3.09-3.09,3.09ZM36.06,35.29c-1.71,0-3.09-1.38-3.09-3.09s1.38-3.09,3.09-3.09,3.09,1.38,3.09,3.09-1.38,3.09-3.09,3.09ZM39.18,13.35c-1.71,0-3.09-1.38-3.09-3.09s1.38-3.09,3.09-3.09,3.09,1.38,3.09,3.09-1.38,3.09-3.09,3.09ZM45.04,31.78c-1.71,0-3.09-1.38-3.09-3.09s1.38-3.09,3.09-3.09,3.09,1.38,3.09,3.09-1.38,3.09-3.09,3.09ZM50.27,24.92c-1.71,0-3.09-1.38-3.09-3.09s1.38-3.09,3.09-3.09,3.09,1.38,3.09,3.09-1.38,3.09-3.09,3.09Z"/>
+    <g>
+      <path class="hobbies-cls-4" d="M8.73,48.24h0c-.76-.66-.86-1.8-.23-2.58l16.08-19.95c.66-.82,1.87-.93,2.67-.24l1.36,1.18c.8.69.87,1.91.15,2.68l-17.44,18.77c-.68.73-1.82.8-2.58.14Z"/>
+      <path class="hobbies-cls-1" d="M34.49,20c-.5,1.19-1.09,2.37-1.7,3.22l-.74.83c-.62.69-1.44,1.11-2.16,1.11-.32,0-.59-.08-.8-.25-.42-.34-.48-.91-.47-1.22.01-.68.3-1.42.8-2.04.18-.23.39-.43.61-.61.38-.11.6-.12.92-.15.27-.02.61-.04,1.06-.13.87-.16,1.7-.41,2.49-.75M37.35,16.42c-.91.77-1.8,1.36-2.64,1.82-.93.5-1.94.85-2.97,1.04-.95.18-1.26.03-2.4.39-.02.01-.04.03-.06.04,0,0,0,0,0,0h0c-.37.27-.72.6-1.03.99-1.46,1.84-1.5,4.24-.08,5.37.49.39,1.09.58,1.73.58,1.11,0,2.34-.57,3.27-1.61h0c2.36-2.17,4.17-8.63,4.17-8.63h0Z"/>
+    </g>
+    <path class="hobbies-cls-2" d="M29.99,1.31c-1.1,0-2.22.04-3.31.13-2.01.16-3.77,1.43-4.59,3.31-3.16,7.25-8.73,12.86-15.28,15.39-1.6.62-2.82,1.91-3.36,3.53-.54,1.63-.32,3.4.6,4.85,2.36,3.73,6.32,6.75,11.17,8.79l1.36-1.69c-4.71-1.86-8.53-4.7-10.76-8.22-.58-.92-.72-2.04-.38-3.07.34-1.03,1.11-1.84,2.12-2.23,7.07-2.73,13.06-8.75,16.45-16.51.51-1.17,1.6-1.96,2.84-2.06,1.03-.08,2.09-.12,3.14-.12,14.44,0,26.18,7.77,26.18,17.33s-11.75,17.33-26.18,17.33c-2.94,0-5.8-.34-8.48-.95l-1.64,1.76c3.17.83,6.59,1.28,10.12,1.28,15.59,0,28.28-8.72,28.28-19.43S45.59,1.31,29.99,1.31Z"/>
+  </g>
+</svg>
+                        <p style="margin: 0; font-family: 'Open Sans', sans-serif; font-weight: bold; color: #3D517D; font-size: 11pt;">Hobbies and Interests</p>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 0 auto 2rem; max-width: 66%;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <svg style="width: 80px; height: auto; display: block; margin: 0 auto 1rem; overflow: visible;" id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 61.44 50">
+  <!-- Generator: Adobe Illustrator 30.5.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 3)  -->
+  <defs>
+    <style>
+      .financial-st0 {
+        fill: #ab3838;
+      }
+
+      .financial-st1 {
+        fill: #f6d6b8;
+      }
+
+      .financial-st2 {
+        stroke-width: 2px;
+      }
+
+      .financial-st2, .financial-st3 {
+        fill: none;
+        stroke: #ab3838;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .financial-st3 {
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <path class="financial-st1" d="M2.07,22.48c.02.25.05.49.06.75.31,3.71.69,7.44,1.94,11,1.25,3.56,3.45,6.98,6.88,9.35,4.32,2.98,10.14,4,15.73,3.96,2.59-.02,5.21-.24,7.65-.98,2.27-.69,4.32-1.79,6.47-2.7,4.32-1.8,9.31-2.86,12.87-5.71,3.81-3.05,5.98-7.39,5.92-11.81-.06-3.87-1.85-7.7-4.93-10.57-3.28-3.06-7.8-4.95-12.35-6.49-6.11-2.08-12.44-3.66-18.73-5.33-3.57-.95-7.34-1.93-11-1.24C7.83,3.59,4.36,7.21,2.94,11.11c-1.33,3.64-1.18,7.54-.87,11.37Z"/>
+  <g>
+    <g>
+      <rect class="financial-st3" x="11.52" y="23.35" width="38.4" height="18.19"/>
+      <path class="financial-st0" d="M30.72,31.05c.77,0,1.4.63,1.4,1.4s-.63,1.4-1.4,1.4-1.4-.63-1.4-1.4.63-1.4,1.4-1.4M30.72,29.05c-1.88,0-3.4,1.52-3.4,3.4s1.52,3.4,3.4,3.4,3.4-1.52,3.4-3.4-1.52-3.4-3.4-3.4h0Z"/>
+      <path class="financial-st2" d="M41.33,37.93v-.33c0-1.63,1.31-2.95,2.94-2.98h0v-4.98h-.34c-1.45-.05-2.6-1.23-2.6-2.68h-21.21c0,1.45-1.15,2.63-2.6,2.67h-.34v4.99h0c1.63.02,2.94,1.35,2.94,2.98v.33h21.21Z"/>
+    </g>
+    <polyline class="financial-st3" points="13.78 22.55 19.16 11.47 43.47 23.29"/>
+    <polyline class="financial-st3" points="24.37 13.11 31.14 6.46 47.42 23.02"/>
+  </g>
+</svg>
+                        <p style="margin: 0; font-family: 'Open Sans', sans-serif; font-weight: bold; color: #3D517D; font-size: 11pt;">Financial Planning</p>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <svg style="width: 80px; height: auto; display: block; margin: 0 auto 1rem; overflow: visible;" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.44 50">
+  <defs>
+    <style>
+      .usculture-cls-1 {
+        fill: none;
+        stroke: #ab3838;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2.5px;
+      }
+
+      .usculture-cls-2 {
+        fill: #d1e0c5;
+      }
+    </style>
+  </defs>
+  <path class="usculture-cls-2" d="M35.49,2.79c-7.63-.04-15.53,2.46-22.28,6.6-1.43.88-2.84,1.85-3.96,3.05-1.39,1.51-2.24,3.28-3.12,5.02-.87,1.73-2.08,3.32-2.93,5.03-1.84,3.72-1.66,8.04-.24,11.48,1.53,3.73,4.51,6.73,8.06,8.95,5.95,3.71,13.75,5.28,21.39,3.64,7.81-1.67,14.89-6.53,20.32-12.29,3.45-3.66,6.46-7.98,6.83-12.52.29-3.48-1.02-6.78-3.04-9.48-4.28-5.75-11.78-9.1-19.79-9.44-.4-.03-.81-.03-1.24-.03Z"/>
+  <path class="usculture-cls-1" d="M6.52,8.56l.2.1c.33.17.74.05.94-.26l.56-.88c.18-.28.52-.4.84-.3,2.76.89,15.62,4.82,23.3,2.95.11-.03.22-.03.33,0l1.74.38c.33.07.57.37.57.71v1.53c0,.3.19.58.47.68l.83.31c.36.13.76-.03.92-.38l.43-.95c.2-.45.79-.58,1.16-.24.75.69,2.12,1.51,4.24,1.07.37-.08.74.14.85.5l1.36,4.41c.17.54.85.69,1.23.28l1.66-1.8c.12-.13.29-.21.47-.23l.55-.05c.22-.02.42-.14.54-.33l1.4-2.16c.1-.16.27-.27.45-.31l2.44-.55c.3-.07.53-.32.56-.62l.29-2.43c.04-.33.3-.59.62-.64l1.3-.18c.36-.05.69.17.8.51l.5,1.65c.03.1.08.19.15.27l.36.41c.24.27.24.67.02.95l-1.91,2.32c-.21.26-.22.63-.02.9l.43.57c.29.4.12.96-.35,1.12-1.68.57-4.8,2.36-3.99,7.68.02.14.08.27.18.38l.44.49c.25.28.25.7,0,.98l-4.08,4.51c-.13.14-.19.33-.19.52l.06,1.68c0,.08.02.16.05.24l1.17,3.03s0,.02.01.03c.1.22,1.35,3.22-1.35,5.27-.38.29-.94.14-1.12-.31l-2.65-6.52c-.13-.32-.47-.51-.81-.44l-1.35.25c-.05.01-.11.01-.17.01l-2.66-.11c-.43-.02-.78.34-.76.76h0c.02.42-.31.76-.73.76h-1.33c-.05,0-.1,0-.15-.02-.71-.15-6.5-1.19-7.5,4.37-.06.35-.36.6-.72.6h-.14c-.23,0-.45-.11-.59-.3l-3.66-4.95c-.24-.32-.69-.39-1.01-.16l-.7.5c-.34.24-.81.15-1.04-.2-.84-1.31-2.67-4.15-2.79-4.15-.13,0-2.94.44-3.79.57-.16.02-.32,0-.46-.08l-4.72-2.59c-.09-.05-.18-.08-.28-.09l-1.89-.17c-.26-.02-.48-.18-.59-.42-.31-.68-1.11-2.08-2.53-2.67-.21-.09-.37-.26-.43-.48l-1.44-5.09s-.02-.1-.03-.15l-.36-4.92c-.01-.15.02-.29.1-.42l2.57-4.4c.06-.11.1-.23.1-.36l.02-2.3c0-.54.57-.88,1.05-.64Z"/>
+</svg>
+                        <p style="margin: 0; font-family: 'Open Sans', sans-serif; font-weight: bold; color: #3D517D; font-size: 11pt;">Learning About Life in the U.S.</p>
+                    </div>
+                </div>
+                </div>
+
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/hazmoola</div>
+                    <div class="callout-content">
+                        <p>"Meditation. [If you] are the type of person who obsesses and or embraces intrusive thoughts no matter how non productive, I recommend reading up about meditation, grounding techniques, deflecting intrusive thoughts."</p>
+                        <a href="https://www.reddit.com/r/USCIS/comments/wydxa0/how_to_deal_with_the_wait/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                <div class="callout-box">
+                    <div class="callout-label">I've Been There</div>
+                    <div class="callout-username">u/Lil_boots_onthemove</div>
+                    <div class="callout-content">
+                        <p>"I just started a mindfulness app called waking up...sent the application like 2 weeks ago and also doing it through consular processing. Definitely feeling that anxiety and the idea of how long I will I have to wait is really taxing. I recently started using this app and the way consciousness is framed is helping me little by little try and not pay so much attention to my intrusive thoughts. If not the app I also tried some YouTube mindfulness meditations by channels like daily calm and great meditation. This is what I've been trying for now to deal with it."</p>
+                        <a href="https://www.reddit.com/r/USCIS/comments/wydxa0/how_to_deal_with_the_wait/" target="_blank" rel="noopener noreferrer" class="read-thread-btn">Read the Thread</a>
+                    </div>
+                </div>
+                </div>
+
+                <h3 id="connect-with-others" style="font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 14pt; color: #AB3838; margin-bottom: 0.5rem; scroll-margin-top: 120px;">Connect with Others</h3>
+
+                <p style="margin-bottom: 1rem;">Many people find comfort in talking with others who are going through the same process. Immigration forums, community groups, and support networks can help you understand what to expect and remind you that you are not going through this alone.</p>
+
+                <p style="margin-bottom: 1rem;">r/USCIS on Reddit is a great place to start if you are looking for an online community. The stories you see in the sidebar on the right are from this forum. You can visit their page here:</p>
+
+                <a href="https://www.reddit.com/r/USCIS/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 20px; background: #3D517D; color: white; border: none; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; margin-bottom: 3rem;">r/USCIS Page</a>
+
+                <!-- ============================================================ -->
+                <!-- END CHAPTER 4 CONTENT                                        -->
+                <!-- ============================================================ -->
+
+            </div>
+        </div>
+        <div style="height: 600px;"></div>
+    </main>
+    
+    <!-- Floating Footer Navigation -->
+    <div class="footer-nav" id="footer-nav">
+        <div class="footer-nav-content">
+            <a href="chapter-3-evidence.html" class="footer-nav-btn">
+                <span class="arrow">←</span>
+                <span>Previous: Evidence & Paperwork</span>
+            </a>
+            <a href="chapter-5-medical.html" class="footer-nav-btn">
+                <span>Next: Medical Exam</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Accordion toggle
+        function toggleAccordion(index) {
+            const headers = document.querySelectorAll('.accordion-header');
+            const contents = document.querySelectorAll('.accordion-content');
+            
+            if (headers[index] && contents[index]) {
+                headers[index].classList.toggle('active');
+                contents[index].classList.toggle('active');
+            }
+        }
+        
+        // Carousel functionality
+        let currentSlide = 0;
+        let currentFormsSlide = 0;
+        
+        function goToSlide(index) {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (!track || cards.length === 0) return;
+            
+            currentSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = track.closest('.category-carousel').querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+        
+        function nextSlide() {
+            const track = document.getElementById('carouselTrack');
+            const cards = track ? track.querySelectorAll('.category-card') : [];
+            if (currentSlide < cards.length - 1) goToSlide(currentSlide + 1);
+        }
+        
+        function goToFormsSlide(index) {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const formsCarousel = carousels[1];
+            const track = formsCarousel.querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            
+            currentFormsSlide = index;
+            cards.forEach((card, i) => card.classList.toggle('active', i === index));
+            
+            const dots = formsCarousel.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            
+            const cardWidth = cards[0].offsetWidth + 32;
+            track.style.transform = `translateX(-${index * cardWidth}px)`;
+        }
+        
+        function previousFormsSlide() {
+            if (currentFormsSlide > 0) goToFormsSlide(currentFormsSlide - 1);
+        }
+        
+        function nextFormsSlide() {
+            const carousels = document.querySelectorAll('.category-carousel');
+            if (carousels.length < 2) return;
+            const track = carousels[1].querySelector('.carousel-track');
+            const cards = track.querySelectorAll('.category-card');
+            if (currentFormsSlide < cards.length - 1) goToFormsSlide(currentFormsSlide + 1);
+        }
+        
+        // Prevent callout boxes from overlapping in the right margin
+        function adjustCalloutPositions() {
+            const isWideScreen = window.innerWidth > 1200;
+            const callouts = document.querySelectorAll('.callout-box');
+            
+            callouts.forEach(box => {
+                box.style.top = '0';
+            });
+            
+            if (!isWideScreen) return;
+            
+            const gap = 20;
+            
+            for (let i = 1; i < callouts.length; i++) {
+                const prevRect = callouts[i - 1].getBoundingClientRect();
+                const currRect = callouts[i].getBoundingClientRect();
+                
+                const overlap = prevRect.bottom + gap - currRect.top;
+                
+                if (overlap > 0) {
+                    const currentTop = parseInt(callouts[i].style.top) || 0;
+                    callouts[i].style.top = (currentTop + overlap) + 'px';
+                }
+            }
+        }
+        
+        window.addEventListener('load', adjustCalloutPositions);
+        window.addEventListener('resize', adjustCalloutPositions);
+        window.addEventListener('scroll', adjustCalloutPositions);
+        
+        // Ensure page is tall enough to show all absolute-positioned callout boxes
+        function ensurePageHeight() {
+            const callouts = document.querySelectorAll('.callout-box');
+            const main = document.querySelector('main');
+            let maxBottom = 0;
+            
+            callouts.forEach(box => {
+                const rect = box.getBoundingClientRect();
+                const absoluteBottom = window.scrollY + rect.bottom;
+                if (absoluteBottom > maxBottom) {
+                    maxBottom = absoluteBottom;
+                }
+            });
+            
+            const footerHeight = 100;
+            const neededHeight = maxBottom + footerHeight - main.offsetTop;
+            if (neededHeight > main.offsetHeight) {
+                main.style.minHeight = neededHeight + 'px';
+            }
+        }
+        
+        // Align all callout boxes to consistent left position
+        function alignCalloutBoxes() {
+            if (window.innerWidth <= 1200) return;
+            
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (!contentWrapper) return;
+            
+            const wrapperRect = contentWrapper.getBoundingClientRect();
+            const targetLeft = wrapperRect.width + 30;
+            
+            const callouts = document.querySelectorAll('.callout-box');
+            callouts.forEach(box => {
+                const anchor = box.closest('.callout-anchor');
+                if (!anchor) return;
+                const anchorRect = anchor.getBoundingClientRect();
+                const wrapperLeft = wrapperRect.left;
+                const anchorLeft = anchorRect.left;
+                const offset = wrapperLeft - anchorLeft;
+                box.style.left = (targetLeft + offset) + 'px';
+            });
+        }
+        
+        window.addEventListener('load', alignCalloutBoxes);
+        window.addEventListener('resize', alignCalloutBoxes);
+        
+        window.addEventListener('load', ensurePageHeight);
+        window.addEventListener('resize', ensurePageHeight);
+    </script>
+</body>
+</html>
