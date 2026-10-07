@@ -1,0 +1,2826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Route - We've Been There</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            color: #3D517D;
+            line-height: 1.8;
+            overflow-x: hidden;
+            background-color: #FDF8F4;
+            position: relative;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #3D517D;
+            text-decoration: none;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .lang-btn.active {
+            background: #3D517D;
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: #FFE3E3;
+        }
+
+        .hamburger-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 24px;
+            height: 3px;
+            background: #3D517D;
+            border-radius: 2px;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .hamburger-btn span::before,
+        .hamburger-btn span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 24px;
+            height: 3px;
+            background: #3D517D;
+            border-radius: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .hamburger-btn span::before {
+            top: -8px;
+        }
+
+        .hamburger-btn span::after {
+            top: 8px;
+        }
+
+        .hamburger-btn.open span {
+            background: transparent;
+        }
+
+        .hamburger-btn.open span::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+
+        .hamburger-btn.open span::after {
+            top: 0;
+            transform: rotate(-45deg);
+        }
+
+        .chapter-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 999;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .mobile-nav-menu {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 80px;
+            right: 0;
+            width: max-content;
+            max-width: calc(100vw - 2rem);
+            background: #3D517D;
+            z-index: 998;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 0 0 0 12px;
+        }
+
+        @media (max-width: 1050px) {
+            .chapter-nav { display: none; }
+            .hamburger-btn { display: flex; }
+            .mobile-nav-menu.open { display: flex; }
+            header { border-bottom: 2px solid #3D517D; }
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #FFD0D0;
+            font-family: 'Open Sans', sans-serif;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.2s ease;
+        }
+
+        .mobile-nav-item:hover { background: #58647E; color: white; }
+        .mobile-nav-item.active { background: #58647E; color: white; }
+
+        .mobile-nav-number { font-weight: bold; font-size: 12pt; min-width: 32px; }
+        .mobile-nav-title { font-size: 12pt; }
+
+        .btn {
+            padding: 1rem 20px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background: #3D517D;
+            color: white;
+            border: 2px solid #3D517D;
+        }
+
+        .btn-primary:hover {
+            background: white;
+            color: #3D517D;
+        }
+
+        .spanish-page {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #FDF8F4;
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spanish-page.active {
+            display: flex;
+        }
+
+        .spanish-content {
+            max-width: 600px;
+        }
+
+        .spanish-content h1 {
+            font-family: 'Source Serif 4', serif;
+            color: #3D517D;
+            margin-bottom: 1rem;
+        }
+
+        .spanish-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .two-col-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chapter-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.25rem 1rem 0.5rem;
+            text-decoration: none;
+            color: #FFD0D0;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            background: #3D517D;
+        }
+
+        .chapter-nav-item:hover {
+            background: #58647E;
+            color: white;
+        }
+
+        .chapter-nav-item.active {
+            color: white;
+            border-bottom-color: #FFD0D0;
+            background: #58647E;
+        }
+
+        .chapter-nav-number {
+            font-weight: bold;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+
+        .chapter-nav-title {
+            font-size: 9pt;
+            line-height: 1.2;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+
+        .chapter-nav-item:hover .chapter-nav-title,
+        .chapter-nav-item.active .chapter-nav-title {
+            max-height: 20px;
+            opacity: 1;
+            margin-top: 0.25rem;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            padding-bottom: 200px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        .content-wrapper {
+            margin-top: 2rem;
+            position: relative;
+            overflow: visible;
+            max-width: 800px;
+        }
+
+        .main-content-area {
+            max-width: 800px;
+        }
+
+        .callout-box {
+            background: #FBEBDD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: absolute;
+            width: 380px;
+            top: 0;
+        }
+
+        .callout-anchor {
+            position: relative;
+        }
+
+        .callout-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .callout-content {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+        }
+
+        .callout-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .callout-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        h1 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 25pt;
+            color: #3D517D;
+            line-height: 1.2;
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #3D517D;
+            background: white;
+            color: #3D517D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .nav-arrow:hover {
+            background: #3D517D;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            transition: all 0.3s ease;
+        }
+
+        .footer-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            transition: all 0.3s ease;
+        }
+
+        .footer-nav-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+
+        .footer-nav-btn .arrow {
+            font-size: 1.2rem;
+        }
+
+        .resource-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .resource-btn {
+            padding: 0.6rem 18px;
+            background: white;
+            color: #AB3838;
+            border: 2px solid #AB3838;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+            text-align: center;
+            white-space: nowrap;
+            width: auto;
+        }
+
+        .resource-btn:hover {
+            background: #AB3838;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(171, 56, 56, 0.3);
+        }
+
+        /* Tighten bullet spacing globally */
+        ul li,
+        ol li {
+            margin-bottom: 0.15rem !important;
+        }
+
+        /* ============================================================ */
+        /* ROUTE FINDER TOOL                                            */
+        /* ============================================================ */
+
+        .route-tool {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin: 1.5rem 0 3rem;
+            scroll-margin-top: 140px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .route-tool fieldset {
+            border: 0;
+            min-width: 0;
+        }
+
+        .q-progress {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 10pt;
+            font-weight: bold;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .q-progress,
+        .q-legend-text {
+            display: block;
+        }
+
+        .q-legend {
+            display: block;
+            width: 100%;
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 18pt;
+            line-height: 1.3;
+            color: #3D517D;
+            margin: 0.25rem 0 0.5rem;
+            outline: none;
+        }
+
+        .q-helper {
+            font-style: italic;
+            color: #58647E;
+            font-size: 11pt;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .opt-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .opt-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .opt-row .opt {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .opt {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            border: 2px solid #3D517D;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            line-height: 1.4;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .opt:hover {
+            background: #FDF8F4;
+        }
+
+        .opt.selected {
+            background: #3D517D;
+            color: white;
+        }
+
+        .opt:focus-within {
+            outline: 3px solid #FFD0D0;
+            outline-offset: 2px;
+        }
+
+        .opt input {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: #AB3838;
+            cursor: pointer;
+        }
+
+        .followup {
+            background: #FBEBDD;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .followup + .followup {
+            margin-top: 0.75rem;
+        }
+
+        .q-sub {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .q-note {
+            font-size: 10.5pt;
+            font-style: italic;
+            color: #58647E;
+            line-height: 1.5;
+            margin-top: 0.75rem;
+        }
+
+        .not-sure {
+            margin-top: 1rem;
+            font-size: 11pt;
+            color: #58647E;
+        }
+
+        .not-sure summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #AB3838;
+        }
+
+        .not-sure p {
+            margin-top: 0.4rem;
+            line-height: 1.6;
+        }
+
+        .q-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .q-actions .spacer {
+            flex: 1;
+        }
+
+        .tool-btn {
+            display: inline-block;
+            padding: 0.75rem 20px;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12pt;
+            line-height: 1.4;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-btn.primary {
+            background: #3D517D;
+            color: white;
+        }
+
+        .tool-btn.primary:hover:not(:disabled) {
+            background: white;
+            color: #3D517D;
+        }
+
+        .tool-btn.secondary {
+            background: white;
+            color: #3D517D;
+        }
+
+        .tool-btn.secondary:hover:not(:disabled) {
+            background: #FFE3E3;
+        }
+
+        .tool-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: #AB3838;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        /* Result card */
+        .result-eyebrow {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #AB3838;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-title {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 22pt;
+            line-height: 1.25;
+            color: #3D517D;
+            margin: 0.25rem 0 0.5rem;
+            outline: none;
+        }
+
+        .result-tagline {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #3D517D;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .based-on {
+            font-size: 10.5pt;
+            color: #58647E;
+            background: #FDF8F4;
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-section {
+            margin-top: 2.25rem;
+        }
+
+        .result-section > h3 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+
+        .result-section > p {
+            margin-bottom: 1rem;
+        }
+
+        .forms-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11pt;
+        }
+
+        .forms-table th {
+            text-align: left;
+            background: #3D517D;
+            color: white;
+            padding: 0.6rem 0.8rem;
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .forms-table td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid #E3ECDC;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .cost-table td.fee {
+            white-space: nowrap;
+        }
+
+        .cost-table tr.total-row td {
+            font-weight: bold;
+            background: #FDF8F4;
+            border-bottom: none;
+            border-top: 2px solid #3D517D;
+        }
+
+        .cost-table td.item-both { background: #E3ECDC; }
+        .cost-table td.item-cp { background: #F6D6B8; }
+        .cost-table td.item-aos { background: #FFD0D0; }
+
+        .cost-key {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.25rem;
+            font-size: 10.5pt;
+            margin: 1rem 0;
+        }
+
+        .cost-key span::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-right: 0.4rem;
+            vertical-align: -2px;
+        }
+
+        .cost-key .k-both::before { background: #E3ECDC; }
+        .cost-key .k-cp::before { background: #F6D6B8; }
+        .cost-key .k-aos::before { background: #FFD0D0; }
+
+        .cost-totals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .cost-totals div {
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            line-height: 1.4;
+        }
+
+        .cost-totals strong {
+            display: block;
+            font-family: 'Source Serif 4', serif;
+            font-size: 18pt;
+            margin-top: 0.25rem;
+        }
+
+        .fee-note {
+            font-size: 10pt;
+            font-style: italic;
+            color: #58647E;
+            line-height: 1.5;
+            margin-top: 0.75rem;
+        }
+
+        @media (max-width: 600px) {
+            .cost-totals { grid-template-columns: 1fr; }
+        }
+
+        .forms-table td.form-num {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .optional {
+            display: block;
+            font-style: italic;
+            font-weight: normal;
+            font-size: 9.5pt;
+            color: #58647E;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 9pt;
+            font-weight: bold;
+            padding: 0.1rem 0.65rem;
+            border-radius: 999px;
+            line-height: 1.6;
+            white-space: nowrap;
+        }
+
+        .tag-you {
+            background: #3D517D;
+            color: white;
+        }
+
+        .tag-family {
+            background: #FFD0D0;
+            color: #8E2C2C;
+        }
+
+        .tag-both {
+            background: #E3ECDC;
+            color: #3D517D;
+        }
+
+        .tag-key {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 10.5pt;
+            color: #58647E;
+            margin-bottom: 1.5rem;
+        }
+
+        .route-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .route-step {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            margin-bottom: 1.75rem !important;
+        }
+
+        .route-step:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .blob-num {
+            position: relative;
+            width: 46px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blob-num svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 46px;
+            height: 38px;
+            display: block;
+            overflow: visible;
+        }
+
+        .blob-num span {
+            position: relative;
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 20pt;
+            color: #3D517D;
+            z-index: 1;
+        }
+
+        .step-body {
+            flex: 1;
+        }
+
+        .step-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 0.6rem;
+            padding-top: 0.35rem;
+        }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 12.5pt;
+            line-height: 1.4;
+        }
+
+        .step-body p {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+            margin-top: 0.3rem;
+        }
+
+        .step-link {
+            display: inline-block;
+            margin-top: 0.35rem;
+            font-size: 10.5pt;
+            font-weight: bold;
+            color: #AB3838;
+        }
+
+        /* Visa Bulletin box: neutral information panel (not a callout) */
+        .bulletin-box {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            background: #FDF8F4;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .bulletin-code {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 26pt;
+            color: #3D517D;
+            line-height: 1;
+            min-width: 72px;
+        }
+
+        .bulletin-box p {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        /* ============================================================ */
+        /* CALLOUT SYSTEM                                               */
+        /* Every callout shares one layout: icon + label, title, body.  */
+        /*   Field Notes     practical tips          green, blue border */
+        /*   I've Been There real experiences        peach, quote type  */
+        /*   Need Help?      legal help resources    pink, red edge     */
+        /*   Important       warnings, deadlines     white, red border  */
+        /* Red is only used by Need Help? and Important.                */
+        /* ============================================================ */
+        .note {
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.25rem 0;
+        }
+
+        .callout-box.note {
+            margin: 0 0 2rem;
+            padding: 1.5rem;
+        }
+
+        .note-head {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .note-icon,
+        .note-icon svg {
+            display: block;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            overflow: visible;
+        }
+
+        .note-label {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 10pt;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: #3D517D;
+        }
+
+        .note-title {
+            font-weight: bold;
+            color: #3D517D;
+            line-height: 1.4;
+            margin-bottom: 0.35rem;
+        }
+
+        .note-body p {
+            font-size: 11pt;
+            color: #58647E;
+            line-height: 1.6;
+            margin-bottom: 0.6rem;
+        }
+
+        .note-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .note-body .resource-buttons {
+            margin-top: 0.75rem;
+        }
+
+        /* Field Notes */
+        .note-field {
+            background: #E3ECDC;
+            border: 2px solid #3D517D;
+        }
+
+        /* I've Been There */
+        .note-been {
+            background: #FBEBDD;
+        }
+
+        .note-been .note-user {
+            font-weight: bold;
+            font-size: 11pt;
+            color: #3D517D;
+            margin-bottom: 0.35rem;
+        }
+
+        .note-been .note-quote {
+            font-family: 'Source Serif 4', serif;
+            font-style: italic;
+            font-size: 12pt;
+            color: #3D517D;
+        }
+
+        .note-thread-btn {
+            display: inline-block;
+            margin-top: 0.85rem;
+            padding: 0.45rem 16px;
+            background: white;
+            color: #3D517D;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.3s ease;
+        }
+
+        .note-thread-btn:hover {
+            background: #3D517D;
+            color: white;
+        }
+
+        /* Need Help? */
+        .note-help {
+            background: #FFE3E3;
+            border-left: 4px solid #AB3838;
+            border-radius: 4px;
+        }
+
+        .note-help .note-label {
+            color: #AB3838;
+        }
+
+        /* Important */
+        .note-important {
+            background: white;
+            border: 2px solid #AB3838;
+        }
+
+        .note-important .note-label,
+        .note-important .note-title {
+            color: #AB3838;
+        }
+
+        .note-important .note-body p {
+            color: #3D517D;
+        }
+
+        .tips {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+
+        .tips li {
+            margin-bottom: 0.4rem !important;
+            line-height: 1.6;
+        }
+
+        .full-img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .img-caption {
+            font-size: 10.5pt;
+            color: #58647E;
+            line-height: 1.6;
+            margin: 1rem 0 0.75rem;
+        }
+
+        .next-step {
+            background: #E3ECDC;
+            border-radius: 8px;
+            padding: 1.75rem 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .next-step h3 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #3D517D;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-step p {
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .next-step .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .result-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .share-hint {
+            font-size: 10.5pt;
+            color: #58647E;
+            line-height: 1.6;
+            margin-top: 2rem;
+        }
+
+        .copy-status {
+            font-size: 10.5pt;
+            font-weight: bold;
+            color: #AB3838;
+        }
+
+        .disclaimer {
+            font-size: 10pt;
+            font-style: italic;
+            color: #58647E;
+            line-height: 1.6;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #E3ECDC;
+        }
+
+        /* ============================================================ */
+        /* EXPLORE ALL ROUTES                                           */
+        /* ============================================================ */
+
+        .explore-heading {
+            font-family: 'Source Serif 4', serif;
+            font-weight: bold;
+            font-size: 26pt;
+            line-height: 1.2;
+            color: #3D517D;
+            margin: 3rem 0 0.75rem;
+            scroll-margin-top: 120px;
+        }
+
+        .explore-item {
+            background: white;
+            border: 2px solid #3D517D;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            scroll-margin-top: 120px;
+        }
+
+        .explore-item > summary {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #3D517D;
+            transition: background 0.3s ease;
+        }
+
+        .explore-item > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .explore-item > summary::after {
+            content: '▾';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .explore-item > summary:hover {
+            background: #E3ECDC;
+        }
+
+        .explore-item[open] > summary {
+            background: #3D517D;
+            color: white;
+        }
+
+        .explore-item[open] > summary::after {
+            transform: rotate(180deg);
+        }
+
+        .explore-body {
+            padding: 1.75rem 1.5rem;
+        }
+
+        .explore-body h3 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #AB3838;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .explore-body h4 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #3D517D;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .compare-steps {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .compare-steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 2rem !important;
+        }
+
+        .compare-steps li:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .compare-steps .step-text {
+            flex: 1;
+            padding-top: 0.4rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .callout-anchor {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .callout-box {
+                position: relative;
+                left: 0 !important;
+                right: 0;
+                width: 100%;
+                margin-top: 1rem;
+                order: 999;
+            }
+
+            .callout-box.note {
+                margin: 1rem 0;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-nav {
+                padding: 1rem;
+            }
+
+            .footer-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 11pt;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .route-tool {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .q-legend {
+                font-size: 16pt;
+            }
+
+            .result-title {
+                font-size: 18pt;
+            }
+
+            .bulletin-box {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .forms-table {
+                font-size: 10.5pt;
+            }
+
+            .forms-table th,
+            .forms-table td {
+                padding: 0.55rem 0.5rem;
+            }
+
+            .next-step {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .explore-body {
+                padding: 1.25rem 1rem;
+            }
+
+            .explore-heading {
+                font-size: 21pt;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+            }
+
+            .header-controls {
+                gap: 0.35rem !important;
+            }
+
+            .logo svg {
+                height: 28px !important;
+            }
+
+            .lang-toggle {
+                gap: 0.25rem;
+            }
+
+            .lang-btn {
+                padding: 0.35rem 0.6rem;
+                font-size: 9pt;
+            }
+
+            .hamburger-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .hamburger-btn span,
+            .hamburger-btn span::before,
+            .hamburger-btn span::after {
+                width: 20px;
+            }
+
+            .section-heading svg {
+                height: 40px !important;
+            }
+        }
+
+        /* Print: show only the route result */
+        @media print {
+            header,
+            .chapter-nav,
+            .mobile-nav-menu,
+            .bg-blobs,
+            #chapter-hero,
+            #section-jump,
+            .tool-intro,
+            .callout-box,
+            #explore-all-routes,
+            .explore-section,
+            .footer-nav,
+            .result-actions,
+            .share-hint,
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            main {
+                margin: 0;
+                padding: 0;
+                min-height: 0;
+            }
+
+            .content-wrapper {
+                margin: 0;
+                max-width: none;
+            }
+
+            .route-tool {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .route-step,
+            .note,
+            .bulletin-box,
+            .next-step {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Background blobs -->
+<div class="bg-blobs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;">
+  <svg style="position: absolute; top: 5%; left: -50%; width: 180vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.770-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.090-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.630,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 800px; right: -55%; width: 190vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M304.59,125.18c-37.64-22.33-79.33-44.43-122.76-39.02-42.29,5.27-78.68,37.84-93.31,77.86-14.63,40.02-8.97,85.87,10.41,123.83,20.82,40.79,57.16,75.43,62.95,120.86,6.34,49.7-25.85,95.3-56.94,134.58-31.1,39.29-64.56,83.29-61.34,133.28,3.52,54.59,53.09,98.25,106.68,109.2,53.6,10.95,109.31-4.76,158.8-28.06,49.49-23.3,95.19-54.18,145.18-76.39,49.99-22.21,106.72-35.49,159.48-21.05,56.46,15.45,103.04,61.02,161.26,67.03,56.04,5.79,110.45-28,143.8-73.41,33.34-45.41,49.26-101.03,62.57-155.78,14.78-60.81,27.19-123.06,23.64-185.55-3.55-62.48-24.57-125.92-68.68-170.31-44.11-44.39-113.64-65.92-172.05-43.46-46.75,17.98-79.51,59.39-116.37,93.3-38.76,35.66-105.48,72.71-159.05,50.14-64.54-27.19-123.77-81.18-184.26-117.06Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 1900px; left: -48%; width: 185vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M548.93,793.85c-26.48-7.81-50.63-23.68-67.36-45.68-21.54-28.32-31.9-65.86-60.43-87.13-37.4-27.89-89.86-16.92-134.75-4.24-54.23,15.32-118.51,29.95-157.420-23.03-7.6-10.35-12.77-22.410-15.75-34.9-12.15-50.96,5.01-98.74,15.91-147.07,8.03-35.61,12.55-73.74-.22-107.93-12.56-33.62-40.02-58.96-63.89-85.76-30.54-34.29-58.03-78.36-34.77-126.02,11.14-22.82,32.02-39.47,55.93-48.02,50.38-18.01,103.17-2.08,149.32,20.96,52.36,26.14,100.7,62.65,159.66,72.14,91.58,14.73,165.96-31.76,244.17-70.91,83.03-41.56,185.76-41.2,268.5.94,56.94,29,105.8,80.17,117.39,143.02,11.58,62.85-23.07,135.17-84.34,153.32-17.7,5.24-36.15,5.92-54.69,6.3-46.96.96-92.95,17.37-127.97,48.68-84.34,75.41-26.89,162.9-47.06,242.78-11.91,47.16-52.42,85.85-100.07,95.58-20.58,4.2-42.04,2.91-62.17-3.02Z" fill="#FFE3E3"/>
+  </svg>
+  <svg style="position: absolute; top: 3000px; right: -52%; width: 188vw; opacity: 0.20;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M547.51,99.89c-48.63,23.79-86.43,68.73-101.54,120.71-8.23,28.31-11.96,61.58-35.99,78.66-24.42,17.36-58.86,9.12-84.68-6.07-25.82-15.19-48.3-36.66-76.58-46.53-60.31-21.06-127.45,18.66-162.59,72.01-46.75,71-52.31,165.25-21.69,244.55,30.62,79.3,94.75,143.43,170.56,181.87,75.81,38.45,162.57,52.4,247.49,48.51,67.37-3.08,140.71-21.12,179.94-75.97,24.9-34.82,31.93-78.8,44.27-119.79,12.34-40.99,34.15-83.76,73.94-99.54,36.47-14.47,78.11-2.33,116.67-9.62,66.43-12.55,110.67-84.66,106-152.1-4.67-67.44-49.07-127.19-104.33-166.13-88.63-62.45-246.67-121.82-351.46-70.56Z" fill="#FBEBDD"/>
+  </svg>
+  <svg style="position: absolute; top: 4100px; left: -45%; width: 182vw; opacity: 0.22;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M535.82,171.45c-48.08-38.68-100.99-73.68-160.88-88.56-59.89-14.88-128.08-6.88-175.2,32.96-37.85,32-57.99,80.07-72.28,127.53-39.72,131.94-44.09,274.35-12.54,408.48,8.7,36.97,20.61,74.35,44.75,103.68,24.14,29.33,62.92,49.18,100.14,41.57,46.42-9.49,74.38-55.17,108.85-87.68,39.23-37.01,92.19-59.12,146.1-60.99,53.9-1.88,108.27,16.5,149.98,50.69,35.27,28.91,64.88,70.24,109.74,78.44,35.82,6.55,72.85-11.22,97.47-38.04,24.62-26.82,38.72-61.56,49.66-96.28,22.63-71.82,33.91-147.21,33.28-222.51-.62-74.29-15.1-205.33-92.94-243.13-70.02-34.01-131.29,74.14-206.41,63.13-46.52-6.82-84.44-40.92-119.7-69.29Z" fill="#E3ECDC"/>
+  </svg>
+  <svg style="position: absolute; top: 5200px; right: -50%; width: 186vw; opacity: 0.21;" viewBox="0 0 1049 874.67" xmlns="http://www.w3.org/2000/svg">
+    <path d="M251.32,783.57c-54.52,10.08-112.2-15.77-147.17-58.8-34.96-43.03-48.69-100.79-44.96-156.1,3.73-55.32,23.72-108.49,50.09-157.27,87.44-161.78,250.07-280.86,430.7-315.35,70.73-13.51,152.33-11.49,203.97,38.7,49.19,47.8,56.4,124.65,96.46,180.32,28.25,39.25,71.13,65.6,101.96,102.86,58.43,70.62,64.22,179.91,13.59,256.32-50.63,76.4-153.55,113.66-241.35,87.37-43.88-13.14-82.23-39.77-122.73-61.17-64.16-33.9-113.62-39.21-177.53-6.83-55.05,27.89-100.43,78.38-163.04,89.96Z" fill="#FFE3E3"/>
+  </svg>
+</div>
+    <header>
+        <a href="index.html" class="logo">
+            <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 487.97 99.61" style="height: 45px; width: auto; display: block;">
+              <g>
+                <circle fill="#ba0c2f" cx="49.8" cy="37.05" r="10.31"/>
+                <path fill="#ba0c2f" d="M49.8,0C22.3,0,0,22.3,0,49.8s22.3,49.8,49.8,49.8,49.8-22.3,49.8-49.8S77.3,0,49.8,0ZM73.6,38.75c0,4.03-1.01,7.83-2.78,11.16h.01l-.09.16s-.03.05-.03.05l-17.6,32.26c-1.5,3.07-5.9,3.04-7.35-.06l-17-32.41h.01c-1.77-3.33-2.780-7.12-2.78-11.16,0-13.15,10.66-23.81,23.81-23.81s23.81,10.66,23.81,23.81h-.01Z"/>
+              </g>
+              <g>
+                <g>
+                  <g>
+                    <path fill="#3d517e" d="M166.43,33.94c-2.05,5.47-3.55,14.96-3.69,20.66-.11,4.32-1.01,8.18-2.18,12.34-.33,1.17-1.25,2.97-2.28,3.42-2.68-.06-3.99-2.07-5.11-4.03-1.14-1.06-1.59-2.32-2.3-3.68l-6.9-13.22c-2.46,5.61-3.68,10.67-4.57,16.26-.22,1.39-.99,2.55-2.22,3.12-1.07.49-2.66-.4-3.38-1.64-1.65-2.83-1.54-6.18-2.32-9.36-1.46-5.95-2.97-11.7-5.36-17.21l-2.37-5.48c-.73-1.7-1.61-3.49-.99-5.41,1.19-.62,3.68-.61,4.88.09l3.73,8.38,2.69,7.18c.84,2.23,1.35,4.11,2.67,6.15l2.83-8.53c.45-1.34.61-2.41,1.7-3.13.87-.58,3.19-1.27,3.94-.46,2.51,2.71,3.93,5.83,5.6,8.99l5.44,10.55,2.54-18.4.52-4.25c.24-2.01.38-4.14,1.44-5.94.69-1.18,3.68-1.29,4.78-.49s1.36,2.89.89,4.12l.02-.03Z"/>
+                    <path fill="#3d517e" d="M196.71,61.12l-1.95-5.04c-.58-1.49-1.94-3.35-1.14-5.09,1.03-2.24,5.02-1.85,5.99.23l2.2,4.68,3.34-10.66c.43-1.36,3.7-2.04,4.97-1.43,1.7.82.75,3.42.04,4.89-2.33,4.82-3.68,9.83-4.6,15.13-.38,2.22-1.13,5.11-3.9,5.23-1.76.08-2.92-2.69-3.47-4.11l-1.49-3.84h.01Z"/>
+                    <path fill="#3d517e" d="M188.27,49.96c-.81.62-2.95-.3-3.46-1.19-.79-1.39-1.56-2.92-1.910-4.47-.51-2.25,1.57-4.25,3.75-3.5,1.12.39,1.93,1.17,2.29,2.23l1.44,4.25c.17.5,0,1.06-.42,1.38l-1.69,1.290h0Z"/>
+                  </g>
+                  <path fill="#3d517e" d="M229.56,60.61c-.47-.64-2.32-1.46-2.81-.81-1.15,1.53-1.83,3.31-3.24,3.93-.92.35-3.25-.65-3.81-1.47-.83-1.2-1.17-3.18-1.16-4.65,4.41-2.07,8.25-2.93,7.41-7.45-1.07-1.34-3.23-1.7-4.85-1.93-2.48-.35-4.47.18-5.89,2.26l-1.83,2.69-2.79.73c-1.65,2.27,1.19,3.37,1.66,4.67,1.1,3.02,1.05,6.25,3.5,8.39,2.49,2.18,5.22,3.35,8.6,2.54,2.58-.62,5.04-2.59,5.920-5.83.25-.92-.2-2.38-.71-3.07ZM218.07,52.35c-.08-.3.57-.73,1.45-.96.88-.23,1.66-.17,1.74.13s-.57.73-1.45.96-1.66.17-1.74-.13Z"/>
+                  <path fill="#3d517e" d="M183.46,63.43c-.47-.41-1.66-.69-2.22-.58l-3.96.77c-2.3.45-4.79-1.5-4.68-3.69l4.19-1.53c1.88-.69,4.38-1.74,4.61-4.18.13-1.37-1.37-4.07-2.67-4.59-3.82-1.51-7.85.52-10.01,3.61-1.6,2.29-3.87,2.67-4.01,4.66-.05.69.91,1.89,1.45,2.53.42,4.32,3.05,7.4,7.18,8.77,3.87,1.29,7.88.46,10.15-3.35.38-.64.43-2-.04-2.42h0ZM174.11,53.05c.88-.23,1.66-.17,1.74.13s-.57.73-1.45.96-1.66.17-1.74-.13.57-.73,1.45-.96Z"/>
+                </g>
+                <g>
+                  <g>
+                    <path fill="#3d517e" d="M398.01,37.64l-12.14,2,.52,10.17.21,5.85.05,9.72c0,.79-.5,2.14-1.01,2.6-.59.53-2.39.42-3.19,0-2.34-1.25-2.46-3.73-2.49-6.22l-.2-14.6-.68-6.46-9.25,2.25c-2.2.53-3.68.26-4.91-1.8-.52-.87-1.01-2.18-.59-3.16.32-.74,1.6-1.72,2.5-1.92l4.99-1.1,4.66-.86,8.22-1.16c5.44-.77,10.61-1.63,15.85-3.37.91-.3,2.44-.37,3.06.13.59.47,1.43,1.91,1.38,2.75-.3,5.48-.43,10.57.26,16.22,2.42-1.77,4.48-3.44,7.2-3.72,7.69-.79,8.63,10.69,9.7,18.12.3,2.1.91,4.51-.62,6.36-1.12,1.36-4.15.96-5.27-.59-2.25-3.12.13-12.18-4.54-18.06-2.14,3.09-4.63,6.88-4.51,10.64.09,2.7.92,5.71-2.84,7.04-1.95.69-4.92-1.11-5.03-3.71l-.89-20.69-.44-6.43h0Z"/>
+                    <path fill="#3d517e" d="M479.83,62.25c3.85-2.06,4.12-4.5,6.77-3.31.27.84.84,2.87.56,3.73-1.43,4.38-5.88,6.93-10.22,6.34-3.61-.49-6.61-2.23-8.06-5.36-3.3-7.1-.83-14.14,4.77-19.05,3.83-3.37,7.19-3.66,12.11-3.18,2.24,1.55,2.85,4.09,1.52,6.34-1.54,2.61-3.84,4.57-6.51,6.05l-2.91,1.61-4.02,1.89c-.59,3.77,4.51,5.74,5.98,4.95h.01ZM479.91,47.04c-1.68-.51-3,.44-3.18,2.15l3.18-2.15Z"/>
+                    <path fill="#3d517e" d="M459.39,63.78c.28,1.03-1.39,3.17-2.31,3.83-1.44,1.04-4.47-.12-4.9-1.94-1.31-5.61-2.16-11.13-2.58-16.82-.1-1.4,2.37-2.41,3.38-2.28,1.23.16,2.43,1.06,3.5,2.24,3.3-3.29,8.1-5.58,11.39-3.71.58.33,1.03,1.94.71,2.52-.86,1.54-2.41,2.2-4,2.82-3.75,1.45-6.41,5.36-6.24,9.46l1.04,3.88h0Z"/>
+                  </g>
+                  <path fill="#3d517e" d="M445.9,59.05c-4.01.63-6.01,4.71-9.23,3.12-.77-.38-1.48-1.76-1.74-2.84-.4-1.66.32-2.67,1.86-3.2l7.42-2.58c.89-.31,1.82-2.49,1.82-3.41,0-1.2-1.28-2.38-2.1-3.11-3.47-3.07-11.57-1.88-13.35,3.82l-4.86,2.14c-1.83.8-2.27,2.9-1.8,4.14.74,1.97,2.14,2.53,4.5,2.24.21,3.3,1.75,7.05,4.84,8.64,5.6,2.88,12.11-.29,13.83-6.13.27-.91-.41-2.96-1.19-2.84h0ZM437.24,48.85c.97-.27,1.83-.21,1.93.13s-.61.84-1.58,1.11-1.83.21-1.93-.13.61-.84,1.58-1.11Z"/>
+                </g>
+                <g>
+                  <path fill="#3d517e" d="M338.74,48.14c-3.61-.88-5.74,3.3-7.57,7.12-1.64,3.43-2.46,6.96-1.54,10.74.43,1.75-.66,3.05-2.2,3.72s-2.91-.08-4.12-1.61c-.82-1.03-.8-1.77-.8-3.06-.03-6.63-.84-13-1.57-19.69.81-1.4,2.96-1.69,4.45-1.29s2.25,1.94,2.85,4.05c1.63-2.83,4.11-4.66,7.28-5.37,4.63-1.04,8.88,1.52,10.58,6.06,1.91,5.12,2.36,10.56,3.18,16.01.33,2.18.41,4.21-2.02,5.08-1.43.51-4.41-.15-4.67-2.54l-1.19-10.93c-.31-2.81-1.16-5.92-2.65-8.28h0Z"/>
+                  <path fill="#3d517e" d="M296.36,63.38l-4.61.88c-1.9-1.35-2.13-3.88-1.49-5.82l2.54-1.3c2.71-1.11,5.15-2.75,7.05-5.04.15-2.78-1.03-5.3-3.33-6.03-2.45-1.28-4.88-.85-7.13.89-2.05,1.59-3.34,4.26-4.27,6.76-1.77.28-3.36.72-5.17,1.59-.64-5.67-1.02-8.55-7.22-10.81l2.3-3.88c1.08-1.82,1.49-3.61,1.28-5.89-.81-8.99-23.35-4.6-25.72.54-1.02,2.21,1.6,4.23,3.45,5,.6,3.4.45,7.07.32,10.53l-.45,11.85c-.08,2,.64,5.57,3.04,5.85,1.42.17,2.53.13,3.78.75,3.38,1.69,7.31.46,10.17-1.55l3.21-2.26c2.91-2.05,4.49-4.81,5.4-8.59,1.11,2.02,1.82,2.97,3.89,3.21l1.34,4.98c1.16,1.84,3.18,3.61,5.13,4.51,2.33,1.08,5.41-.12,6.88-2.01,1.15-1.48,1.1-3.67-.4-4.18v.02ZM292.26,50.58c.79-.44,1.56-.58,1.71-.31s-.37.85-1.16,1.29c-.79.44-1.56.58-1.71.31s.37-.85,1.16-1.29ZM259.83,37.36c3.23-1.55,6.11-2.5,9.91-1.68-1.24,2.59-3.07,4.52-5.12,6.51-1.06,1.03-1.46,2.75-3.66,2.69l-1.14-7.52h.01ZM268.81,61.59c-2.52,1.8-5.45,2.92-7.86,1.31-.44-2.68-.27-5.09-.25-7.77l.02-2.94c3.9,1.02,7.43-3.01,11.71-1.46,1.94.7,1.44,7.25-3.61,10.86h-.01Z"/>
+                  <path fill="#3d517e" d="M313.24,64.03c-1.92,1.16-3.76-.45-4.16-1.85-.7-2.47.44-3.09,2.24-4.2l5.99-3.7c.69-.43,1.32-1.98,1.14-2.76-.95-4.08-9.64-4.58-14.26-.67l-1.98,3.9c-.31.61-1.63,1.89-1.34,2.51l1.29,2.78c.26,2.76.94,5.36,2.81,7.2,3.34,3.28,7.79,3.87,11.64.82,1.23-.97,2.48-2.96,1.08-4.27-1.08-1-3.35-.42-4.45.24h0ZM308.44,54.35c-.21-.23.05-.81.59-1.3.53-.49,1.14-.69,1.35-.46s-.05.81-.59,1.3c-.53.49-1.14.69-1.35.46Z"/>
+                </g>
+              </g>
+            </svg>
+        </a>
+        <div class="header-controls" style="display: flex; align-items: center; gap: 0.75rem;">
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="switchLanguage('es')">Español</button>
+            </div>
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open chapter menu" aria-expanded="false" aria-controls="mobileNavMenu">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="chapter-1.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">Intro</span>
+            <span class="mobile-nav-title">Introduction</span>
+        </a>
+        <a href="#" class="mobile-nav-item active">
+            <span class="mobile-nav-number">01</span>
+            <span class="mobile-nav-title">Plan Your Route</span>
+        </a>
+        <a href="chapter-3-evidence.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">02</span>
+            <span class="mobile-nav-title">Evidence & Paperwork</span>
+        </a>
+        <a href="chapter-4-waiting.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">03</span>
+            <span class="mobile-nav-title">The Waiting</span>
+        </a>
+        <a href="chapter-5-medical.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">04</span>
+            <span class="mobile-nav-title">Medical Exam</span>
+        </a>
+        <a href="chapter-6-biometrics.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">05</span>
+            <span class="mobile-nav-title">Biometrics</span>
+        </a>
+        <a href="chapter-7-work.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">06</span>
+            <span class="mobile-nav-title">Work Auth & SSN</span>
+        </a>
+        <a href="chapter-8-interview.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">07</span>
+            <span class="mobile-nav-title">Interview</span>
+        </a>
+        <a href="chapter-9-green.html" class="mobile-nav-item">
+            <span class="mobile-nav-number">08</span>
+            <span class="mobile-nav-title">The Green Card</span>
+        </a>
+    </div>
+
+    <div id="english-content">
+    <nav class="chapter-nav">
+        <a href="chapter-1.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">Intro</span>
+            <span class="chapter-nav-title">Introduction</span>
+        </a>
+        <a href="#" class="chapter-nav-item active">
+            <span class="chapter-nav-number">01</span>
+            <span class="chapter-nav-title">Plan Your Route</span>
+        </a>
+        <a href="chapter-3-evidence.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">02</span>
+            <span class="chapter-nav-title">Evidence & Paperwork</span>
+        </a>
+        <a href="chapter-4-waiting.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">03</span>
+            <span class="chapter-nav-title">The Waiting</span>
+        </a>
+        <a href="chapter-5-medical.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">04</span>
+            <span class="chapter-nav-title">Medical Exam</span>
+        </a>
+        <a href="chapter-6-biometrics.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">05</span>
+            <span class="chapter-nav-title">Biometrics</span>
+        </a>
+        <a href="chapter-7-work.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">06</span>
+            <span class="chapter-nav-title">Work Auth & SSN</span>
+        </a>
+        <a href="chapter-8-interview.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">07</span>
+            <span class="chapter-nav-title">Interview</span>
+        </a>
+        <a href="chapter-9-green.html" class="chapter-nav-item">
+            <span class="chapter-nav-number">08</span>
+            <span class="chapter-nav-title">The Green Card</span>
+        </a>
+    </nav>
+
+    <!-- Hero Image -->
+    <div id="chapter-hero" style="margin-top: 140px; position: relative; z-index: 2;">
+        <div style="overflow: hidden; line-height: 0;">
+        <svg id="hero-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 400" style="width: 100%; height: auto; display: block; overflow: visible;">
+  <defs>
+    <style>
+      .cls-1, .cls-2 { fill: #3e527e; }
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15 { isolation: isolate; }
+      .cls-1, .cls-4 { opacity: .3; }
+      .cls-2, .cls-3, .cls-5 { opacity: .14; }
+      .cls-16 { fill: #ab3939; }
+      .cls-3, .cls-4 { fill: #c0782f; }
+      .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 { fill: #ac3939; }
+      .cls-6 { opacity: .22; }
+      .cls-7 { opacity: .28; }
+      .cls-8 { opacity: .4; }
+      .cls-9, .cls-11 { opacity: .65; }
+      .cls-10 { fill: none; opacity: .15; stroke: #3e527e; stroke-dasharray: 8 7; stroke-linecap: round; stroke-width: 2px; }
+      .cls-17 { fill: #3d517e; }
+      .cls-11 { fill: #fbcfd0; }
+      .cls-12 { fill: #faeadc; opacity: .82; }
+      .cls-13 { fill: #fde2e2; opacity: .75; }
+      .cls-18 { fill: #ebf2e4; }
+      .cls-14 { fill: #d1e0c5; }
+      .cls-14, .cls-15 { opacity: .78; }
+      .cls-15 { fill: #e3ebdc; }
+    </style>
+  </defs>
+  <rect class="cls-18" x="1.32" width="1920" height="400"/>
+  <g>
+    <path class="cls-10" d="M-238.31,271.37c139.69,0,244.46-122.23,366.69-139.69"/>
+    <path class="cls-10" d="M215.68,131.68c139.69,0,244.46,139.69,366.69,165.88"/>
+    <path class="cls-10" d="M673.17,297.57c136.2,0,240.97-165.88,363.2-186.84"/>
+    <path class="cls-10" d="M1127.16,110.73c153.66,0,258.43,125.72,398.12,151.91"/>
+    <path class="cls-10" d="M1619.57,262.64c115.24,0,185.09-43.65,254.94-61.11"/>
+    <circle class="cls-12" cx="172.03" cy="131.68" r="87.31"/>
+    <circle class="cls-3" cx="172.03" cy="131.68" r="55.88"/>
+    <circle class="cls-4" cx="172.03" cy="131.68" r="24.45"/>
+    <circle class="cls-15" cx="631.26" cy="297.57" r="69.85"/>
+    <circle class="cls-2" cx="631.26" cy="297.57" r="43.65"/>
+    <circle class="cls-1" cx="631.26" cy="297.57" r="19.21"/>
+    <circle class="cls-13" cx="1081.76" cy="110.73" r="62.86"/>
+    <circle class="cls-5" cx="1081.76" cy="110.73" r="38.41"/>
+    <circle class="cls-7" cx="1081.76" cy="110.73" r="15.72"/>
+    <circle class="cls-14" cx="1572.43" cy="262.64" r="66.35"/>
+    <circle class="cls-2" cx="1572.43" cy="262.64" r="41.91"/>
+    <circle class="cls-1" cx="1572.43" cy="262.64" r="17.46"/>
+    <circle class="cls-11" cx="1839.58" cy="201.53" r="96.04"/>
+    <circle class="cls-6" cx="1839.58" cy="201.53" r="62.86"/>
+    <circle class="cls-8" cx="1839.58" cy="201.53" r="31.43"/>
+    <circle class="cls-9" cx="1839.58" cy="201.53" r="12.22"/>
+  </g>
+  <g>
+    <g>
+      <path class="cls-16" d="M450.42,276.86c-14.25,5.99-31.25-5.01-37.42-21.4-3.39-9-4.66-18.48-7.19-27.83-2.2-8.12-5.72-16.1-3.58-24.92,5.48-22.57,22.71-45.6,46.79-46.31,15.1-.44,31.76,24.8,32.68,43.89,1.05,21.62-2.81,43.25-13.65,61.88-3.75,6.45-11.09,11.94-17.62,14.68ZM464.05,227.77l3.39-13.7-1.37-16.16c-1.09-12.86-16.1-31.75-26.51-25.88-16.68,9.41-14.87,17.35-16.15,30.53-1.23,12.73,1.32,24.79,4.35,36.93,2.27,9.09,6.07,16.99,14.08,22.21,10.85,7.08,18.62-19.38,22.22-33.93Z"/>
+      <path class="cls-16" d="M520.7,258.85c-4.44-17.45-1.73-49.75-7.8-72.21-4.9,6.01-8.16,12.66-13.66,13.17-1.92.18-5.24-1.72-6.46-2.77-7.19-6.19,14.42-37.54,23.31-38.48,3.54-.38,10,.37,11.14,3.72,5.18,15.24,8.8,53.62,10.34,73.39.91,11.66,6.16,24.81-7.25,27.88-2.53.58-8.75-1.32-9.61-4.7Z"/>
+    </g>
+    <g>
+      <path class="cls-17" d="M684.4,259.02c.03,4.14,2.1,11.08-1.43,13.74s-8.27,2.09-10.93.18c-2.74-1.97-4.62-5.5-4.59-9.58.16-20.95.19-40.99-.93-61.93-.44-8.22-8.67-7.66-9.41-13.12-.24-1.79,1.09-5.68,2.21-7.06,8.08-9.97,19.32-13.7,31.16-15.56,7.87-1.24,14.07-1.62,22,.78,10.83,3.28,18.12,14.06,12.97,26.08-6.19,14.44-15.88,27.36-30.78,34.04-3.51,1.57-7.12.67-10.52-1.48l.26,33.91ZM712.43,184.39c2.66-6.05-18.72-5.51-31.93,2.05l2.92,24.25c11.18,1.2,23.93-14.77,29.01-26.31Z"/>
+      <g>
+        <path class="cls-17" d="M746.4,281.91c-3.67-1.59-6.53-5.090-6.7-8.83-1.51-32.68,3.48-65.21,1.44-97.08-.3-4.74-.79-10.61,5.78-11.08,5.06-.37,10.42,4.02,10.49,9.63.22,18.41.57,36.42-.47,54.74-.86,15.07-.68,29.11.66,44.32.2,2.31-.91,6.16-2.33,7.36-1.87,1.57-6.03,2.16-8.86.94Z"/>
+        <g>
+          <path class="cls-17" d="M804.38,271.96l-.68-3.64c-1-5.35-10.08,15.49-24.93,11.91-3.06-.74-6.96-4.26-8.8-8.07-3.54-7.35-2.15-15.37-1.7-23.4l.63-11.28c.12-2.2,6.34-3.58,8.65-3.5,2.47-5.53,6-10.29,12.43-10.26l12.45.07c3.93.02,7.55.12,10.17,2.7,2.25,2.22,4.25,6.01,4.64,9.75l2.66,25.83,2.98,15.99c.29,1.56-1.76,4.97-3.12,5.79s-4.8,1.04-6.43.45c-5.57-2.01-7.81-6.35-8.94-12.35ZM790.08,256.23l9.44-18.91c-2.62-.88-6.79.04-7.51,1.86-2.11,5.34-3.44,10.59-1.93,17.05Z"/>
+          <path class="cls-17" d="M870.39,253.73c-1.73-11.8-5.95-18.43-8.71-15.07l-3.33,4.06c-15.5,18.88-2.43,32.72-10.65,38.56-2.13,1.51-7.7,2.33-9.31.42l-5.25-6.23-4.06-36.85c-.61-5.51,1.73-9.72,7.3-11.6,2.65-.9,6.8,2.24,9.27,4.92,6.55-7.12,14.02-13.01,23.94-9.59,8.56,2.95,13.63,12.26,15.62,21.2l6.17,27.76c.72,3.23-.24,7.53-2.7,9.19-4.74,3.19-14.61-1.64-15.25-5.96l-3.06-20.79Z"/>
+        </g>
+      </g>
+    </g>
+    <g>
+      <path class="cls-17" d="M1273.43,251.97l-12.66-11.52-7.85-7.37,1.79,16.99c.42,3.99-1.15,9.6-4.85,11.81-4.05,2.41-10.25-1.33-11.23-6.45-3.47-18.22-3-37.08-2.78-56.16l-.58-11.12c-.22-4.15-1.98-10.04.25-13.43,7.99-12.16,21.06-17.87,34.84-16.62l10.27,1.75c3.3.56,7.69,3.66,8.41,6.97,2.09,9.6-.75,18.3-6.03,25.78l-18.75,26.51,16.26,16.3,12.96,9.07c7.74,1.83,12.34,7.17,10.68,15.61-.47,2.37-2.34,5.82-4.27,6.45-2.83.92-5.69-.23-8.11-1.9l-18.34-12.65ZM1271.77,179.1l1.1-2.84c1.15-2.99-16.96-1.29-20.43,6.83-2.63,6.14-.29,13.71.23,21.06,7.17-5.23,16.16-17.41,19.11-25.06Z"/>
+      <path class="cls-17" d="M1442.81,266.38c-5.57,2.16-11.2-4.89-11.7-9.44l-2.25-20.5c-1-9.12-8.27-.04-16.06-8.7-1.82-2.02-3.1-5.91-3.08-8.65.02-2.43,3.29-6.82,5.77-7.06,4.52-.44,7.08-.12,11.89.44l2.02-22.29,2.27-15.67c.64-4.46,8.77-6.23,12.35-3.59,2.58,1.91,3.39,6.85,2.8,9.87-2.15,11.04-2.34,20.57-2.15,32.24l8.79-1.03c4-.47,11.73,2.08,10.12,7.06-2.34,7.25-10.23,9.93-17.26,12.14-1.12,7.32-.23,14.01,1.65,21.36,1,3.9-.4,12-5.14,13.84Z"/>
+      <path class="cls-17" d="M1518.27,250.38c-2.5,11.02-11.17,16.11-20.58,18.72-9.06,2.51-16.63,1-23.17-6.45-1.95-2.22-4.66-6.72-5.15-10.29l-2.75-20,4.94-11.25c4.75-10.82,11.59-22.33,21.85-21.4,5.2.47,8.59,3.73,11.78,7.97s5.22,11.15.22,15.22l-19.78,16.08c-3.22,2.62-1.35,8.61,1.1,11.03,7.47,7.42,17.8.05,26.23-8.79,3.21-.43,6.24,5.13,5.32,9.15Z"/>
+      <path class="cls-17" d="M1320.46,264.66c-7.61-2.66-11.66-7.6-14.05-14.9-4.06-12.4-3.64-24.97-2.26-38.18.27-2.53.62-5.9,1.75-7.78,2.32-3.87,7.89-.17,16.76-2.73,7.34-2.12,11.8,4.57,15.32,9.5,2.56,3.58,6.71,6.46,7.98,11.33,5.8,22.21-11.06,47.83-25.5,42.77ZM1324.66,247.57c7.19-5.72,9.2-13.45,8.86-21.06l-8.08-10.18-5.11,9.04c-2.24,7.26-.86,16.1,4.32,22.2Z"/>
+      <path class="cls-17" d="M1359.09,238.19c-2.52-10.27-4.29-20.24-2.2-30.14.89-4.21,6.24-7.02,9.47-6.26,12.34,2.89.38,18.78,12.35,39.98,1.79,3.17,3.65,4.87,7.81,6.49l.21-10.78-.53-27.11c-.07-3.72.84-7.8,3.89-9.14,2.79-1.230,7.95-1.22,9.72.63,2.99,3.11,2.11,7.19,1.58,11.21-2.32,17.6,4.45,32.54-3.15,46.63-1.4,2.32-6.75,5.39-9.42,5.88-12.1,2.21-26.22-13.14-29.71-27.39Z"/>
+    </g>
+    <g>
+      <path class="cls-17" d="M989.35,268.49l-2.14-41.31.42-22.69-16.61-25.51c-2.72-4.17-5.39-9.63-5.41-14.5-.01-4,3.79-5.99,6.66-6.56,3.29-.65,7.07.72,9.12,3.94l16.24,25.56,10.24-24.72c1.97-4.74,5.93-8.21,11.21-8.32,5.69,2.35,8.09,8.16,5.23,13.73l-5.6,10.91-9.81,30.68-2.98,10.74c-2.06,7.44-1.14,16.03-.24,23.73l1.83,15.62c.67,5.74,1.04,13.75-4.69,17.4-5.08,3.23-13.13-2.28-13.47-8.73Z"/>
+      <path class="cls-17" d="M1104.2,225.8l1.83,18.4c1.75,17.68-11.72,31.42-21.4,30.36-15.55-1.7-25.85-30.44-17.17-52.5,1.37-3.47,8.45-3.29,11.02-1.57,9.34,6.27-3.98,22.76,9.93,35.74,4.42-16.41-7.45-30.56,6.33-36.1,3.95-1.59,9,1.03,9.46,5.66Z"/>
+      <path class="cls-17" d="M1058.43,246.29c2.71,18.02-14.4,33.24-24.16,31.45-3.97-.73-7.43-3.58-9.47-7.06-6.59-11.19-6.59-22.96-3.95-35.11,1.48-6.82,4.21-9.63,10.84-11.16,4.56-1.06,8.88-2.69,12.97.17,7.8,5.45,12.28,11.74,13.77,21.7ZM1039.4,258.35c7.48-6.93,6-16.18.43-22.62-4.17,7.34-4.25,15.93-.43,22.62Z"/>
+      <path class="cls-17" d="M1122.82,270.02c-5.46-4.92-6.28-11.39-8.03-17.58l-4.99-17.61c-1.28-4.51.05-9.47,3.86-11.75s8.78-1.79,12.23,2.09l10.9-10.67,21.4-6.28c3.37-.99,5.24,6.64,4.36,9.23-.85,2.51-4.02,6.36-7.52,7.14-14.53,3.24-22.92,16.17-18.13,30.99,1.56,4.84-1.74,13.38-5.18,14.96-1.89.87-7.18,1.02-8.9-.53Z"/>
+    </g>
+  </g>
+</svg>
+        </div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 3rem 3rem 2rem; display: flex; align-items: center; justify-content: space-between;">
+            <a href="chapter-1.html" class="nav-arrow" title="Previous Chapter" aria-label="Previous Chapter">←</a>
+            <a href="chapter-3-evidence.html" class="nav-arrow" title="Next Chapter" aria-label="Next Chapter">→</a>
+        </div>
+    </div>
+
+    <div id="section-jump" style="background: #E3ECDC; padding: 2rem 3rem;">
+        <h2 style="font-family: 'Source Serif 4', serif; font-weight: bold; font-size: 20pt; color: #3D517D; margin-bottom: 1rem;">In this Section...</h2>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <a href="#find-your-route" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">Find Your Route</a>
+            <a href="#explore-all-routes" style="padding: 0.75rem 1.5rem; background: white; color: #3D517D; border: 2px solid #3D517D; border-radius: 4px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: bold; font-size: 12pt; transition: all 0.3s ease;">Explore All Routes</a>
+        </div>
+    </div>
+
+    <main id="main-content" style="margin-top: 0;">
+
+        <div class="content-wrapper">
+            <div class="main-content-area">
+
+                <!-- ============================================================ -->
+                <!-- BEGIN CHAPTER 2 CONTENT                                      -->
+                <!-- ============================================================ -->
+
+                <!-- ============================================================ -->
+                <!-- PART 1: ROUTE FINDER                                         -->
+                <!-- All questionnaire and result copy lives in the <script> at    -->
+                <!-- the bottom of the page (search for "QUESTION COPY" and        -->
+                <!-- "RESULT COPY").                                               -->
+                <!-- ============================================================ -->
+
+                <div class="callout-anchor tool-intro">
+                <!-- NOTE: Reuses the "Choosing Your Path" lettering SVG from the original page -->
+                <h2 id="find-your-route" class="section-heading" style="margin-bottom: 1rem; scroll-margin-top: 120px;" aria-label="Choosing Your Path"><svg style="display: block; overflow: visible; height: 60px; width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2475.23 484.81" aria-hidden="true"><g><path style="fill:#3d517d;" d="M975.04,400.37c5.59-5.930,18.29.5,27.2,18.43,8.41,16.91,25.47,34.89,46.65,30.03,23.66-5.43,47.27-58.65,50.41-91.99,2.48-26.33-.13-51.64-4.94-78.07-33.14,16.2-64.52.29-75.040-32.23-6.45-19.93-8.91-75.6-3.69-83.26,3.27-4.8,14.29-8.26,20.56-12.15,10.13-6.28,17.55-17.94,31.28-17.87,10.89.06,28.7,1.57,36.45,7.41,23.67,17.84,24.75,44.72,29.11,70.62l11.49,68.2c6.28,37.27,7.15,74.85-4.53,110.51-12.71,38.82-34.47,71.65-70.71,90.88-9.47,5.03-22.03,4.45-32.02,2.57-59.28-11.17-71.29-73.49-62.23-83.09ZM1092.59,170.57c2.77-4.31-9.99-14.26-14.01-10.82-15.07,20.24-20.51,57.87-4.94,79.24,23.79-21.12-.51-38.16,18.95-68.43Z"/><path style="fill:#3d517d;" d="M393.37,306.48c-4.5,4.31-17.72,7.96-23.83,5.44-5.46-2.25-14.43-11.32-14.98-18.01l-7.95-97.46c-.92-11.33-6.5-21.38-18-24.36-18.1,25.07-24.96,58.61-17.21,88.93,3.23,12.65,3.27,19.9-6.03,29.6-7.42,7.75-19.52,13.99-28.66,11.24-15.15-4.55-16.21-12.9-18.18-26.65-9.61-66.93-19.13-132.28-22.91-199.86l-2.13-37.96c.27-7.14,16.19-13.12,23.33-13.46,7.89-.37,22.5,3.59,25.11,13.03,8,28.95,1.07,71.33,11.45,111.44,24.24-16.1,47.55-20.6,73.74-8.67,17.4,7.92,26.39,28.2,28.91,47.97l8.97,70.31,4.32,33.22-15.96,15.26Z"/><path style="fill:#3d517d;" d="M97.98,262.09c33.26,34.58,63.39-13.07,100.85-21.49,5.72,3.02,11.23,13.81,10.79,19.46-2.4,30.95-58.61,59.82-106.81,56.64-24.03-1.59-42.64-22.38-56.34-40.97-24.19-32.81-28.02-75.38-17.12-114.15,10.28-36.57,24.52-71.57,49.55-100.14,11.93-13.62,23.43-24.12,41.64-27.81,32.48-6.59,58.59,16.84,63.38,48.98,1.87,12.55,2.56,22-6.48,29.47-8.88,7.34-22.46,10.8-32-.78-8.42-10.21-4.11-25.09-12.77-35.93-8.69-10.87-60.8,53.61-61.01,126.53-.07,24.9,10.38,43.62,26.32,60.19Z"/><path style="fill:#3d517d;" d="M957.22,252.16l-4.2-65.68c-.22-3.5-4.57-10.97-6.99-13.79-20.1,38.98-22.97,64.41-19.06,105.96,1.19,12.6-12.88,20.24-23.03,21.61-7.93,1.07-23.63-1.2-26.43-14.03-9.96-45.57-8.11-92.31-1.53-139.84.98-7.1,13.08-14.26,19.61-15.62,7.22-1.51,17.58,5.22,26.11,10.52,8.31-2.7,23.27-10.29,32.3-8.93,27.55,4.17,43.41,23.89,47.06,50.22l10.79,77.78c1.21,8.74-20.3,29.21-39.07,21.2-13.98-5.96-14.64-14.79-15.57-29.41Z"/><path style="fill:#3d517d;" d="M616.28,307.1c-24.29,7.25-44.19-3.27-58.15-20.27-24.32-29.64-30.74-103.82-2.83-138.62,18.18-22.67,51.66-26.33,72.36-4.45,21.27,22.48,39.27,52.37,42.63,84.43,3.64,34.76-21.05,69.07-54.01,78.91ZM627.09,244.32c5.81-31.8-8.13-63.1-32.6-82.25-3.83-3-12.18,9.62-11.3,14.13,5.7,29.07-7.81,65.47,25.8,94.47l18.09-26.35Z"/><path style="fill:#3d517d;" d="M453.32,316.4c-36.54-11.03-53.81-85.38-39.81-128.99,3.29-10.25,12.84-28.31,22.17-31.76,10.1-3.73,26.1-6.83,36.24-8.41,27.57-4.32,57.53,47.16,60.2,82.14,1.92,25.05-8.81,46.7-22.23,67.63-10.38,16.19-35.18,25.85-56.58,19.4ZM474.32,273.61c29.78-40.94,15.98-95.97-8.13-94.22-2.95.21-4.76,8.02-4.97,11.02l-2.39,34.21c-1.1,15.78,7.57,33.72,15.49,48.99Z"/><path style="fill:#3d517d;" d="M709.19,300.9c-23.23-2.45-32.34-27.88-30.06-48.47.82-7.39,3.92-14.23,8.44-18.35,3.52-3.21,15.5-2.1,17.9,2.08l13.19,22.97c10.49-11.26,1.28-20.43-7.7-27.71-22.36-8.06-40.72-24-45.36-49.54,10.52-34.48,41.54-58.35,78.81-57.11,10.78-1.03,25.25,10.33,22.44,21.12-5.58,21.44-32.54,11.58-47.13,23.75-2.75,2.3-2.19,13.84.94,15.96l30.26,20.36c12.67,8.53,20.52,23.64,20.55,35.9.11,36.71-35.56,61.87-62.28,59.05Z"/><path style="fill:#3d517d;" d="M850.62,270.87c1.87,11.01-6.3,21.9-14.32,26.1-8.3,4.35-28.68,5.69-32.43-5.48-5.67-16.87-5.7-35.66-9.09-53.43s-6.8-36.11-2.16-52.05c4.14-14.19,18.46-15.62,28.32-12.41,13.68,4.46,15.33,12.67,17.72,26.74l11.97,70.53Z"/><path style="fill:#3d517d;" d="M821.83,147.05c-15.72-1.26-22.5-16.06-18.16-27.57,4.62-3.38,14.85-9.12,20.32-9.67,9.26-.93,15.34,11.9,15.19,19.28-.18,8.890-7.27,18.77-17.35,17.96Z"/></g><g><path style="fill:#3d517d;" d="M1320.02,301.3l-1.83-117.49-18.35-29.58-47.22-87.96c-2.44-4.54-1.25-16.03.68-19.89,2.21-4.41,12.76-10.56,17.22-8.47l22.35,10.49,41.31,63.12c10.2-32.51,24.74-63.25,41.58-93.47,10.68-5.11,28.99-3.85,36.22,3.9,8.44,9.06.26,19.87-3.32,27.99l-20.27,46.07c-38.99,88.61-12.34,183.46-17.26,210.28-2.47,13.49-16.45,22.5-25.32,21.93-13.94-.9-25.54-10.11-25.8-26.92Z"/><path style="fill:#3d517d;" d="M1426.41,323.51c-9.25-2.76-24.36-16.47-28.31-25.08-13.28-28.94-22.12-80.22,4.34-83.04,10.54-19.17,29.26-30.17,49.51-28.42,21.71,1.88,36.63,14.05,45.47,35.35,10.76,25.93,3.94,54.52-13.33,77.26-12.9,16.99-31.98,31.6-57.69,23.93ZM1444.03,278.48c18.52-17,17.86-46.31-3.35-60.44-6.4,20.74-6.94,40.69,3.35,60.44Z"/><path style="fill:#3d517d;" d="M1510.19,224.99c.21-10.95-.16-25.18,3.04-34.3,4.49-12.79,19.78-14.27,27.55-10.82,29.41,13.06,8.38,41.13,20.6,79.14,34.71-38.98-7.92-82.36,10.21-101.16,8.43-8.74,23.42-5.04,33.1,2.17,9.84,7.33,8.03,22.68,10.49,34.46,8.13,38.99-2.02,77.41-33.65,102.81-17.19,13.81-41.47,10.3-55.37-8.21-13.36-17.8-16.39-41.47-15.97-64.08Z"/><path style="fill:#3d517d;" d="M1692.62,304.32c-3.91,12.11-32.85,17.98-40.25,7.12-20.78-30.49-20.77-68.51-24.45-104.19-1.3-12.55-2.56-28.39,9.06-35.63,12.92-8.06,28.76.99,38.2,11.14,26.11-19.78,51.82-41.59,73.83-20.18,3.99,3.88,8.48,11.99,8.08,17.25-.35,4.62-8.17,11.57-13.72,13.36-29.16,9.41-54.04,31.29-52.57,64.56.63,14.24,7.08,30.27,1.82,46.57Z"/></g><g><path style="fill:#3d517d;" d="M2169.37,338.05c.74,4.25-3.11,14.23-6.32,16.75-7.87,6.18-35.12,5.95-40.5-15.61l-9.23-36.98c-19.01,23.22-45.4,27.39-65.61,7.7-22.12-21.56-27.47-58.78-20.31-88.61,1.77-16.39,14.08-25.84,29.8-23.05,11.56-14.68,29.37-20.57,48.25-17.43,31.07,5.62,56.13,25.79,54.85,58.58,8.35-9.91,17.19-13.52,29.47-16.54l18.08-4.44-.54-53.77c-.09-8.98,2.37-20.91,11.69-24.6,12.98-5.14,35.52,8.34,36.03,22.74l1.73,49.31,40.03-11.53c-4.48-36.7-5.34-68.28.46-101.67,12.63-6.8,24.74-6.01,34.54,1.76,9.98,7.9,11.22,18.28,9.81,32.37-3.18,31.6,1.71,63.59,6.73,95.48,17.09-24.92,54.95-40.43,76.16-28.88,11.81,6.43,18.56,17.53,22.8,28.97l16.47,44.4,10.82,40.99c3.68,13.95-8.93,26.29-21.13,29.55-10.34,2.76-28.22-4.52-31.05-16.66l-20.43-87.62c-31.1,20.58-42,50.8-41.5,85.25.13,9.37-14.48,17.8-21.93,19.07-8.28,1.41-28.07-2.5-29.09-12.91l-9.09-92.45-43.4,20.97,3.72,67.72c.92,16.69-18.76,19.96-30.92,16.59-13.04-3.61-16.44-15.15-17.18-29.87l-2.2-43.4c-23.91,5.71-38.22-3.42-49.95-24.06-.2,30.71,3.53,60.93,8.95,91.9ZM2099.35,213.53c-16.94,13.81-26.25,38.51-19.03,60.59,19.45-19.52,34.27-51.79,19.03-60.59Z"/><path style="fill:#3d517d;" d="M1966.29,212.7l9.23,67.54c1.63,11.94-10.28,21.33-19.84,22.84-5.5.87-15.71,2.88-17.93-.49l-9.48-14.42-15.8-128.4c-.2-13.64.42-31.8-5.16-43.4-4.41-9.18-10.24-14.86-10.06-24.54.74-38.89,100.16-62.75,146.45-26.64,28.77,22.44,13.4,72.65-18.16,105.11-6.8,7-16.03,16.37-23.69,20.99l-35.55,21.44ZM1960.7,164.06c26.6-12.92,51.76-34.52,54.12-64.88,1.08-13.95-21.21-15.48-29.77-13.29l-33.36,8.56,9.01,69.62Z"/></g></svg></h2>
+                <p style="margin-bottom: 1rem;">Every family’s situation is a little different. Answer a few quick questions, and we’ll show you your likely route: the forms you’ll need, the major steps ahead, and who handles each one.</p>
+
+                </div>
+
+                <section id="routeTool" class="route-tool" aria-live="polite">
+                    <noscript>
+                        <p>This tool needs JavaScript to run. You can still explore every route in the section below.</p>
+                    </noscript>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- PART 2: EXPLORE ALL ROUTES (original chapter content)        -->
+                <!-- ============================================================ -->
+
+                <section class="explore-section">
+                <!-- NOTE: Placeholder text heading. Swap for a hand-lettered SVG heading to match the other H2s. -->
+                <h2 id="explore-all-routes" class="explore-heading">Explore All Routes</h2>
+                <p style="margin-bottom: 1.5rem;">Want to see the full picture? Here is everything about family-based green cards in one place, including the routes that may not apply to you.</p>
+
+                <!-- Who Can Apply -->
+                <details class="explore-item" id="explore-who-can-apply">
+                    <summary>Who Can Apply?</summary>
+                    <div class="explore-body">
+                        <div class="callout-anchor">
+                        <h3 id="relationship-eligibility">Relationship Eligibility</h3>
+                        <p style="margin-bottom: 1.5rem;">Some relationships are not eligible for a family-based green card. Use the table below to see which relationships qualify.</p>
+                        <div style="margin: 0.5rem 0; text-align: center;">
+                            <img src="Website_EligibilityTable.png" alt="Relationship eligibility table showing which family relationships qualify for a family-based green card" style="max-width: 100%; height: auto; border-radius: 8px;">
+                        </div>
+                        <p style="margin-top: 0.5rem; margin-bottom: 1rem; font-size: 11pt; color: #AB3838;"><span style="font-weight: bold;">*</span> Family Preference Category (subject to waiting list)</p>
+
+                        <div class="callout-box note note-field">
+                            <div class="note-head"><span class="note-icon" data-icon="field"></span><span class="note-label">Field Notes</span></div>
+                            <p class="note-title">Who Qualifies As a Child?</p>
+                            <div class="note-body"><p>"Child" includes certain stepchildren and adopted children, but strict rules apply (especially timing and legal relationship requirements).</p></div>
+                        </div>
+                        <div class="callout-box note note-field">
+                            <div class="note-head"><span class="note-icon" data-icon="field"></span><span class="note-label">Field Notes</span></div>
+                            <p class="note-title">Upgrading Your Petition</p>
+                            <div class="note-body"><p>If a green card holder becomes a U.S. citizen, their petition can often be upgraded, which can speed things up.</p></div>
+                        </div>
+                        </div>
+
+                        <h3 id="what-is-a-family-preference-category">What is a Family Preference Category?</h3>
+                        <p style="margin-bottom: 1rem;">A family preference category is a type of family-based green card that is subject to annual limits set by U.S. law. Because only a fixed number of visas are available each year in these categories, applicants are placed on a waiting list after their application is filed. Their place in line is determined by their priority date (the filing date of the application), and they must wait until that date becomes "current" in the U.S. Department of State's monthly Visa Bulletin before they can move forward with getting a green card.</p>
+
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; margin-bottom: 0.75rem;"><svg style="width: 40px; height: 40px; flex-shrink: 0; display: block; overflow: visible;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path fill="#3d517d" d="M45.71,13.99v-3.21c-7.27,5.17-14.54,2.18-21.81-.39h0c-.07-.02-.14-.05-.21-.07-.09-.03-.19-.07-.29-.1h0c-6.38-2.23-12.75-3.98-19.13.56v16.06c6.47-4.61,12.95-2.73,19.42-.46,7.34,2.58,14.67,5.68,22.01.46v-3.21c-7.27,5.17-14.54,2.18-21.81-.39v-3.21c7.27,2.56,14.54,5.56,21.81.39v-3.21c-7.27,5.17-14.54,2.18-21.81-.39v-3.21c7.27,2.56,14.54,5.56,21.81.39ZM17.66,13.7c.1-.18.19-.35.29-.53.02-.04.06-.04.08.02.1.22.19.44.29.66.02.05.08.11.13.13.22.08.44.18.66.26.05.02.06.06.02.08-.16.11-.32.22-.47.34-.04.02-.06.09-.05.14.04.23.07.45.11.68,0,.05-.02.07-.07.03-.19-.15-.39-.3-.58-.45-.05-.04-.12-.05-.17-.04-.19.06-.39.12-.58.18-.05.01-.08-.01-.07-.06.04-.21.07-.42.11-.63,0-.05-.01-.13-.05-.17-.16-.19-.32-.37-.47-.56-.04-.05-.02-.08.02-.07.22.01.44.02.65.04.05,0,.11-.03.13-.07ZM4.28,30.05v3.21c13.81-9.83,27.62,9.83,41.43,0v-3.21c-13.81,9.83-27.62-9.830-41.43,0ZM4.28,36.47v3.21c13.81-9.83,27.62,9.83,41.43,0v-3.21c-13.81,9.83-27.62-9.83-41.43,0Z"/></svg><p style="font-weight: bold; margin: 0;">Family Preference Categories by Petitioner Status</p></div>
+                        <div class="two-col-grid" style="margin: 0 0 1.5rem;">
+                            <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                                <h4>For U.S. Citizens</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="line-height: 1.3;">F1 - Unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">21 or older</span></li>
+                                    <li style="line-height: 1.3; margin-top: 0.75rem !important;">F3 - Married children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">any age</span></li>
+                                    <li style="line-height: 1.3; margin-top: 0.75rem !important;">F4 - Siblings<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">petitioner must be 21+</span></li>
+                                </ul>
+                            </div>
+                            <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                                <h4>For Green Card Holders</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="line-height: 1.3;">F2A - Spouse and unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">under 21</span></li>
+                                    <li style="line-height: 1.3; margin-top: 0.75rem !important;">F2B - Unmarried children<br><span style="font-size: 10pt; font-style: italic; line-height: 1;">21 or older</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p style="margin-bottom: 1rem;">You can view the most recent Visa Bulletin to check your preference category status here:</p>
+                        <a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html" target="_blank" rel="noopener noreferrer" class="tool-btn primary" style="margin-bottom: 2.5rem;">Visa Bulletin</a>
+
+                        <h3 id="things-that-could-affect-your-case">Things That Could Affect Your Case</h3>
+                        <p style="margin-bottom: 1rem;">Even if you check all the boxes already mentioned, you may run into issues if:</p>
+                        <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1rem;">
+                            <li style="margin-bottom: 0.5rem;">You entered the U.S. without inspection (for Adjustment of Status cases only)</li>
+                            <li style="margin-bottom: 0.5rem;">You have certain criminal history</li>
+                            <li style="margin-bottom: 0.5rem;">You have overstayed or violated a visa</li>
+                            <li style="margin-bottom: 0.5rem;">You have had prior immigration issues or denials</li>
+                        </ul>
+                        <p style="margin-bottom: 1rem;">If any of these apply, your case may still be possible, but you may need extra steps. You can learn more about "inadmissibility" and what you can do about it here:</p>
+                        <a href="https://www.boundless.com/immigration-resources/grounds-of-inadmissibility-explained" target="_blank" rel="noopener noreferrer" class="tool-btn primary">Grounds of Inadmissibility Explained</a>
+
+                        <div class="note note-help">
+                            <div class="note-head"><span class="note-icon" data-icon="help"></span><span class="note-label">Need Help?</span></div>
+                            <div class="note-body">
+                                <p>It would be a good idea to consult an immigration attorney if any of these describe your case. You can find low-cost or free legal help here:</p>
+                                <div class="resource-buttons">
+                                    <a href="https://www.justice.gov/eoir/list-pro-bono-legal-service-providers" target="_blank" rel="noopener noreferrer" class="resource-btn">Department of Justice</a>
+                                    <a href="https://www.ailalawyer.com/" target="_blank" rel="noopener noreferrer" class="resource-btn">AILA</a>
+                                    <a href="https://www.immi.org/en/Info/get-legal-help" target="_blank" rel="noopener noreferrer" class="resource-btn">Immi.org</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Inside vs. Outside the U.S. -->
+                <details class="explore-item" id="explore-choosing-your-path">
+                    <summary>Inside vs. Outside the U.S.</summary>
+                    <div class="explore-body">
+                        <h3 id="inside-the-us">Inside the U.S.<br><span style="font-size: 11pt; font-style: italic; font-weight: normal; line-height: 1;">Adjustment of Status</span></h3>
+                        <p style="margin-top: 1rem; margin-bottom: 1rem;">Adjustment of Status (AOS), is the process of applying for a green card from inside the United States. This option is usually available to people who are already in the U.S. and qualify to apply without leaving the country.</p>
+                        <p style="margin-bottom: 1.5rem;">With AOS, you submit your application to USCIS, attend a biometrics appointment, and may attend an interview before receiving your green card. In many cases, you can stay in the U.S. while your application is pending and apply for a work permit and travel authorization during the process.</p>
+
+                        <div class="two-col-grid" style="margin-bottom: 2rem;">
+                            <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                                <h4>Pros</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="margin-bottom: 0.5rem;">Stay in the United States during the process</li>
+                                    <li style="margin-bottom: 0.5rem;">May apply for work and travel permits while waiting for a decision</li>
+                                    <li style="margin-bottom: 0.5rem;">Family members can often remain together in the U.S. during processing</li>
+                                </ul>
+                            </div>
+                            <div style="background: #FFE3E3; padding: 2rem; border-radius: 8px;">
+                                <h4>Cons</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="margin-bottom: 0.5rem;">Government filing fees are often higher</li>
+                                    <li style="margin-bottom: 0.5rem;">Travel outside the U.S. is restricted until travel authorization is approved</li>
+                                    <li style="margin-bottom: 0.5rem;">Interviews and requests for additional evidence can cause delays</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 id="outside-the-us">Outside the U.S.<br><span style="font-size: 11pt; font-style: italic; font-weight: normal; line-height: 1;">Consular Processing</span></h3>
+                        <p style="margin-top: 1rem; margin-bottom: 1rem;">Consular processing is the process of applying for an immigrant visa through a U.S. embassy or consulate outside the United States. This option is commonly used when the immigrant lives abroad or is not eligible to apply for a green card inside the U.S.</p>
+                        <p style="margin-bottom: 1.5rem;">With consular processing, the case is first approved by USCIS and then transferred to the National Visa Center (NVC) and a U.S. embassy or consulate for an interview. Once the immigrant visa is approved, the person enters the United States as a lawful permanent resident and receives their green card afterward.</p>
+
+                        <div class="two-col-grid" style="margin-bottom: 2rem;">
+                            <div style="background: #E3ECDC; padding: 2rem; border-radius: 8px;">
+                                <h4>Pros</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="margin-bottom: 0.5rem;">May have lower overall government filing fees</li>
+                                    <li style="margin-bottom: 0.5rem;">No need to wait inside the U.S. during processing</li>
+                                    <li style="margin-bottom: 0.5rem;">Immigrant becomes a permanent resident immediately upon entering the U.S.</li>
+                                </ul>
+                            </div>
+                            <div style="background: #FFE3E3; padding: 2rem; border-radius: 8px;">
+                                <h4>Cons</h4>
+                                <ul style="list-style: disc; padding-left: 2rem; color: #3D517D;">
+                                    <li style="margin-bottom: 0.5rem;">Requires attending an interview at a U.S. embassy or consulate abroad</li>
+                                    <li style="margin-bottom: 0.5rem;">Delays can happen due to administrative processing or embassy backlogs</li>
+                                    <li style="margin-bottom: 0.5rem;">No U.S. work authorization during the process</li>
+                                    <li style="margin-bottom: 0.5rem;">International travel costs and scheduling can add stress and expense</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="callout-anchor">
+                        <h3 id="the-comparison" style="margin-top: 1rem;">The Comparison</h3>
+                        <p style="margin-bottom: 1.5rem;">Below is a very general view of the steps you will take on each pathway, assuming your application is successful. Note that some steps are in a different order depending on which you choose, and that there are some things that you will have to do on one path that you wouldn't have to do on the other.</p>
+
+                        <div class="two-col-grid" style="margin-bottom: 1.5rem;">
+                            <div style="background: #E3ECDC; border-radius: 8px; padding: 2rem;">
+                                <h4 style="margin-bottom: 1.25rem;">Adjustment of Status</h4>
+                                <ol class="compare-steps" data-compare="aos"></ol>
+                            </div>
+                            <div style="background: #E3ECDC; border-radius: 8px; padding: 2rem;">
+                                <h4 style="margin-bottom: 1.25rem;">Consular Processing</h4>
+                                <ol class="compare-steps" data-compare="cp"></ol>
+                            </div>
+                        </div>
+
+                        <div class="callout-box note note-field">
+                            <div class="note-head"><span class="note-icon" data-icon="field"></span><span class="note-label">Field Notes</span></div>
+                            <p class="note-title">Can I Switch Between Pathways?</p>
+                            <div class="note-body"><p>Technically, yes. However, this depends heavily on eligibility and circumstances. Victor (the inspiration for this website) moved from consular processing to AOS, but had the help of an immigration lawyer to ensure he wasn't doing anything he wasn't allowed to do. If you are considering switching from one pathway to another, it is highly recommended to find an immigration attorney to help you through that process.</p></div>
+                        </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- How Long -->
+                <details class="explore-item" id="explore-how-long">
+                    <summary>How Long Will This Take?</summary>
+                    <div class="explore-body">
+                        <p style="margin-bottom: 1rem;">It is impossible to estimate with 100% accuracy how long your process will take, since each case is different. You can do your part in ensuring there are no avoidable delays by reviewing your application many times before submitting and correcting any errors or adding any forgotten elements.</p>
+                        <p style="margin-bottom: 1rem;">If you would like a rough guess, USCIS has a tool online that will estimate your total processing time, which can be viewed here:</p>
+                        <a href="https://egov.uscis.gov/processing-times" target="_blank" rel="noopener noreferrer" class="tool-btn primary" style="margin-bottom: 1rem;">USCIS Wait Time Estimator</a>
+                        <div class="note note-important">
+                            <div class="note-head"><span class="note-icon" data-icon="important"></span><span class="note-label">Important</span></div>
+                            <p class="note-title">For Consular Processing</p>
+                            <div class="note-body"><p>If you are looking at a wait time for an I-130 approval and you have chosen the consular processing pathway, that is only the estimated time it will take USCIS to approve your I-130. You will still have waiting periods after when you submit your additional paperwork and are waiting for a visa.</p></div>
+                        </div>
+                        <p style="margin: 1.5rem 0;">Below, you will find timelines that are based on real experiences shared by applicants. Every case is different, so they cannot help you predict exactly how long your case will take. However, knowing how long it took others to make their way through the system may help you feel more at ease about your own situation.</p>
+                        <img src="TimelineExamples.png" alt="Real timeline examples chart showing processing times for Adjustment of Status and Consular Processing applicants" class="full-img">
+                    </div>
+                </details>
+
+                <!-- How Much -->
+                <details class="explore-item" id="explore-how-much">
+                    <summary>How Much Will This Cost?</summary>
+                    <div class="explore-body">
+                        <p style="margin-bottom: 1.5rem;">Cost will vary depending on what pathway you choose, what optional forms you submit, and whether you use an immigration lawyer or organization to help you file. Attorney fees vary by office, so there is no way to accurately estimate those. However, the below table can help you calculate your expected costs based on what path you choose and what you are submitting. These are government fees only.</p>
+                        <!-- Fee table is generated from the FEES list in the script below -->
+                        <div class="cost-key"><span class="k-both">Both Pathways</span><span class="k-cp">Consular Processing Only</span><span class="k-aos">Adjustment of Status Only</span></div>
+                        <div data-cost-full></div>
+                    </div>
+                </details>
+                </section>
+
+                <!-- ============================================================ -->
+                <!-- END CHAPTER 2 CONTENT                                        -->
+                <!-- ============================================================ -->
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Footer Navigation -->
+    <div class="footer-nav" id="footer-nav">
+        <div class="footer-nav-content">
+            <a href="chapter-1.html" class="footer-nav-btn">
+                <span class="arrow">←</span>
+                <span>Previous: Introduction</span>
+            </a>
+            <a href="chapter-3-evidence.html" class="footer-nav-btn">
+                <span>Next: Evidence & Paperwork</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+
+    </div><!-- end english-content -->
+
+    <div id="spanish-content" class="spanish-page">
+        <div class="spanish-content">
+            <h1>¡Sitio web en español próximamente!</h1>
+            <p>Actualmente disponible solo en inglés</p>
+            <button class="btn btn-primary" onclick="switchLanguage('en')">Volver al sitio en inglés</button>
+        </div>
+    </div>
+
+    <script>
+        function switchLanguage(lang) {
+            const englishContent = document.getElementById('english-content');
+            const spanishContent = document.getElementById('spanish-content');
+            const langButtons = document.querySelectorAll('.lang-btn');
+
+            if (lang === 'es') {
+                englishContent.style.display = 'none';
+                spanishContent.classList.add('active');
+                langButtons[0].classList.remove('active');
+                langButtons[1].classList.add('active');
+            } else {
+                englishContent.style.display = 'block';
+                spanishContent.classList.remove('active');
+                langButtons[0].classList.add('active');
+                langButtons[1].classList.remove('active');
+            }
+        }
+
+        // Hamburger menu toggle
+        (function () {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavMenu');
+            if (!btn || !menu) return;
+
+            function closeMenu() {
+                btn.classList.remove('open');
+                menu.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+
+            function toggleMenu() {
+                const isOpen = menu.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            menu.querySelectorAll('.mobile-nav-item').forEach(function (item) {
+                item.addEventListener('click', closeMenu);
+            });
+
+            document.addEventListener('click', function (e) {
+                if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 1050) closeMenu();
+            });
+        })();
+
+        // Prevent callout boxes from overlapping in the right margin
+        function adjustCalloutPositions() {
+            const isWideScreen = window.innerWidth > 1200;
+            const callouts = Array.prototype.filter.call(document.querySelectorAll('.callout-box'), function (box) {
+                box.style.top = '0';
+                return !box.closest('details:not([open])'); // skip boxes inside closed accordions
+            });
+
+            if (!isWideScreen) return;
+
+            const gap = 20;
+
+            for (let i = 1; i < callouts.length; i++) {
+                const prevRect = callouts[i - 1].getBoundingClientRect();
+                const currRect = callouts[i].getBoundingClientRect();
+                const overlap = prevRect.bottom + gap - currRect.top;
+                if (overlap > 0) {
+                    const currentTop = parseInt(callouts[i].style.top) || 0;
+                    callouts[i].style.top = (currentTop + overlap) + 'px';
+                }
+            }
+        }
+
+        // Align all callout boxes to consistent left position
+        function alignCalloutBoxes() {
+            if (window.innerWidth <= 1200) return;
+
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (!contentWrapper) return;
+
+            const wrapperRect = contentWrapper.getBoundingClientRect();
+            const targetLeft = wrapperRect.width + 30;
+
+            const callouts = document.querySelectorAll('.callout-box');
+            callouts.forEach(box => {
+                const anchor = box.closest('.callout-anchor');
+                if (!anchor) return;
+                const anchorRect = anchor.getBoundingClientRect();
+                const offset = wrapperRect.left - anchorRect.left;
+                box.style.left = (targetLeft + offset) + 'px';
+            });
+        }
+
+        // Sidebar Field Notes live inside the Explore accordions, so they only
+        // show while their accordion is open. Re-place them on every toggle.
+        document.querySelectorAll('.explore-item').forEach(function (item) {
+            item.addEventListener('toggle', function () {
+                alignCalloutBoxes();
+                adjustCalloutPositions();
+            });
+        });
+
+        window.addEventListener('load', adjustCalloutPositions);
+        window.addEventListener('resize', adjustCalloutPositions);
+        window.addEventListener('load', alignCalloutBoxes);
+        window.addEventListener('resize', alignCalloutBoxes);
+
+        // ============================================================
+        // NUMBERED BLOB BADGES (shared by the tool and the comparison)
+        // ============================================================
+        const BLOBS = [
+            ['#d1e0c5', 'M53.65,19.32c-.48-1.64-1.14-3.25-2-4.79-2.53-4.53-6.85-8.34-11.77-10.33-5.35-2.16-10.03-1.71-13.77,1.77-1.81,1.68-3.54,3.59-6.03,4.28-2.88.81-6.35-.16-9.06,1-3.04,1.3-4.1,4.86-4.15,8.17-.08,5.5,1.92,11.25,5.56,16,3.63,4.75,8.86,8.47,14.55,10.34,4.26,1.4,8.8,1.79,12.85.77,5.93-1.49,10.43-5.91,12.79-11.23,2.14-4.82,2.62-10.56,1.04-15.99Z'],
+            ['#ffd0d0', 'M49.26,38.05c3.32-3.48,5.69-8.11,5.48-13.03-.18-4.13-2.16-8.05-4.79-11.23-2.51-3.03-6.52-7.34-10.06-8.92-3.91-1.75-9.5-.48-13.2.98-4.5,1.79-8.45,4.77-12.09,7.99-3.45,3.06-6.85,6.66-7.69,11.31-.65,3.58.35,7.41,2.33,10.49,1.99,3.09,4.89,5.47,8.06,7.18,9.98,5.38,22.9,3.77,31.05-3.85.31-.29.62-.6.93-.92Z'],
+            ['#f6d6b8', 'M8.25,22.48c.02.25.04.49.05.75.25,3.71.54,7.44,1.53,11,.98,3.56,2.71,6.98,5.39,9.35,3.39,2.98,7.95,4,12.34,3.96,2.03-.02,4.09-.24,6-.98,1.78-.69,3.39-1.79,5.08-2.7,3.39-1.8,7.3-2.86,10.1-5.71,2.99-3.05,4.69-7.39,4.64-11.81-.05-3.87-1.45-7.7-3.87-10.57-2.57-3.06-6.12-4.95-9.69-6.49-4.79-2.08-9.76-3.66-14.69-5.33-2.8-.95-5.76-1.93-8.63-1.24-3.72.89-6.45,4.51-7.56,8.41-1.04,3.64-.93,7.54-.68,11.37Z'],
+            ['#d1e0c5', 'M53.55,21.32c-.65-6.36-4.39-12.34-9.74-14.93-4.73-2.3-10.26-1.92-15.2-.25-2.5.84-4.93,1.99-7.5,2.49-4.85.96-10.74,1.02-12.71,7.06-.72,2.21-.71,4.62-.41,6.92.75,5.76,3.34,11.2,7.2,15.21,3.85,4.01,8.93,6.58,14.22,7.23,6.05.74,12.42-1.1,17.1-5.36,4.68-4.26,7.53-10.96,7.12-17.6-.02-.25-.05-.52-.07-.77Z']
+        ];
+        const BLOB_ORDER = [0, 1, 2, 3, 1, 2];
+
+        function blobNum(n) {
+            const b = BLOBS[BLOB_ORDER[(n - 1) % BLOB_ORDER.length]];
+            return '<div class="blob-num" aria-hidden="true"><svg viewBox="0 0 61.44 50"><path fill="' + b[0] + '" d="' + b[1] + '"/></svg><span>' + n + '</span></div>';
+        }
+
+        // ============================================================
+        // CALLOUT ICONS + HELPER
+        // Static callouts use <span class="note-icon" data-icon="..."></span>;
+        // the script below fills in the matching icon.
+        // ============================================================
+        const NOTE_ICONS = {
+            field: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><g fill="none" stroke="#3d517d" stroke-miterlimit="10"><path stroke-width="3" d="M22.23,10.8c3.48-.94,7.46,0,10.080,2.51,2.98,2.64,4.09,6.97,3.15,10.78-.74,3.43-3.92,5.7-4.61,9.16-.44,2.46-.43,4.97-.44,7.45.03,1.23-.48,2.38-1.11,3.41-1.39,2.13-4.4,2.86-6.67,1.79-1.17-.52-2.05-1.52-2.66-2.63-.26-.48-.43-1.02-.47-1.57-.25-3.07.37-6.22-.48-9.23-.8-2.82-3.3-4.73-4.16-7.51-1.05-3.01-.66-6.42.87-9.2,1.37-2.45,3.8-4.24,6.5-4.97Z"/><line stroke-width="2" x1="19.48" y1="35.85" x2="30.88" y2="35.85"/><line stroke-width="2" x1="19.48" y1="39.06" x2="30.88" y2="39.06"/><line stroke-width="2" x1="19.48" y1="42.56" x2="30.88" y2="42.56"/></g><g fill="none" stroke="#3d517d" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10"><line x1="25.03" y1="2.6" x2="25.03" y2="6.24"/><line x1="38.88" y1="8.53" x2="36.31" y2="11.1"/><line x1="13.45" y1="31.45" x2="10.87" y2="34.02"/><line x1="39.13" y1="34.02" x2="36.56" y2="31.45"/><line x1="13.68" y1="11.13" x2="11.1" y2="8.56"/><line x1="43.9" y1="22" x2="40.26" y2="22"/><line x1="9.74" y1="22" x2="6.1" y2="22"/></g></svg>',
+            been: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><path fill="#3d517d" d="M25.52,48.09h-.03c-1.52-.01-2.87-.87-3.51-2.25l-10.02-19.12c-1.19-2.23-1.82-4.76-1.82-7.3,0-8.6,6.99-15.59,15.59-15.59s15.59,6.99,15.59,15.59c0,2.54-.63,5.07-1.82,7.31l-10.48,19.23c-.63,1.3-1.98,2.14-3.48,2.14ZM25.72,6.83c-6.94,0-12.59,5.65-12.59,12.59,0,2.08.5,4.07,1.47,5.9l10.06,19.19c.25.53.67.58.85.58h0c.18,0,.59-.05.82-.51l10.51-19.27c.97-1.82,1.47-3.81,1.47-5.89,0-6.94-5.65-12.59-12.59-12.59Z"/><path fill="#3d517d" d="M25.72,26.95c-4.17,0-7.56-3.39-7.56-7.56s3.39-7.56,7.56-7.56,7.56,3.39,7.56,7.56-3.39,7.56-7.56,7.56ZM25.72,13.84c-3.06,0-5.56,2.49-5.56,5.56s2.49,5.56,5.560,5.56,5.56-2.49,5.56-5.56-2.49-5.56-5.56-5.56Z"/></svg>',
+            help: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><path fill="#3d517d" d="M6.84,41.71c-.78,0-1.5-.46-1.82-1.2-.38-.87-.11-1.87.66-2.43,1.73-1.27,3.18-2.68,4.32-4.2-3.68-2.84-5.77-6.62-5.77-10.54,0-8.52,9.64-15.46,21.49-15.46s21.49,6.93,21.49,15.46-9.64,15.46-21.49,15.46c-2.37,0-4.72-.29-7-.85-4.49,1.9-8.16,3.09-11.51,3.72-.13.02-.25.04-.38.04ZM25.73,10.89c-10.2,0-18.49,5.59-18.49,12.46,0,3.370,2.01,6.53,5.66,8.92l1.23.81-.79,1.25c-.76,1.2-1.66,2.34-2.71,3.42,2.21-.66,4.62-1.56,7.38-2.75l.48-.2.5.13c2.18.58,4.45.88,6.73.88,10.2,0,18.49-5.59,18.49-12.46s-8.3-12.46-18.49-12.46Z"/></svg>',
+            important: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" aria-hidden="true"><path fill="none" stroke="#ab3838" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M21.2,8.97L4.47,35.44c-2.2,3.48.3,8.02,4.42,8.02h32.22c4.04,0,6.55-4.38,4.51-7.87l-15.48-26.47c-1.98-3.38-6.84-3.47-8.94-.15Z"/><circle fill="#ab3838" cx="25" cy="37" r="1.15"/><path fill="#ab3838" d="M25,33.56c-.48,0-.87-.39-.87-.87l-1.17-15.97c0-.48.77-.87,2.04-.87,1.17,0,2.04.39,2.04.87l-1.17,15.97c0,.48-.39.87-.87.87Z"/></svg>'
+        };
+
+        const NOTE_LABELS = {
+            field: 'Field Notes',
+            been: 'I’ve Been There',
+            help: 'Need Help?',
+            important: 'Important'
+        };
+
+        function note(type, title, body) {
+            return '<div class="note note-' + type + '">' +
+                '<div class="note-head"><span class="note-icon">' + NOTE_ICONS[type] + '</span><span class="note-label">' + NOTE_LABELS[type] + '</span></div>' +
+                (title ? '<p class="note-title">' + title + '</p>' : '') +
+                '<div class="note-body">' + body + '</div>' +
+                '</div>';
+        }
+
+        document.querySelectorAll('[data-icon]').forEach(function (el) {
+            el.innerHTML = NOTE_ICONS[el.dataset.icon] || '';
+        });
+
+        // ============================================================
+        // FEES (edit amounts here; the tool and the Explore table both use this list)
+        // path: 'both', 'cp' (Consular Processing only), 'aos' (Adjustment of Status only)
+        // ============================================================
+        const FEES = [
+            { item: 'I-130', path: 'both', online: '$625', mailed: '$675' },
+            { item: 'DS-260', path: 'cp', online: '$325', mailed: 'N/A' },
+            { item: 'I-485', path: 'aos', online: 'N/A', mailed: '$1,440' },
+            { item: 'I-864', path: 'both', online: '$120*', mailed: 'No fee*', cp: ['$120', 'N/A'], aos: ['N/A', 'No fee'] },
+            { item: 'I-765', path: 'aos', online: '$260', mailed: '$260', optional: true },
+            { item: 'I-131', path: 'aos', online: '$580', mailed: '$630', optional: true },
+            { item: 'Immigrant Fee', path: 'cp', online: '$235', mailed: 'N/A' },
+            { item: 'Medical Exam', path: 'both', span: '$200–$600+', note: 'Paid to the doctor' }
+        ];
+        const FEE_TOTALS = {
+            aos: '$2,265–$3,605+',
+            cp: '$1,505–$1,955+'
+        };
+        const FEE_FOOTNOTE = '*For Consular Processing, the $120 I-864 fee is paid online to the National Visa Center. For Adjustment of Status, there is no fee when the I-864 is mailed with the I-485.';
+
+        function feeRow(f, route) {
+            let online = f.online, mailed = f.mailed;
+            if (route && f[route]) { online = f[route][0]; mailed = f[route][1]; }
+            const label = '<td class="form-num' + (route ? '' : ' item-' + f.path) + '">' + f.item +
+                (f.optional ? '<span class="optional">Optional</span>' : '') +
+                (f.note ? '<span class="optional">' + f.note + '</span>' : '') + '</td>';
+            const fees = f.span ? '<td class="fee" colspan="2">' + f.span + '</td>' : '<td class="fee">' + online + '</td><td class="fee">' + mailed + '</td>';
+            return '<tr>' + label + fees + '</tr>';
+        }
+
+        function costTable(route) {
+            const rows = FEES.filter(function (f) { return !route || f.path === 'both' || f.path === route; });
+            let html = '<table class="forms-table cost-table"><thead><tr><th scope="col">Item</th><th scope="col">Online</th><th scope="col">Mailed</th></tr></thead><tbody>' +
+                rows.map(function (f) { return feeRow(f, route); }).join('');
+            if (route) {
+                html += '<tr class="total-row"><td>Estimated total</td><td colspan="2">' + FEE_TOTALS[route] + '</td></tr>';
+            }
+            html += '</tbody></table>';
+            if (!route) html += '<p class="fee-note">' + FEE_FOOTNOTE + '</p>';
+            return html;
+        }
+
+        (function () {
+            const full = document.querySelector('[data-cost-full]');
+            if (!full) return;
+            full.innerHTML = costTable() +
+                '<div class="cost-totals">' +
+                '<div style="background: #FFD0D0;">Adjustment of Status estimated total<strong>' + FEE_TOTALS.aos + '</strong></div>' +
+                '<div style="background: #F6D6B8;">Consular Processing estimated total<strong>' + FEE_TOTALS.cp + '</strong></div>' +
+                '</div>';
+        })();
+
+        // Comparison lists in "Explore All Routes"
+        (function () {
+            const lists = {
+                aos: ['Medical Exam', 'File I-130, I-485, I-864, and I-693', 'Biometrics Appointment', 'Interview', 'Case Approval and Green Card Sent'],
+                cp: ['File I-130', 'I-130 Approval, Case Moved to National Visa Center (NVC)', 'File DS-260 and I-864, Pay Fees', 'Medical Exam', 'Interview', 'Case Approval and Immigrant Visa Issued', 'Enter U.S. and Green Card Sent']
+            };
+            document.querySelectorAll('[data-compare]').forEach(function (ol) {
+                ol.innerHTML = lists[ol.dataset.compare].map(function (text, i) {
+                    return '<li>' + blobNum(i + 1) + '<div class="step-text">' + text + '</div></li>';
+                }).join('');
+            });
+        })();
+
+        // ============================================================
+        // ROUTE FINDER
+        // ============================================================
+        (function () {
+            const tool = document.getElementById('routeTool');
+            if (!tool) return;
+
+            const CH = {
+                evidence: { href: 'chapter-3-evidence.html', label: 'Evidence & Paperwork' },
+                waiting: { href: 'chapter-4-waiting.html', label: 'The Waiting' },
+                medical: { href: 'chapter-5-medical.html#who-to-schedule-your-exam-with', label: 'Medical Exam' },
+                biometrics: { href: 'chapter-6-biometrics.html', label: 'Biometrics' },
+                work: { href: 'chapter-7-work.html', label: 'Work Auth & SSN' },
+                interviewAOS: { href: 'chapter-8-interview.html#adjustment-of-status-applicants', label: 'Interview' },
+                interviewCP: { href: 'chapter-8-interview.html#consular-processing-applicants', label: 'Interview' },
+                green: { href: 'chapter-9-green.html', label: 'The Green Card' }
+            };
+
+            const URLS = {
+                bulletin: 'https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html',
+                estimator: 'https://egov.uscis.gov/processing-times',
+                inadmissibility: 'https://www.boundless.com/immigration-resources/grounds-of-inadmissibility-explained'
+            };
+
+            const CATEGORIES = {
+                F1: 'Unmarried sons and daughters (21 or older) of U.S. citizens',
+                F2A: 'Spouses and unmarried children (under 21) of green card holders',
+                F2B: 'Unmarried sons and daughters (21 or older) of green card holders',
+                F3: 'Married sons and daughters of U.S. citizens',
+                F4: 'Brothers and sisters of U.S. citizens'
+            };
+
+            const state = { role: null, pet: null, rel: null, married: null, under21: null, petAdult: null, loc: null, check: [] };
+            let idx = 0;
+            let firstRender = true;
+
+            // Voice helper: (applicant wording, sponsor wording)
+            function isSponsor() { return state.role === 'sponsor'; }
+            function v(a, s) { return isSponsor() ? s : a; }
+
+            // ---------- Logic ----------
+            function outcome() {
+                const s = state;
+                if (!s.pet || !s.rel) return null;
+                if (s.rel === 'other') return { type: 'ineligible', reason: 'other' };
+                if (s.pet === 'lpr') {
+                    if (s.rel === 'spouse') return { type: 'pref', cat: 'F2A' };
+                    if (s.rel === 'child') {
+                        if (s.married === 'yes') return { type: 'ineligible', reason: 'lpr-married' };
+                        if (s.married === 'no' && s.under21) return { type: 'pref', cat: s.under21 === 'yes' ? 'F2A' : 'F2B' };
+                    }
+                    return null;
+                }
+                if (s.rel === 'spouse') return { type: 'ir' };
+                if (s.rel === 'child') {
+                    if (s.married === 'yes') return { type: 'pref', cat: 'F3' };
+                    if (s.married === 'no' && s.under21) return s.under21 === 'yes' ? { type: 'ir' } : { type: 'pref', cat: 'F1' };
+                    return null;
+                }
+                if (s.rel === 'parent' || s.rel === 'sibling') {
+                    if (!s.petAdult) return null;
+                    if (s.petAdult === 'no') return { type: 'notyet' };
+                    return s.rel === 'parent' ? { type: 'ir' } : { type: 'pref', cat: 'F4' };
+                }
+                return null;
+            }
+
+            function isRoute(o) { return o && (o.type === 'ir' || o.type === 'pref'); }
+
+            function screens() {
+                const list = ['role', 'pet', 'rel'];
+                const o = outcome();
+                if (!o || isRoute(o)) {
+                    list.push('loc');
+                    if (state.loc === 'in') list.push('check');
+                }
+                return list;
+            }
+
+            function needsAttorneyNote() {
+                return state.loc === 'in' && state.check.length > 0 && state.check.indexOf('none') === -1;
+            }
+
+            function relOptions() {
+                if (state.pet === 'lpr') {
+                    return v(
+                        [['spouse', 'I’m their spouse'], ['child', 'I’m their child'], ['other', 'Another relationship (parent, brother or sister, grandparent…)']],
+                        [['spouse', 'My spouse'], ['child', 'My child'], ['other', 'Another relative (parent, brother or sister, grandparent…)']]
+                    );
+                }
+                return v(
+                    [['spouse', 'I’m their spouse'], ['child', 'I’m their child'], ['parent', 'I’m their parent'], ['sibling', 'I’m their brother or sister'], ['other', 'Another relationship (grandparent, cousin, aunt, uncle…)']],
+                    [['spouse', 'My spouse'], ['child', 'My child'], ['parent', 'My parent'], ['sibling', 'My brother or sister'], ['other', 'Another relative (grandparent, cousin, aunt, uncle…)']]
+                );
+            }
+
+            // ---------- Markup helpers ----------
+            function option(type, name, value, label, checked) {
+                return '<label class="opt' + (checked ? ' selected' : '') + '"><input type="' + type + '" name="' + name + '" value="' + value + '"' + (checked ? ' checked' : '') + '><span>' + label + '</span></label>';
+            }
+
+            function radios(name, opts, layout) {
+                return '<div class="' + (layout || 'opt-list') + '">' + opts.map(function (o) {
+                    return option('radio', name, o[0], o[1], state[name] === o[0]);
+                }).join('') + '</div>';
+            }
+
+            function yesNo(name, noLabel) {
+                return radios(name, [['yes', 'Yes'], ['no', noLabel || 'No']], 'opt-row');
+            }
+
+            function tag(code) {
+                let label;
+                if (code === 'B') label = 'Together';
+                else if (code === 'A') label = isSponsor() ? 'Your family member' : 'You';
+                else label = isSponsor() ? 'You' : 'Your family member';
+                const cls = label === 'You' ? 'tag-you' : (label === 'Together' ? 'tag-both' : 'tag-family');
+                return '<span class="tag ' + cls + '">' + label + '</span>';
+            }
+
+            function legalHelp() {
+                return '<div class="resource-buttons">' +
+                    '<a href="https://www.justice.gov/eoir/list-pro-bono-legal-service-providers" target="_blank" rel="noopener noreferrer" class="resource-btn">Department of Justice</a>' +
+                    '<a href="https://www.ailalawyer.com/" target="_blank" rel="noopener noreferrer" class="resource-btn">AILA</a>' +
+                    '<a href="https://www.immi.org/en/Info/get-legal-help" target="_blank" rel="noopener noreferrer" class="resource-btn">Immi.org</a>' +
+                    '</div>';
+            }
+
+            function fieldNote(title, text) {
+                return note('field', title, '<p>' + text + '</p>');
+            }
+
+            // ============================================================
+            // QUESTION COPY
+            // ============================================================
+            function screenHTML(id) {
+                switch (id) {
+                    case 'role':
+                        return {
+                            legend: 'Which best describes you?',
+                            helper: 'Your answers stay on this page. Nothing is saved or sent anywhere.',
+                            body: radios('role', [['applicant', 'I’m applying for a green card'], ['sponsor', 'I’m sponsoring a family member']])
+                        };
+                    case 'pet':
+                        return {
+                            legend: v('Who is filing the petition for you?', 'What is your status in the U.S.?'),
+                            helper: v('The petitioner is your family member in the U.S. who is sponsoring you.', 'As the sponsor, you’re also called the petitioner.'),
+                            body: radios('pet', v(
+                                [['usc', 'A U.S. citizen'], ['lpr', 'A green card holder (permanent resident)']],
+                                [['usc', 'I’m a U.S. citizen'], ['lpr', 'I’m a green card holder (permanent resident)']]
+                            )) +
+                            '<details class="not-sure"><summary>Not sure?</summary><p>A U.S. citizen may have a U.S. passport, a U.S. birth certificate, or a naturalization certificate. A green card holder has a permanent resident card (green card).</p></details>'
+                        };
+                    case 'rel': {
+                        let body = radios('rel', relOptions());
+                        if (state.rel === 'child') {
+                            body += '<div class="followup"><span class="q-sub" id="q-married">' + v('Are you married?', 'Is your child married?') + '</span>' + yesNo('married') + '</div>';
+                            if (state.married === 'no') {
+                                body += '<div class="followup"><span class="q-sub" id="q-under21">' + v('Are you under 21?', 'Is your child under 21?') + '</span>' + yesNo('under21') + '</div>';
+                            }
+                            body += '<p class="q-note">“Child” can include stepchildren and adopted children, but special rules apply.</p>';
+                        }
+                        if ((state.rel === 'parent' || state.rel === 'sibling') && state.pet === 'usc') {
+                            body += '<div class="followup"><span class="q-sub" id="q-adult">' + v('Is your family member in the U.S. 21 or older?', 'Are you 21 or older?') + '</span>' + yesNo('petAdult', 'Not yet') + '</div>';
+                        }
+                        return {
+                            legend: v('How are you related to them?', 'Who are you sponsoring?'),
+                            helper: '',
+                            body: body
+                        };
+                    }
+                    case 'loc':
+                        return {
+                            legend: v('Are you in the U.S. right now?', 'Is your family member in the U.S. right now?'),
+                            helper: '',
+                            body: yesNo('loc').replace(/value="yes"/, 'value="in"').replace(/value="no"/, 'value="out"')
+                        };
+                    case 'check': {
+                        const items = v(
+                            [['ewi', 'I entered the U.S. without being inspected'], ['overstay', 'I have stayed past my visa or broken its terms'], ['criminal', 'I have a criminal record'], ['denial', 'I’ve had a past immigration denial or removal'], ['none', 'None of these'], ['unsure', 'I’m not sure']],
+                            [['ewi', 'They entered the U.S. without being inspected'], ['overstay', 'They have stayed past their visa or broken its terms'], ['criminal', 'They have a criminal record'], ['denial', 'They’ve had a past immigration denial or removal'], ['none', 'None of these'], ['unsure', 'I’m not sure']]
+                        );
+                        return {
+                            legend: v('Do any of these apply to you?', 'Do any of these apply to your family member?'),
+                            helper: 'Select all that apply. Your answers stay on this page.',
+                            body: '<div class="opt-list">' + items.map(function (it) {
+                                return option('checkbox', 'check', it[0], it[1], state.check.indexOf(it[0]) !== -1);
+                            }).join('') + '</div>'
+                        };
+                    }
+                }
+            }
+
+            // The yes/no for location uses in/out values; mark the saved choice
+            function fixLocChecked(html) {
+                if (!state.loc) return html;
+                return html.replace('value="' + state.loc + '"', 'value="' + state.loc + '" checked')
+                    .replace(new RegExp('<label class="opt"><input type="radio" name="loc" value="' + state.loc + '"'), '<label class="opt selected"><input type="radio" name="loc" value="' + state.loc + '"');
+            }
+
+            function canContinue(id) {
+                switch (id) {
+                    case 'role': return !!state.role;
+                    case 'pet': return !!state.pet;
+                    case 'rel': return !!outcome();
+                    case 'loc': return !!state.loc;
+                    case 'check': return state.check.length > 0;
+                }
+                return false;
+            }
+
+            function renderQuestion(focusTarget) {
+                const list = screens();
+                const id = list[idx];
+                const q = screenHTML(id);
+                let body = q.body;
+                if (id === 'loc') {
+                    // yesNo() matched state.loc against yes/no; rebuild selection for in/out
+                    body = body.replace(/ checked/g, '').replace(/opt selected/g, 'opt');
+                    body = fixLocChecked(body);
+                }
+                const isLast = (idx === list.length - 1) && (id !== 'rel' || !isRoute(outcome())) || id === 'check' || (id === 'loc' && state.loc === 'out');
+                const nextLabel = isLast ? 'See my route' : 'Continue';
+
+                tool.innerHTML =
+                    '<div class="q-form">' +
+                    '<fieldset>' +
+                    '<legend class="q-legend" tabindex="-1"><span class="q-progress">Question ' + (idx + 1) + '</span><span class="q-legend-text">' + q.legend + '</span></legend>' +
+                    (q.helper ? '<p class="q-helper">' + q.helper + '</p>' : '') +
+                    body +
+                    '</fieldset>' +
+                    '<div class="q-actions">' +
+                    (idx > 0 ? '<button type="button" class="tool-btn secondary" data-action="back">← Back</button>' : '<span></span>') +
+                    '<button type="button" class="tool-btn primary" data-action="next"' + (canContinue(id) ? '' : ' disabled') + '>' + nextLabel + ' →</button>' +
+                    '</div>' +
+                    '</div>';
+
+                if (focusTarget) {
+                    const el = tool.querySelector('input[name="' + focusTarget.name + '"][value="' + focusTarget.value + '"]');
+                    if (el) el.focus({ preventScroll: true });
+                } else if (!firstRender) {
+                    focusAndScroll(tool.querySelector('.q-legend'));
+                }
+                firstRender = false;
+            }
+
+            function focusAndScroll(el) {
+                if (el) el.focus({ preventScroll: true });
+                const top = tool.getBoundingClientRect().top;
+                if (top < 120 || top > window.innerHeight * 0.6) {
+                    window.scrollTo({ top: window.scrollY + top - 150, behavior: 'smooth' });
+                }
+            }
+
+            // ---------- Input handling ----------
+            tool.addEventListener('change', function (e) {
+                const input = e.target;
+                if (!input.name) return;
+                const name = input.name;
+                const value = input.value;
+
+                if (name === 'check') {
+                    if (input.checked) {
+                        if (value === 'none') state.check = ['none'];
+                        else state.check = state.check.filter(function (c) { return c !== 'none'; }).concat([value]);
+                    } else {
+                        state.check = state.check.filter(function (c) { return c !== value; });
+                    }
+                } else {
+                    state[name] = value;
+                    if (name === 'pet') {
+                        const allowed = relOptions().map(function (o) { return o[0]; });
+                        if (state.rel && allowed.indexOf(state.rel) === -1) state.rel = null;
+                        if (value === 'lpr') state.petAdult = null;
+                    }
+                    if (name === 'rel') { state.married = null; state.under21 = null; state.petAdult = null; }
+                    if (name === 'married' && value === 'yes') state.under21 = null;
+                    if (name === 'loc' && value === 'out') state.check = [];
+                }
+                renderQuestion({ name: name, value: value });
+            });
+
+
+            tool.addEventListener('click', function (e) {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                const action = btn.dataset.action;
+                if (action === 'next') { goNext(); }
+                if (action === 'back') { idx = Math.max(0, idx - 1); renderQuestion(); }
+                if (action === 'edit') { idx = 0; clearHash(); renderQuestion(); }
+                if (action === 'restart') { reset(); }
+                if (action === 'share') { share(btn); }
+            });
+
+            function goNext() {
+                const list = screens();
+                if (!canContinue(list[idx])) return;
+                const o = outcome();
+                if (list[idx] === 'rel' && o && !isRoute(o)) { showResult(); return; }
+                if (idx >= list.length - 1) { showResult(); return; }
+                idx++;
+                renderQuestion();
+            }
+
+            function reset() {
+                Object.assign(state, { role: null, pet: null, rel: null, married: null, under21: null, petAdult: null, loc: null, check: [] });
+                idx = 0;
+                clearHash();
+                renderQuestion();
+            }
+
+            // ============================================================
+            // RESULT COPY
+            // ============================================================
+            function basedOn() {
+                const pet = state.pet === 'usc' ? 'a U.S. citizen' : 'a green card holder';
+                const parts = [];
+                if (!isSponsor()) {
+                    const who = { spouse: 'your spouse', child: 'your parent', parent: 'your child', sibling: 'your brother or sister', other: 'your family member' }[state.rel];
+                    parts.push(who + ' is ' + pet);
+                    if (state.rel === 'child') {
+                        parts.push(state.married === 'yes' ? 'you’re married' : 'you’re unmarried');
+                        if (state.married === 'no') parts.push(state.under21 === 'yes' ? 'you’re under 21' : 'you’re 21 or older');
+                    }
+                    if (state.petAdult === 'no') parts.push('they’re under 21');
+                    if (isRoute(outcome())) parts.push(state.loc === 'in' ? 'you’re in the U.S.' : 'you’re outside the U.S.');
+                } else {
+                    const who = { spouse: 'your spouse', child: 'your child', parent: 'your parent', sibling: 'your brother or sister', other: 'another relative' }[state.rel];
+                    parts.push('you’re ' + pet + ' sponsoring ' + who);
+                    if (state.rel === 'child') {
+                        parts.push(state.married === 'yes' ? 'they’re married' : 'they’re unmarried');
+                        if (state.married === 'no') parts.push(state.under21 === 'yes' ? 'they’re under 21' : 'they’re 21 or older');
+                    }
+                    if (state.petAdult === 'no') parts.push('you’re under 21');
+                    if (isRoute(outcome())) parts.push(state.loc === 'in' ? 'they’re in the U.S.' : 'they’re outside the U.S.');
+                }
+                return '<p class="based-on">Based on your answers: ' + parts.join(' · ') + ' · <button type="button" class="link-btn" data-action="edit">Change answers</button></p>';
+            }
+
+            function stepsHTML(steps) {
+                return '<div class="tag-key">Who does what: ' + tag('A') + tag('S') + tag('B') + '</div>' +
+                    '<ol class="route-steps">' + steps.map(function (s, i) {
+                        return '<li class="route-step">' + blobNum(i + 1) +
+                            '<div class="step-body"><div class="step-head"><span class="step-title">' + s.title + '</span>' + tag(s.who) + '</div>' +
+                            (s.desc ? '<p>' + s.desc + '</p>' : '') +
+                            (s.extra || '') +
+                            (s.link ? '<a class="step-link" href="' + s.link.href + '">Read: ' + s.link.label + ' →</a>' : '') +
+                            '</div></li>';
+                    }).join('') + '</ol>';
+            }
+
+            function formsHTML(rows) {
+                return '<table class="forms-table"><thead><tr><th scope="col">Form</th><th scope="col">What it’s for</th><th scope="col">Who fills it out</th></tr></thead><tbody>' +
+                    rows.map(function (r) {
+                        return '<tr><td class="form-num">' + r[0] + (r[3] ? '<span class="optional">Optional</span>' : '') + '</td><td>' + r[1] + '</td><td>' + tag(r[2]) + '</td></tr>';
+                    }).join('') + '</tbody></table>';
+            }
+
+            function routeResult(o) {
+                const aos = state.loc === 'in';
+                const pref = o.type === 'pref';
+                const spouse = state.rel === 'spouse';
+                const cat = o.cat;
+                const bulletinLink = '<a href="' + URLS.bulletin + '" target="_blank" rel="noopener noreferrer" class="step-link">Check the Visa Bulletin →</a>';
+
+                // ----- Header -----
+                const title = (aos ? 'Adjustment of Status' : 'Consular Processing') + ' ' + (pref ? 'in Family Preference Category ' + cat : 'as an Immediate Relative');
+                let tagline;
+                if (pref) tagline = v('Your category has a waiting list.', 'Your family member’s category has a waiting list.');
+                else if (aos) tagline = v('You can apply from inside the U.S., and there’s no waiting list for your category.', 'Your family member can apply from inside the U.S., and there’s no waiting list for their category.');
+                else tagline = v('You’ll apply through a U.S. embassy or consulate, and there’s no waiting list for your category.', 'Your family member will apply through a U.S. embassy or consulate, and there’s no waiting list for their category.');
+
+                // ----- What this means -----
+                let meaning;
+                if (!pref) {
+                    meaning = v('Because your family member is a U.S. citizen, a visa is available to you right away. ', 'Because you’re a U.S. citizen, a visa is available to your family member right away. ');
+                    meaning += aos
+                        ? v('You’ll apply for your green card from inside the U.S., and in most cases you can stay here while your case is processed.', 'They’ll apply for their green card from inside the U.S., and in most cases they can stay here while their case is processed.')
+                        : v('Your family member starts by filing a petition with USCIS. Once it’s approved, your case moves to the National Visa Center (NVC) and then to a U.S. embassy or consulate for your interview. When your visa is approved, you become a permanent resident as soon as you enter the U.S.', 'You start by filing a petition with USCIS. Once it’s approved, the case moves to the National Visa Center (NVC) and then to a U.S. embassy or consulate for their interview. When their visa is approved, they become a permanent resident as soon as they enter the U.S.');
+                } else {
+                    meaning = v('Only a set number of visas are available in your category each year, so you’ll wait in line before you can get your green card. ', 'Only a set number of visas are available in this category each year, so your family member will wait in line before they can get their green card. ');
+                    meaning += aos
+                        ? v('Your family member can file the petition now. Once your place in line comes up, you can apply for your green card from inside the U.S.', 'You can file the petition now. Once their place in line comes up, they can apply for their green card from inside the U.S.')
+                        : v('Your family member starts by filing a petition with USCIS. After it’s approved, your case moves to the National Visa Center (NVC) and waits there until your place in line comes up. Then you’ll interview at a U.S. embassy or consulate, and you become a permanent resident as soon as you enter the U.S.', 'You start by filing a petition with USCIS. After it’s approved, the case moves to the National Visa Center (NVC) and waits there until their place in line comes up. Then they’ll interview at a U.S. embassy or consulate, and they become a permanent resident as soon as they enter the U.S.');
+                }
+
+                let bulletin = '';
+                if (pref) {
+                    bulletin = '<div class="bulletin-box"><div class="bulletin-code">' + cat + '</div><div>' +
+                        '<p><strong>' + v('Your category is ', 'Their category is ') + cat + ':</strong> ' + CATEGORIES[cat] + '.</p>' +
+                        '<p>' + v('Your place in line is called your priority date. It’s the date the petition is filed. You can check where the line is right now in the most recent Visa Bulletin.', 'Their place in line is called their priority date. It’s the date the petition is filed. You can check where the line is right now in the most recent Visa Bulletin.') + '</p>' +
+                        '<a href="' + URLS.bulletin + '" target="_blank" rel="noopener noreferrer" class="tool-btn primary">Check the Visa Bulletin</a>' +
+                        '</div></div>';
+                }
+
+                let attorney = '';
+                if (aos && needsAttorneyNote()) {
+                    attorney = note('help', '',
+                        '<p>' + v('Your path may still be possible, but it’s a good idea to talk with an immigration attorney first.', 'Your family member’s path may still be possible, but it’s a good idea to talk with an immigration attorney first.') + ' You can find low-cost or free legal help here:</p>' +
+                        legalHelp() +
+                        '<p style="margin-top: 1rem;"><a href="' + URLS.inadmissibility + '" target="_blank" rel="noopener noreferrer" class="step-link">Learn about grounds of inadmissibility →</a></p>');
+                }
+
+                // ----- Forms -----
+                const forms = [['I-130', 'Proves the family relationship', 'S']];
+                if (spouse) forms.push(['I-130A', 'Extra information about the spouse, filed with the I-130', 'B']);
+                if (aos) {
+                    forms.push(['I-485', 'The green card application', 'A']);
+                    forms.push(['I-864', 'Affidavit of Support: shows the sponsor can support the applicant financially', 'S']);
+                    forms.push(['I-693', 'Medical exam results from a USCIS-approved doctor', 'A']);
+                    forms.push(['I-765', 'Work permit while the case is being processed', 'A', true]);
+                    forms.push(['I-131', 'Travel permit while the case is being processed', 'A', true]);
+                } else {
+                    forms.push(['DS-260', 'Immigrant visa application, filed online with the NVC', 'A']);
+                    forms.push(['I-864', 'Affidavit of Support: shows the sponsor can support the applicant financially', 'S']);
+                }
+
+                // ----- Steps -----
+                const evidence = { title: 'Gather your evidence', who: 'B', desc: 'Collect proof of your relationship, identity documents, and financial records.', link: CH.evidence };
+                const fileI130 = { title: 'File the petition (I-130)', who: 'S', desc: pref ? v('This sets your priority date, your place in line.', 'This sets their priority date, their place in line.') : (spouse ? 'The I-130 and I-130A are filed with USCIS.' : 'The I-130 is filed with USCIS.') };
+                const waitPD = { title: 'Wait for the priority date to become current', who: 'B', desc: 'Check the Visa Bulletin each month for category ' + cat + '.', extra: bulletinLink + '<br>', link: CH.waiting };
+                const biometrics = { title: 'Attend the biometrics appointment', who: 'A', desc: 'Fingerprints, a photo, and a signature are taken at a local USCIS office.', link: CH.biometrics };
+                const permits = { title: 'Receive work and travel permits', who: 'A', desc: 'If they were applied for, these usually arrive while the case is still being processed.', link: CH.work };
+                const interviewAOS = { title: 'Attend the interview', who: spouse ? 'B' : 'A', desc: spouse ? 'Spouses usually attend together at a local USCIS office.' : 'USCIS may schedule an interview at a local field office.', link: CH.interviewAOS };
+                const approvedAOS = { title: 'Get approved and receive the green card', who: 'A', desc: 'Once the case is approved, the green card is mailed.', link: CH.green };
+                const medicalAOS = { title: 'Get the medical exam', who: 'A', desc: 'A USCIS-approved doctor (civil surgeon) completes Form I-693. This needs to be done before the I-485 is sent in.', link: CH.medical };
+                const nvc = { title: 'Petition approved, case moves to the NVC', who: 'B', desc: 'The National Visa Center reaches out with next steps.', link: CH.waiting };
+                const ds260 = { title: 'Pay fees and submit the DS-260 and I-864', who: 'B', desc: v('You fill out the DS-260 online, and your family member submits the I-864 with their financial documents.', 'Your family member fills out the DS-260 online, and you submit the I-864 with your financial documents.') };
+                const medicalCP = { title: 'Get the medical exam', who: 'A', desc: 'An embassy-approved doctor (panel physician) does the exam, usually once the interview is scheduled.', link: CH.medical };
+                const interviewCP = { title: 'Attend the interview', who: 'A', desc: 'The interview takes place at a U.S. embassy or consulate.', link: CH.interviewCP };
+                const enter = { title: 'Receive the visa and enter the U.S.', who: 'A', desc: v('Pay the USCIS Immigrant Fee before traveling so the green card can be mailed. You become a permanent resident when you enter.', 'The USCIS Immigrant Fee is paid before traveling so the green card can be mailed. They become a permanent resident when they enter.') };
+                const cardCP = { title: 'Receive the green card', who: 'A', desc: 'The green card arrives by mail after entry.', link: CH.green };
+
+                const pkgForms = spouse ? 'I-130, I-130A, I-485, I-864, I-693' : 'I-130, I-485, I-864, I-693';
+                let steps;
+                if (aos && !pref) {
+                    steps = [evidence, medicalAOS,
+                        { title: 'Send in the application package', who: 'B', desc: 'The ' + pkgForms + ', and any optional forms are mailed to USCIS together.' },
+                        { title: 'Wait for receipt notices', who: 'B', desc: 'USCIS mails a receipt for each form. This is when the waiting begins.', link: CH.waiting },
+                        biometrics, permits, interviewAOS, approvedAOS];
+                } else if (aos && pref) {
+                    steps = [evidence, fileI130, waitPD, medicalAOS,
+                        { title: 'Send in the green card application', who: 'B', desc: 'The I-485, I-864, I-693, and any optional forms are mailed to USCIS together.' },
+                        biometrics, permits, interviewAOS, approvedAOS];
+                } else if (!pref) {
+                    steps = [evidence, fileI130, nvc, ds260, medicalCP, interviewCP, enter, cardCP];
+                } else {
+                    steps = [evidence, fileI130, nvc, waitPD, ds260, medicalCP, interviewCP, enter, cardCP];
+                }
+
+                // ----- Good to know -----
+                let tips;
+                if (aos) {
+                    tips = [];
+                    if (pref) tips.push(v('Keep your visa status valid while you wait for your priority date.', 'They’ll need to keep their visa status valid while they wait for their priority date.'));
+                    tips.push(v('You can usually stay in the U.S. while your case is processed.', 'They can usually stay in the U.S. while their case is processed.'));
+                    tips.push(v('You can apply for work and travel permits while you wait.', 'They can apply for work and travel permits while they wait.'));
+                    tips.push(v('Wait for your travel permit before leaving the U.S.', 'They should wait for their travel permit before leaving the U.S.'));
+                    tips.push('Answering any request for more evidence quickly helps keep the case moving.');
+                } else {
+                    tips = [
+                        'Government filing fees are often lower than for Adjustment of Status.',
+                        v('You become a permanent resident as soon as you enter the U.S.', 'They become a permanent resident as soon as they enter the U.S.'),
+                        'Plan ahead for travel to the embassy or consulate for the interview.',
+                        'Embassy schedules can vary, so it helps to leave some flexibility in your plans.'
+                    ];
+                }
+
+                let notes = '';
+                if (!aos) {
+                    notes += note('important', v('Planning a Trip to the U.S.?', 'Is Your Family Member Planning a Trip to the U.S.?'), '<p>' + v('Entering on a temporary visa with plans to apply for a green card can cause problems for your case. If you’re thinking about this, talk with an immigration attorney before you travel.', 'Entering on a temporary visa with plans to apply for a green card can cause problems for their case. If they’re thinking about this, talk with an immigration attorney before they travel.') + '</p>');
+                }
+                if (spouse) {
+                    notes += fieldNote('Married Less Than Two Years?', v('If you’ve been married less than two years when your case is approved, your first green card will be valid for two years. You’ll apply to remove the conditions before it expires.', 'If you’ve been married less than two years when their case is approved, their first green card will be valid for two years. They’ll apply to remove the conditions before it expires.'));
+                }
+                if (pref && state.pet === 'lpr') {
+                    notes += fieldNote('Upgrading Your Petition', v('If your family member becomes a U.S. citizen, their petition can often be upgraded, which can speed things up.', 'If you become a U.S. citizen, your petition can often be upgraded, which can speed things up.'));
+                }
+
+                // ----- Time -----
+                let time = '<p>Every case is different, so there’s no way to know exactly how long yours will take. Reviewing the application carefully before sending it in helps avoid delays that can be prevented.</p>';
+                if (pref) time += '<p>' + v('Your wait will also depend on when your priority date becomes current. ', 'Their wait will also depend on when their priority date becomes current. ') + 'The Visa Bulletin is the best way to see how category ' + cat + ' is moving.</p>';
+                time += '<p>For a rough estimate, USCIS has an online tool that shows current processing times.</p>' +
+                    '<a href="' + URLS.estimator + '" target="_blank" rel="noopener noreferrer" class="tool-btn primary">USCIS Wait Time Estimator</a>';
+                if (!aos) time += note('important', 'The I-130 Is Only the First Wait', '<p>If you look up the wait time for an I-130, keep in mind that’s only the time it takes USCIS to approve the petition. There’s more waiting afterward while the case moves through the NVC and the embassy.</p>');
+
+                // ----- Cost -----
+                const cost = '<p>Cost depends on which optional forms are included and whether you work with an attorney or organization. Attorney fees vary by office, so they aren’t included here. These are the government fees for your route.</p>' +
+                    costTable(aos ? 'aos' : 'cp') +
+                    (aos ? '<p class="fee-note">The total range includes the optional work and travel permits at the high end. Most forms for this route are mailed together, so the Mailed column is usually the one that applies.</p>' : '<p class="fee-note">The high end assumes a mailed I-130 and a higher-cost medical exam.</p>');
+
+                // ----- Next step -----
+                let next;
+                if (aos && !pref) {
+                    next = '<p>Start with Evidence & Paperwork to get your documents in order, or go straight to the Medical Exam. Just remember, the medical exam needs to be done before the I-485 is sent in.</p>' +
+                        '<div class="btn-row"><a class="tool-btn primary" href="' + CH.evidence.href + '">Evidence & Paperwork →</a><a class="tool-btn secondary" href="' + CH.medical.href + '">Medical Exam →</a></div>';
+                } else if (aos && pref) {
+                    next = '<p>Start with Evidence & Paperwork to put together the I-130 petition. The medical exam comes later, closer to when the green card application is sent in.</p>' +
+                        '<div class="btn-row"><a class="tool-btn primary" href="' + CH.evidence.href + '">Evidence & Paperwork →</a></div>';
+                } else {
+                    next = '<p>Continue to Evidence & Paperwork to begin putting together the packet for the I-130.</p>' +
+                        '<div class="btn-row"><a class="tool-btn primary" href="' + CH.evidence.href + '">Evidence & Paperwork →</a></div>';
+                }
+
+                return '<div class="result-eyebrow">Your likely route</div>' +
+                    '<h3 class="result-title" tabindex="-1">' + title + '</h3>' +
+                    '<p class="result-tagline">' + tagline + '</p>' +
+                    basedOn() +
+                    attorney +
+                    '<div class="result-section"><h3>What This Means</h3><p>' + meaning + '</p>' + bulletin + '</div>' +
+                    '<div class="result-section"><h3>Your Forms</h3>' + formsHTML(forms) + '</div>' +
+                    '<div class="result-section"><h3>Your Steps</h3>' + stepsHTML(steps) + '</div>' +
+                    '<div class="result-section"><h3>Good to Know</h3><ul class="tips">' + tips.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' + notes + '</div>' +
+                    '<div class="result-section"><h3>How Long Will This Take?</h3>' + time + '</div>' +
+                    '<div class="result-section"><h3>How Much Will This Cost?</h3>' + cost + '</div>' +
+                    '<div class="next-step"><h3>Your Next Step</h3>' + next + '</div>' +
+                    actionsHTML();
+            }
+
+            function stopResult(o) {
+                let title, body;
+                if (o.type === 'notyet') {
+                    title = 'Not quite yet';
+                    body = '<p>' + v('You’ll be able to apply once your family member in the U.S. turns 21.', 'You’ll be able to sponsor them once you turn 21.') + '</p>' +
+                        '<p>U.S. citizens can sponsor parents and brothers and sisters once they’re 21 or older. You’re welcome to come back to this tool anytime.</p>';
+                } else if (o.reason === 'lpr-married') {
+                    title = 'Green card holders can’t sponsor married children';
+                    body = '<p>' + v('Once your family member becomes a U.S. citizen, they can sponsor you as a married child (category F3).', 'Once you become a U.S. citizen, you can sponsor your married child (category F3).') + '</p>' +
+                        note('help', '', '<p>An immigration attorney can help you look at your options. You can find low-cost or free legal help here:</p>' + legalHelp());
+                } else {
+                    title = 'This relationship doesn’t qualify for a family-based green card';
+                    body = '<p>Family-based green cards are for spouses, children, parents, and brothers and sisters of U.S. citizens, and for spouses and unmarried children of green card holders.</p>';
+                    if (state.pet === 'lpr') {
+                        body += '<p>' + v('If your family member becomes a U.S. citizen, they may be able to sponsor more relatives, including parents and brothers and sisters.', 'If you become a U.S. citizen, you may be able to sponsor more relatives, including parents and brothers and sisters.') + '</p>';
+                    }
+                    body += note('help', '', '<p>There may be other options, such as work-based or humanitarian routes. An immigration attorney can help you explore them. You can find low-cost or free legal help here:</p>' + legalHelp());
+                }
+                return '<div class="result-eyebrow">Your result</div>' +
+                    '<h3 class="result-title" tabindex="-1">' + title + '</h3>' +
+                    basedOn() +
+                    '<div class="result-section">' + body + '</div>' +
+                    '<p style="margin-top: 1.5rem;"><a href="#explore-all-routes" class="step-link">Explore all routes →</a></p>' +
+                    actionsHTML();
+            }
+
+            function actionsHTML() {
+                return '<p class="share-hint">Send this result to your family member so you can look at the same route together.</p>' +
+                    '<div class="result-actions">' +
+                    '<button type="button" class="tool-btn primary" data-action="share">Share this result</button>' +
+                    '<button type="button" class="tool-btn secondary" data-action="restart">Start over</button>' +
+                    '<span class="copy-status" role="status"></span>' +
+                    '</div>' +
+                    '<p class="disclaimer">This tool is a guide, not legal advice. Every case is different, so if anything feels unclear, an immigration attorney can help.</p>';
+            }
+
+            function showResult(fromLink) {
+                const o = outcome();
+                if (!o) return;
+                tool.innerHTML = isRoute(o) ? routeResult(o) : stopResult(o);
+                safeReplace(location.pathname + location.search + encode());
+                if (fromLink) {
+                    tool.scrollIntoView();
+                } else {
+                    focusAndScroll(tool.querySelector('.result-title'));
+                }
+                adjustCalloutPositions();
+            }
+
+            // ---------- Share link (answers live only in the link) ----------
+            function encode() {
+                const p = new URLSearchParams();
+                p.set('r', isSponsor() ? 's' : 'a');
+                p.set('p', state.pet);
+                p.set('rel', state.rel);
+                if (state.married) p.set('m', state.married);
+                if (state.under21) p.set('u', state.under21);
+                if (state.petAdult) p.set('a', state.petAdult);
+                if (isRoute(outcome())) {
+                    p.set('loc', state.loc);
+                    if (needsAttorneyNote()) p.set('n', '1');
+                }
+                return '#route?' + p.toString();
+            }
+
+            function decode() {
+                if (location.hash.indexOf('#route?') !== 0) return false;
+                const p = new URLSearchParams(location.hash.slice(7));
+                const pick = function (key, allowed) { const val = p.get(key); return allowed.indexOf(val) !== -1 ? val : null; };
+                state.role = p.get('r') === 's' ? 'sponsor' : 'applicant';
+                state.pet = pick('p', ['usc', 'lpr']);
+                state.rel = pick('rel', ['spouse', 'child', 'parent', 'sibling', 'other']);
+                state.married = pick('m', ['yes', 'no']);
+                state.under21 = pick('u', ['yes', 'no']);
+                state.petAdult = pick('a', ['yes', 'no']);
+                state.loc = pick('loc', ['in', 'out']);
+                state.check = state.loc === 'in' ? (p.get('n') === '1' ? ['unsure'] : ['none']) : [];
+                const o = outcome();
+                if (!o || (isRoute(o) && !state.loc)) return false;
+                return true;
+            }
+
+            function clearHash() {
+                if (location.hash) safeReplace(location.pathname + location.search);
+            }
+
+            // Some previews block history updates; the tool still works without them
+            function safeReplace(url) {
+                try { history.replaceState(null, '', url); } catch (err) { /* ignore */ }
+            }
+
+            function share(btn) {
+                const url = location.href.split('#')[0] + encode();
+                const status = btn.parentElement.querySelector('.copy-status');
+                const done = function () { if (status) status.textContent = 'Link copied!'; };
+                const fallback = function () {
+                    if (status) status.innerHTML = 'Copy this link: <input type="text" readonly value="' + url + '" style="width: 100%; max-width: 420px; font-size: 10pt; padding: 0.3rem;" onclick="this.select()">';
+                };
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(url).then(done, fallback);
+                    } else {
+                        fallback();
+                    }
+                } catch (err) {
+                    fallback();
+                }
+            }
+
+            // ---------- Start ----------
+            if (decode()) {
+                firstRender = false;
+                showResult(true);
+            } else {
+                renderQuestion();
+            }
+        })();
+    </script>
+</body>
+</html>
